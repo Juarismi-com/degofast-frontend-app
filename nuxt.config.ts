@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
+  modules: ['@pinia/nuxt'],
   css: ['~/assets/css/main.css'],
   /**
    * @todo mejorar como se 
@@ -15,5 +16,5 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
-  }
+  },
 })
