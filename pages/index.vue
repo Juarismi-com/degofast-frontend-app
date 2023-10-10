@@ -1,7 +1,7 @@
 <template>
   <div>
-   <PresentationInfoSection />
-   <ServiceListSection />
-   <GridWhiteSection />
+    <PresentationInfoSection />
+    <ServiceListSection />
+    <GridWhiteSection />
   </div>
 </template>

@@ -4,12 +4,12 @@ export default defineNuxtConfig({
   modules: ['@pinia/nuxt'],
   css: ['~/assets/css/main.css'],
   /**
-   * @todo mejorar como se 
+   * @todo mejorar como se
    */
-  runtimeConfig:{
-   public: {
-      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000'
-   }
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000',
+    },
   },
   postcss: {
     plugins: {
@@ -17,4 +17,4 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-})
+});

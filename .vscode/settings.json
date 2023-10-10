@@ -3,7 +3,7 @@
    "editor.formatOnSave": true,
 
    // Para que no defecte la indentación del archivo
-   "editor.detectIndentation": false,
+   "editor.detectIndentation": true,
    "editor.tabSize": 3,
 
    // Inserta espacios cuando se agregan tabs
