@@ -21,7 +21,7 @@
 
             <div>
                <label for="fechaFirmaDigital" :class="[commonLabelClass]"
-                  >Fecha de Tibrado *</label
+                  >Fecha Generación de Firma Digital *</label
                >
                <vue-tailwind-datepicker
                   v-model="form.fechaFirmaDigital"
@@ -176,21 +176,17 @@
 /**
  * @todo add object for establecimientos, by defailt send 1
  * @todo separate a component in actividadEconomica, establecimientos, etc
+ * @todo add table of actividades generadas
  */
+import { storeToRefs } from "pinia";
 import VueTailwindDatepicker from "vue-tailwind-datepicker";
 import { create } from "~/services/http.service";
+import { useAuthStore } from "~/stores";
 
-const form = ref({
-   fechaFirmaDigital: "",
-   ruc: "",
-   razonSocial: "",
-   nombreFantasia: "",
-   actividadesEconomicas: [],
-   timbradoNumero: "",
-   timbradoFecha: "",
-   tipoContribuyente: 1,
-   establecimientos: [],
-});
+const authStore = useAuthStore();
+const { contributor } = storeToRefs(authStore);
+
+const form = ref({ ...contributor.value });
 
 const formActividadEconomica = ref({
    codigo: "",
@@ -219,12 +215,16 @@ const addActividadEconomica = () => {
    if (!isAdded) actividadesEconomicas.push(actividadEconomica);
 };
 
+const setContributorDefault = () => {
+   contributor;
+};
+
 /**
  * Guarda el formulario
  */
 const saveForm = (e) => {
    e.preventDefault();
-   const result = create("contributor-emitter", form.value);
+   if (!form.value.ruc) create("contributor-emitter", form.value);
 };
 
 onMounted(() => {
