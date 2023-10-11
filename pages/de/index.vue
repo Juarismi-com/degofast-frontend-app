@@ -4,10 +4,10 @@
    </div>
 </template>
 
-<script>
-import DEList from '~/components/DE/DEList.vue';
+<script setup lang="ts">
+import DEList from "~/components/DE/DEList.vue";
 
-export default {
-    components: { DEList }
-}
+definePageMeta({
+   middleware: ["auth"],
+});
 </script>
