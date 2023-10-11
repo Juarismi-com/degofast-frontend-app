@@ -17,7 +17,14 @@
       <li :class="[commonCss]">Nota de Debito</li>
       <li :class="[commonCss]">Nota de Remisión</li>
       <li :class="[commonCss]">Mi Perfil</li>
-      <li :class="[commonCss]" @click="prueba">Contribuyente</li>
+      <li :class="[commonCss]">
+         <NuxtLink
+            class="font-medium text-blue-600 hover:underline dark:text-blue-500"
+            to="/contributor"
+         >
+            Contribuyente</NuxtLink
+         >
+      </li>
       <li class="w-full px-4 py-2 rounded-b-lg" @click="setViewMenu">
          Cerrar Menu
       </li>

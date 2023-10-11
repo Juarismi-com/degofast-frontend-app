@@ -11,7 +11,12 @@
          <div v-if="loginFail" class="text-center">
             Email o contraseña invalido
          </div>
-         <form class="space-y-4 md:space-y-6" action="#" @submit="login">
+         <form
+            class="space-y-4 md:space-y-6"
+            action="#"
+            @submit="login"
+            method="post"
+         >
             <div>
                <label
                   for="email"
