@@ -2,8 +2,8 @@
 
 ## Resources
 
+-  [Front theme](https://windmill-dashboard.vercel.app/)
 -  [Front components](https://flowbite.com/docs/components/)
--
 
 ## Setup and run for dev mode (locally)
 
@@ -19,18 +19,8 @@ npm run dev
 
 ## Demo
 
-[Public Front](https://main.dtwgzwt5xqcp8.amplifyapp.com/)
+[Public Front](Update here staging app)
 
 ## Deploy
 
-If you push a main branch this code is deployed automatic in an aws amplify account
-
-## Todo
-
--  Improve responsive views with design
--  Improve d3 graph with more complex data
--  Improve the manage of .env for other cases
-
-## Resource
-
--  [Front theme](https://windmill-dashboard.vercel.app/)
+If you push main branch this code is deployed to automatic in an aws amplify service
