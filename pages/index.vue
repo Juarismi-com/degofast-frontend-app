@@ -1,7 +1,5 @@
-<template>
-  <div>
-    <PresentationInfoSection />
-    <ServiceListSection />
-    <GridWhiteSection />
-  </div>
-</template>
+<template></template>
+
+<script setup>
+await navigateTo({ path: "/de" });
+</script>

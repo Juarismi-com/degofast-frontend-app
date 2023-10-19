@@ -42,3 +42,13 @@ export const create = async (path: string, payload: string) => {
       return null;
    }
 };
+
+export const get = async (path: string, query: string) => {
+   try {
+      const res = await axios.get(`${API_BASE_URL}/${path}`);
+      return res.data;
+   } catch (error) {
+      console.error(error);
+      return null;
+   }
+};

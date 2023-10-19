@@ -30,3 +30,7 @@ If you push a main branch this code is deployed automatic in an aws amplify acco
 -  Improve responsive views with design
 -  Improve d3 graph with more complex data
 -  Improve the manage of .env for other cases
+
+## Resource
+
+-  [Front theme](https://windmill-dashboard.vercel.app/)
