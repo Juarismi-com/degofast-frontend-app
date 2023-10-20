@@ -1,5 +1,7 @@
 <template></template>
 
 <script setup>
-await navigateTo({ path: "/de" });
+import { HOME_PAGE_PATH } from "../config";
+
+await navigateTo({ path: HOME_PAGE_PATH });
 </script>

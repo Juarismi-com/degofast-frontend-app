@@ -82,6 +82,7 @@
 <script>
 import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
+import { HOME_PAGE_PATH } from "../../config";
 
 export default defineComponent({
    setup() {
@@ -107,7 +108,7 @@ export default defineComponent({
          await this.setAuth(this.form.username, this.form.password);
 
          if (this.authToken) {
-            this.$router.push("/de");
+            this.$router.push(HOME_PAGE_PATH);
          } else {
             this.loginFail = true;
          }

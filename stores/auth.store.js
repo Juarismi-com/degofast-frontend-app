@@ -49,6 +49,7 @@ export const useAuthStore = defineStore("auth", {
          this.authToken = null;
          this.userData = null;
          axios.defaults.headers.common["auth_token"] = null;
+         navigateTo("/auth");
       },
    },
 });
