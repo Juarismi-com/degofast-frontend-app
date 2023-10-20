@@ -97,10 +97,6 @@ const menu = ref([
 
 const activeIndex = ref(null);
 
-const setActive = (index) => {
-   activeIndex.value = index;
-};
-
 const closeSession = () => {
    const authStore = useAuthStore();
    const { logout } = authStore;
