@@ -160,40 +160,12 @@
 </template>
 
 <script setup>
-/*export default {
-   
-   methods: {
-      uploadFile(){
-         if (confirm("Desea subir el archivo")){
-            this.items.unshift({
-               cliente: 'Maria Fernandez',
-               tipoVenta: 'contado',
-               fechaVenta: '18/sep/2023',
-               totalFacturas: '1',
-               establecimiento: 'Local 1',
-               servicios_ofrecidos: '4',
-               moneda: 'PYG',
-               totalVenta: 441000,
-               estado: "En proceso",
-               detail: [{
-                  name: 'x',
-                  value: 441000
-               }]
-            })
-         }
-
-         setTimeout(() => {
-            this.items[0].estado = "Aceptado"
-         }, 5000);
-      }
-   }
-}*/
-
-import { get } from "~/services/http.service";
-
-const items = ref([]);
-
-onMounted(async () => {
-   items.value = await get("de");
+const props = defineProps({
+   items: {
+      type: Array,
+      default: [],
+   },
 });
+
+const { items } = toRefs(props);
 </script>

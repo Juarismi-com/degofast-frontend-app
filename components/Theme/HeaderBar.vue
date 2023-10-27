@@ -171,7 +171,7 @@
                      alt=""
                      aria-hidden="true"
                   /-->
-                  usuario: {{ userData?.nombre }}
+                  <b>Bienvenid@ {{ userData?.nombre }}</b>
                </button>
                <template v-if="isProfileMenuOpen">
                   <ul

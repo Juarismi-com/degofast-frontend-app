@@ -15,7 +15,7 @@
             <!-- Chart legend -->
             <div class="flex items-center">
                <span
-                  class="inline-block w-3 h-3 mr-1 bg-blue-500 rounded-full"
+                  class="inline-block w-3 h-3 mr-1 bg-purple-500 rounded-full"
                ></span>
                <span>Shirts</span>
             </div>

@@ -3,13 +3,18 @@
       <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
          {{ title }}
       </h2>
-      <DEFileUpload :tipo-documento="deType" />
-      <DEList />
+      <modal-simple title-btn="Subir archivos" title="Subir Archivos">
+         <DEFileUpload :tipo-documento="deType" @submit="uploadFiles" />
+      </modal-simple>
+
+      <DEList uploadFiles="uploadFiles" :items="des" />
    </div>
 </template>
 
 <script setup>
 import { TIPO_DOCUMENT_LIST } from "../../../config";
+import ModalSimple from "../../../components/Theme/Modal/Simple.vue";
+import { get } from "~/services/http.service";
 
 definePageMeta({
    middleware: ["auth"],
@@ -22,4 +27,17 @@ const routeSelected = ref(
    routeList.value.find((item) => item.tipoDocumento == route.params.type),
 );
 const title = ref(routeSelected.value.title);
+const des = ref([]);
+
+const uploadFiles = async () => {
+   await setDes();
+};
+
+const setDes = async () => {
+   des.value = await get(`de?tipoDocumento=${deType.value}`);
+};
+
+onMounted(() => {
+   setDes();
+});
 </script>
