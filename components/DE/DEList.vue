@@ -7,7 +7,7 @@
                   class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                >
                   <th class="px-4 py-3">Cliente</th>
-                  <th class="px-4 py-3">Importe Total</th>
+                  <th class="px-4 py-3">Identificador</th>
                   <th class="px-4 py-3">Estado</th>
                   <th class="px-4 py-3">Fecha</th>
                </tr>
@@ -47,7 +47,7 @@
                         </div>
                      </div>
                   </td>
-                  <td class="px-4 py-3 text-sm">{{ item.total }}</td>
+                  <td class="px-4 py-3 text-sm">{{ item._id }}</td>
                   <td class="px-4 py-3 text-xs">
                      <span
                         class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
@@ -63,9 +63,7 @@
       <div
          class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
       >
-         <span class="flex items-center col-span-3">
-            Showing 21-30 of 100
-         </span>
+         <span class="flex items-center col-span-3"> Viendo 21-30 of 100 </span>
          <span class="col-span-2"></span>
          <!-- Pagination -->
          <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">

@@ -4,7 +4,7 @@
          {{ title }}
       </h2>
       <modal-simple title-btn="Subir archivos" title="Subir Archivos">
-         <DEFileUpload :tipo-documento="deType" @submit="uploadFiles" />
+         <DEFileUpload :tipo-documento="deType" @submit="setDes" />
       </modal-simple>
 
       <DEList uploadFiles="uploadFiles" :items="des" />
@@ -28,10 +28,6 @@ const routeSelected = ref(
 );
 const title = ref(routeSelected.value.title);
 const des = ref([]);
-
-const uploadFiles = async () => {
-   await setDes();
-};
 
 const setDes = async () => {
    des.value = await get(`de?tipoDocumento=${deType.value}`);
