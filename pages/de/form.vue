@@ -290,11 +290,7 @@ const agregarItem = () => {
 
 const submitForm = async () => {
    try {
-      const response = await axios.post(`{{API_BASE_URL}}/de`, data, {
-         headers: {
-            Authorization: `Bearer ${authToken.value}`,
-         },
-      });
+      const response = await saveDE(data, authToken.value);
       console.log("Response:", response);
    } catch (error) {
       console.error("Error submitting form:", error);
