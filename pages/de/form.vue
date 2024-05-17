@@ -204,6 +204,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { authToken } from "../../stores/auth.store";
 import { saveDE } from "../../utils";
 
 const formData = ref({
@@ -289,7 +290,11 @@ const agregarItem = () => {
 
 const submitForm = async () => {
    try {
-      const response = await saveDE(formData.value, token);
+      const response = await axios.post(`{{API_BASE_URL}}/de`, data, {
+         headers: {
+            Authorization: `Bearer ${authToken.value}`,
+         },
+      });
       console.log("Response:", response);
    } catch (error) {
       console.error("Error submitting form:", error);
