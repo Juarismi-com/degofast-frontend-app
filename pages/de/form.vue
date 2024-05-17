@@ -114,7 +114,7 @@
                </div>
                <div>
                   <label for="presencia">¿Factura presente?</label>
-                  <select v-model="formData.presencia" id="presencia">
+                  <select v-model="formData.factura.presencia" id="presencia">
                      <option value="1">Sí</option>
                      <option value="0">No</option>
                   </select>
@@ -136,12 +136,12 @@
                   />
                </div>
 
-               <!-- <button
-            type="submit"
-            class="w-full mt-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-            >
-            Generar Factura
-            </button> -->
+               <button
+                  type="submit"
+                  class="w-full mt-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+               >
+                  Generar Factura
+               </button>
             </div>
          </form>
       </div>
@@ -235,16 +235,35 @@ const formData = ref({
    cliente: {
       ruc: "123",
       nombre: "Clara",
+      razonSocial: "HUGO CABRAL",
+      nombreFantasia: "HUGO CABRAL",
+      tipoOperacion: "1",
+      direccion: null,
+      numeroCasa: "0",
+      departamento: 1,
+      departamentoDescripcion: "CAPITAL",
+      distrito: 1,
+      distritoDescripcion: "ASUNCION",
+      ciudad: 1,
+      pais: "PRY",
+      paisDescripcion: "Paraguay",
+      tipoContribuyente: 1,
+      documentoTipo: 1,
+      documentoNumero: "",
+      telefono: "",
+      celular: "",
+      email: "",
+      codigo: "",
    },
    items: [],
 });
 
 const item = ref({
    codigo: "1",
-   descripcion: "",
-   precioUnitario: "",
-   cantidad: "",
-   totalUnitario: "",
+   descripcion: "-",
+   precioUnitario: "5",
+   cantidad: "2",
+   totalUnitario: "10",
 });
 
 const agregarItem = () => {
