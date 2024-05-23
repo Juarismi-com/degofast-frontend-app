@@ -5,13 +5,14 @@
       </h2>
       <div>
          <form @submit.prevent="submitForm">
-            <div>
+            <div class="grid grid-cols-3 gap-4">
                <div>
                   <label for="establecimiento">Establecimiento:</label>
                   <input
                      type="text"
                      v-model="formData.establecimiento"
                      id="establecimiento"
+                     :class="INPUT_CLASS.basic"
                   />
                </div>
                <div>
@@ -22,6 +23,7 @@
                      type="text"
                      v-model="formData.codigoSeguridadAleatorio"
                      id="codigoSeguridadAleatorio"
+                     :class="INPUT_CLASS.basic"
                   />
                </div>
                <div>
@@ -31,15 +33,17 @@
                      v-model="formData.punto"
                      id="punto"
                      readonly
+                     :class="INPUT_CLASS.basic"
                   />
                </div>
                <div>
-                  <label for="numero">Número:</label>
+                  <label for="numero">Número de Documento:</label>
                   <input
                      type="text"
                      v-model="formData.numero"
                      id="numero"
                      readonly
+                     :class="INPUT_CLASS.basic"
                   />
                </div>
                <div>
@@ -47,6 +51,7 @@
                   <textarea
                      v-model="formData.descripcion"
                      id="descripcion"
+                     :class="INPUT_CLASS.basic"
                   ></textarea>
                </div>
                <div>
@@ -54,6 +59,7 @@
                   <textarea
                      v-model="formData.observacion"
                      id="observacion"
+                     :class="INPUT_CLASS.basic"
                   ></textarea>
                </div>
                <div>
@@ -62,11 +68,13 @@
                      type="datetime-local"
                      v-model="formData.fecha"
                      id="fecha"
+                     :class="INPUT_CLASS.basic"
                   />
                </div>
                <div>
                   <label for="tipoEmision">Tipo de Emisión:</label>
-                  <select v-model="formData.tipoEmision" id="tipoEmision">
+                  <select v-model="formData.tipoEmision" id="tipoEmision"
+                     :class="INPUT_CLASS.basic">
                      <option value="1">Normal</option>
                      <option value="2">Contingencia</option>
                   </select>
@@ -76,6 +84,7 @@
                   <select
                      v-model="formData.tipoTransaccion"
                      id="tipoTransaccion"
+                     :class="INPUT_CLASS.basic"
                   >
                      <option value="1">Venta de mercadería</option>
                      <option value="2">Prestación de servicios</option>
@@ -98,7 +107,8 @@
                </div>
                <div>
                   <label for="tipoImpuesto">Tipo de Impuesto:</label>
-                  <select v-model="formData.tipoImpuesto" id="tipoImpuesto">
+                  <select v-model="formData.tipoImpuesto" id="tipoImpuesto"
+                     :class="INPUT_CLASS.basic">
                      <option value="1">IVA</option>
                      <option value="2">ISC</option>
                      <option value="3">Renta</option>
@@ -107,14 +117,15 @@
                   </select>
                </div>
                <div>
-                  <label for="moneda">Moneda:</label>
-                  <select v-model="formData.moneda" id="moneda">
+                  <label for="moneda" >Moneda:</label>
+                  <select v-model="formData.moneda" id="moneda" :class="INPUT_CLASS.basic">
                      <option value="PYG">PYG</option>
                   </select>
                </div>
                <div>
                   <label for="presencia">¿Factura presente?</label>
-                  <select v-model="formData.factura.presencia" id="presencia">
+                  <select v-model="formData.factura.presencia" id="presencia"
+                     :class="INPUT_CLASS.basic">
                      <option value="1">Sí</option>
                      <option value="0">No</option>
                   </select>
@@ -125,6 +136,7 @@
                      type="text"
                      v-model="formData.cliente.ruc"
                      id="ciCliente"
+                     :class="INPUT_CLASS.basic"
                   />
                </div>
                <div>
@@ -133,6 +145,7 @@
                      type="text"
                      v-model="formData.cliente.nombre"
                      id="nombreCliente"
+                     :class="INPUT_CLASS.basic"
                   />
                </div>
 
@@ -153,7 +166,9 @@
          </div>
          <div class="col-span-3">
             <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" v-model="item.descripcion" />
+            <input type="text" id="descripcion" 
+               v-model="item.descripcion" 
+               :class="INPUT_CLASS.basic"/>
          </div>
          <div class="col-span-2">
             <label for="precio">Precio:</label>
@@ -204,8 +219,10 @@
 
 <script setup>
 import { ref } from "vue";
-import { authToken } from "../../stores/auth.store";
+//import { authToken } from "../../stores/auth.store";
 import { saveDE } from "../../utils";
+
+import { INPUT_CLASS } from  "../../config"
 
 const formData = ref({
    tipoDocumento: "1",
@@ -290,8 +307,8 @@ const agregarItem = () => {
 
 const submitForm = async () => {
    try {
-      const response = await saveDE(data, authToken.value);
-      console.log("Response:", response);
+      //const response = await saveDE(data, authToken.value);
+      //console.log("Response:", response);
    } catch (error) {
       console.error("Error submitting form:", error);
    }

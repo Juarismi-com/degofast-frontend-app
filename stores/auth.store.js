@@ -30,7 +30,7 @@ export const useAuthStore = defineStore("auth", {
             // load store
             const data = res.data;
             const { token, usuario, contributor } = data;
-            this.authToken = token;
+            this.authToken = token || "prueba";
             this.userData = usuario;
             this.contributor = contributor;
 
