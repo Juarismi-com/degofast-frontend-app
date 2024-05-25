@@ -204,8 +204,10 @@
 
 <script setup>
 import { ref } from "vue";
-import { authToken } from "../../stores/auth.store";
 import { saveDE } from "../../utils";
+
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "../../stores/auth.store";
 
 const formData = ref({
    tipoDocumento: "1",
@@ -288,9 +290,12 @@ const agregarItem = () => {
    }
 };
 
+const authStore = useAuthStore();
+const { authToken } = storeToRefs(authStore);
+
 const submitForm = async () => {
    try {
-      const response = await saveDE(data, authToken.value);
+      const response = await saveDE(formData.value, authToken.value);
       console.log("Response:", response);
    } catch (error) {
       console.error("Error submitting form:", error);
