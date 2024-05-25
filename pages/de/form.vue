@@ -3,11 +3,14 @@
       <h2 class="my-4 text-2xl font-semibold text-gray-700 dark:text-gray-200">
          Facturación Electrónica
       </h2>
-      <div class="border rounded-lg p-4">
-         <h2 class="text-lg font-semibold mb-4 text-gray-700 dark:text-white">
-            Cabecera
-         </h2>
-         <form @submit.prevent="submitForm">
+      <form @submit.prevent="submitForm">
+         <div class="border rounded-lg p-4">
+            <h2
+               class="text-lg font-semibold mb-4 text-gray-700 dark:text-white"
+            >
+               Cabecera
+            </h2>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8">
                <div>
                   <div>
@@ -230,150 +233,153 @@
                   </div>
                </div>
             </div>
-         </form>
-      </div>
-      <!-- Detalle -->
-      <div class="border rounded-lg p-4">
-         <h2 class="text-lg font-semibold mb-4 text-gray-700 dark:text-white">
-            Detalle
-         </h2>
-         <div class="grid grid-cols-1 md:grid-cols-5 gap-x-6 gap-y-8">
-            <div>
-               <label
-                  for="codigo"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                  >Código:</label
-               >
-               <input
-                  type="text"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="codigo"
-                  v-model="item.codigo"
-               />
-            </div>
-            <div>
-               <label
-                  for="descripcion"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                  >Descripción:</label
-               >
-               <input
-                  type="text"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="descripcion"
-                  v-model="item.descripcion"
-               />
-            </div>
-            <div>
-               <label
-                  for="precio"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                  >Precio:</label
-               >
-               <input
-                  type="text"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="precio"
-                  v-model="item.precioUnitario"
-               />
-            </div>
-            <div>
-               <label
-                  for="cantidad"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                  >Cantidad:</label
-               >
-               <input
-                  type="text"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="cantidad"
-                  v-model="item.cantidad"
-               />
-            </div>
-            <div>
-               <label
-                  for="totalUnitario"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                  >Total Unitario:</label
-               >
-               <input
-                  type="text"
-                  id="totalUnitario"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  v-model="item.totalUnitario"
-               />
-            </div>
-            <button type="button" @click="agregarItem">Agregar Ítem</button>
          </div>
 
-         <div>
-            <!-- Tabla -->
-            <div class="w-full mt-8">
-               <div class="overflow-x-auto">
-                  <table class="w-full">
-                     <thead>
-                        <tr class="bg-gray-50 dark:bg-gray-800">
-                           <th
-                              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+         <!-- Detalle -->
+         <div class="border rounded-lg p-4">
+            <h2
+               class="text-lg font-semibold mb-4 text-gray-700 dark:text-white"
+            >
+               Detalle
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-x-6 gap-y-8">
+               <div>
+                  <label
+                     for="codigo"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Código:</label
+                  >
+                  <input
+                     type="text"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     id="codigo"
+                     v-model="item.codigo"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="descripcion"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Descripción:</label
+                  >
+                  <input
+                     type="text"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     id="descripcion"
+                     v-model="item.descripcion"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="precio"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Precio:</label
+                  >
+                  <input
+                     type="text"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     id="precio"
+                     v-model="item.precioUnitario"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="cantidad"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Cantidad:</label
+                  >
+                  <input
+                     type="text"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     id="cantidad"
+                     v-model="item.cantidad"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="totalUnitario"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Total Unitario:</label
+                  >
+                  <input
+                     type="text"
+                     id="totalUnitario"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     v-model="item.totalUnitario"
+                  />
+               </div>
+               <button type="button" @click="agregarItem">Agregar Ítem</button>
+            </div>
+
+            <div>
+               <!-- Tabla -->
+               <div class="w-full mt-8">
+                  <div class="overflow-x-auto">
+                     <table class="w-full">
+                        <thead>
+                           <tr class="bg-gray-50 dark:bg-gray-800">
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Código
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Descripción
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Precio Unitario
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Cantidad
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Total Unitario
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr
+                              v-for="(item, index) in formData.items"
+                              :key="index"
+                              class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white"
                            >
-                              Código
-                           </th>
-                           <th
-                              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                           >
-                              Descripción
-                           </th>
-                           <th
-                              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                           >
-                              Precio Unitario
-                           </th>
-                           <th
-                              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                           >
-                              Cantidad
-                           </th>
-                           <th
-                              class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                           >
-                              Total Unitario
-                           </th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr
-                           v-for="(item, index) in formData.items"
-                           :key="index"
-                           class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white"
-                        >
-                           <td class="px-4 py-2 whitespace-nowrap">
-                              {{ item.codigo }}
-                           </td>
-                           <td class="px-4 py-2 whitespace-nowrap">
-                              {{ item.descripcion }}
-                           </td>
-                           <td class="px-4 py-2 whitespace-nowrap">
-                              {{ item.precioUnitario }}
-                           </td>
-                           <td class="px-4 py-2 whitespace-nowrap">
-                              {{ item.cantidad }}
-                           </td>
-                           <td class="px-4 py-2 whitespace-nowrap">
-                              {{ item.totalUnitario }}
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.codigo }}
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.descripcion }}
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.precioUnitario }}
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.cantidad }}
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.totalUnitario }}
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
          </div>
-      </div>
-      <button
-         type="submit"
-         class="w-full mt-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-      >
-         Generar Factura
-      </button>
+         <button
+            type="submit"
+            class="w-full mt-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+         >
+            Generar Factura
+         </button>
+      </form>
    </div>
 </template>
 
@@ -469,11 +475,13 @@ const authStore = useAuthStore();
 const { authToken } = storeToRefs(authStore);
 
 const submitForm = async () => {
-   try {
-      const response = await saveDE(formData.value, authToken.value);
-      console.log("Response:", response);
-   } catch (error) {
-      console.error("Error submitting form:", error);
-   }
+   console.log("Token:" + authToken.value);
+
+   // try {
+   //    const response = await saveDE(formData.value, authToken.value);
+   //    console.log("Response:", response);
+   // } catch (error) {
+   //    console.error("Error submitting form:", error);
+   // }
 };
 </script>
