@@ -149,20 +149,298 @@
                   />
                </div>
 
-               <button
-                  type="submit"
-                  class="w-full mt-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-               >
-                  Generar Factura
-               </button>
-            </div>
-         </form>
-      </div>
+               <div>
+                  <div>
+                     <label
+                        for="observacion"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >Observación:</label
+                     >
+                     <textarea
+                        v-model="formData.observacion"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="observacion"
+                     ></textarea>
+                  </div>
 
-      <div>
-         <div class="col-span-3">
-            <label for="codigo">Código:</label>
-            <input type="text" id="codigo" v-model="item.codigo" />
+                  <div>
+                     <label
+                        for="fecha"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >Fecha:</label
+                     >
+                     <input
+                        type="datetime-local"
+                        v-model="formData.fecha"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="fecha"
+                     />
+                  </div>
+                  <div>
+                     <label
+                        for="tipoEmision"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >Tipo de Emisión:</label
+                     >
+                     <select
+                        v-model="formData.tipoEmision"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="tipoEmision"
+                     >
+                        <option value="1">Normal</option>
+                        <option value="2">Contingencia</option>
+                     </select>
+                  </div>
+                  <div>
+                     <label
+                        for="tipoTransaccion"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >Tipo de Transacción:</label
+                     >
+                     <select
+                        v-model="formData.tipoTransaccion"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="tipoTransaccion"
+                     >
+                        <option value="1">Venta de mercadería</option>
+                        <option value="2">Prestación de servicios</option>
+                        <option value="3">
+                           Mixto (Venta de mercadería y servicios)
+                        </option>
+                        <option value="4">Venta de activo fijo</option>
+                        <option value="5">Venta de divisas</option>
+                        <option value="6">Compra de divisas</option>
+                        <option value="7">
+                           Promoción o entrega de muestras
+                        </option>
+                        <option value="8">Donación</option>
+                        <option value="9">Anticipo</option>
+                        <option value="10">Compra de Productos</option>
+                        <option value="11">Venta de Crédito fiscal</option>
+                        <option value="12">Compra de Crédito fiscal</option>
+                        <option value="13">
+                           Muestras médicas (Art. 3 RG 24/2014)
+                        </option>
+                     </select>
+                  </div>
+
+                  <div>
+                     <label
+                        for="tipoImpuesto"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >Tipo de Impuesto:</label
+                     >
+                     <select
+                        v-model="formData.tipoImpuesto"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="tipoImpuesto"
+                     >
+                        <option value="1">IVA</option>
+                        <option value="2">ISC</option>
+                        <option value="3">Renta</option>
+                        <option value="4">Ninguno</option>
+                        <option value="5">IVA - Renta</option>
+                     </select>
+                  </div>
+               </div>
+               <div>
+                  <div>
+                     <label
+                        for="moneda"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >Moneda:</label
+                     >
+                     <select
+                        v-model="formData.moneda"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="moneda"
+                     >
+                        <option value="PYG">PYG</option>
+                     </select>
+                  </div>
+                  <div>
+                     <label
+                        for="presencia"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >¿Factura presente?</label
+                     >
+                     <select
+                        v-model="formData.factura.presencia"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="presencia"
+                     >
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                     </select>
+                  </div>
+
+                  <div>
+                     <label
+                        for="ciCliente"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >RUC:</label
+                     >
+                     <input
+                        type="text"
+                        v-model="formData.cliente.ruc"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="ciCliente"
+                     />
+                  </div>
+                  <div>
+                     <label
+                        for="nombreCliente"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                        >Nombre del Cliente:</label
+                     >
+                     <input
+                        type="text"
+                        v-model="formData.cliente.nombre"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="nombreCliente"
+                     />
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Detalle -->
+         <div class="border rounded-lg p-4">
+            <h2
+               class="text-lg font-semibold mb-4 text-gray-700 dark:text-white"
+            >
+               Detalle
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-x-6 gap-y-8">
+               <div>
+                  <label
+                     for="codigo"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Código:</label
+                  >
+                  <input
+                     type="text"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     id="codigo"
+                     v-model="item.codigo"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="descripcion"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Descripción:</label
+                  >
+                  <input
+                     type="text"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     id="descripcion"
+                     v-model="item.descripcion"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="precio"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Precio:</label
+                  >
+                  <input
+                     type="text"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     id="precio"
+                     v-model="item.precioUnitario"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="cantidad"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Cantidad:</label
+                  >
+                  <input
+                     type="text"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     id="cantidad"
+                     v-model="item.cantidad"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="totalUnitario"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >Total Unitario:</label
+                  >
+                  <input
+                     type="text"
+                     id="totalUnitario"
+                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     v-model="item.totalUnitario"
+                  />
+               </div>
+               <button type="button" @click="agregarItem">Agregar Ítem</button>
+            </div>
+
+            <div>
+               <!-- Tabla -->
+               <div class="w-full mt-8">
+                  <div class="overflow-x-auto">
+                     <table class="w-full">
+                        <thead>
+                           <tr class="bg-gray-50 dark:bg-gray-800">
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Código
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Descripción
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Precio Unitario
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Cantidad
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                 Total Unitario
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr
+                              v-for="(item, index) in formData.items"
+                              :key="index"
+                              class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white"
+                           >
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.codigo }}
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.descripcion }}
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.precioUnitario }}
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.cantidad }}
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                 {{ item.totalUnitario }}
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
          </div>
          <div class="col-span-3">
             <label for="descripcion">Descripción:</label>
@@ -304,6 +582,9 @@ const agregarItem = () => {
       alert("Por favor, complete todos los campos del nuevo ítem.");
    }
 };
+
+const authStore = useAuthStore();
+const { authToken } = storeToRefs(authStore);
 
 const submitForm = async () => {
    try {
