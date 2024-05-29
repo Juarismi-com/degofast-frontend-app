@@ -3,81 +3,150 @@
       <h2 class="my-4 text-2xl font-semibold text-gray-700 dark:text-gray-200">
          Facturación Electrónica
       </h2>
-      <form @submit.prevent="submitForm">
-         <div class="border rounded-lg p-4">
-            <h2
-               class="text-lg font-semibold mb-4 text-gray-700 dark:text-white"
-            >
-               Cabecera
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8">
+      <div>
+         <form @submit.prevent="submitForm">
+            <div class="grid grid-cols-3 gap-4">
                <div>
-                  <div>
-                     <label
-                        for="establecimiento"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Establecimiento:</label
-                     >
-                     <input
-                        type="text"
-                        v-model="formData.establecimiento"
-                        id="establecimiento"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                     />
-                  </div>
-                  <div>
-                     <label
-                        for="codigoSeguridadAleatorio"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Código de Seguridad Aleatorio:</label
-                     >
-                     <input
-                        type="text"
-                        v-model="formData.codigoSeguridadAleatorio"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="codigoSeguridadAleatorio"
-                     />
-                  </div>
-                  <div>
-                     <label
-                        for="punto"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Punto:</label
-                     >
-                     <input
-                        type="text"
-                        v-model="formData.punto"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="punto"
-                        readonly
-                     />
-                  </div>
-                  <div>
-                     <label
-                        for="numero"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Número:</label
-                     >
-                     <input
-                        type="text"
-                        v-model="formData.numero"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="numero"
-                        readonly
-                     />
-                  </div>
-                  <div>
-                     <label
-                        for="descripcion"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Descripción:</label
-                     >
-                     <textarea
-                        v-model="formData.descripcion"
-                        id="descripcion"
-                     ></textarea>
-                  </div>
+                  <label for="establecimiento">Establecimiento:</label>
+                  <input
+                     type="text"
+                     v-model="formData.establecimiento"
+                     id="establecimiento"
+                     :class="INPUT_CLASS.basic"
+                  />
+               </div>
+               <div>
+                  <label for="codigoSeguridadAleatorio"
+                     >Código de Seguridad Aleatorio:</label
+                  >
+                  <input
+                     type="text"
+                     v-model="formData.codigoSeguridadAleatorio"
+                     id="codigoSeguridadAleatorio"
+                     :class="INPUT_CLASS.basic"
+                  />
+               </div>
+               <div>
+                  <label for="punto">Punto:</label>
+                  <input
+                     type="text"
+                     v-model="formData.punto"
+                     id="punto"
+                     readonly
+                     :class="INPUT_CLASS.basic"
+                  />
+               </div>
+               <div>
+                  <label for="numero">Número de Documento:</label>
+                  <input
+                     type="text"
+                     v-model="formData.numero"
+                     id="numero"
+                     readonly
+                     :class="INPUT_CLASS.basic"
+                  />
+               </div>
+               <div>
+                  <label for="descripcion">Descripción:</label>
+                  <textarea
+                     v-model="formData.descripcion"
+                     id="descripcion"
+                     :class="INPUT_CLASS.basic"
+                  ></textarea>
+               </div>
+               <div>
+                  <label for="observacion">Observación:</label>
+                  <textarea
+                     v-model="formData.observacion"
+                     id="observacion"
+                     :class="INPUT_CLASS.basic"
+                  ></textarea>
+               </div>
+               <div>
+                  <label for="fecha">Fecha:</label>
+                  <input
+                     type="datetime-local"
+                     v-model="formData.fecha"
+                     id="fecha"
+                     :class="INPUT_CLASS.basic"
+                  />
+               </div>
+               <div>
+                  <label for="tipoEmision">Tipo de Emisión:</label>
+                  <select v-model="formData.tipoEmision" id="tipoEmision"
+                     :class="INPUT_CLASS.basic">
+                     <option value="1">Normal</option>
+                     <option value="2">Contingencia</option>
+                  </select>
+               </div>
+               <div>
+                  <label for="tipoTransaccion">Tipo de Transacción:</label>
+                  <select
+                     v-model="formData.tipoTransaccion"
+                     id="tipoTransaccion"
+                     :class="INPUT_CLASS.basic"
+                  >
+                     <option value="1">Venta de mercadería</option>
+                     <option value="2">Prestación de servicios</option>
+                     <option value="3">
+                        Mixto (Venta de mercadería y servicios)
+                     </option>
+                     <option value="4">Venta de activo fijo</option>
+                     <option value="5">Venta de divisas</option>
+                     <option value="6">Compra de divisas</option>
+                     <option value="7">Promoción o entrega de muestras</option>
+                     <option value="8">Donación</option>
+                     <option value="9">Anticipo</option>
+                     <option value="10">Compra de Productos</option>
+                     <option value="11">Venta de Crédito fiscal</option>
+                     <option value="12">Compra de Crédito fiscal</option>
+                     <option value="13">
+                        Muestras médicas (Art. 3 RG 24/2014)
+                     </option>
+                  </select>
+               </div>
+               <div>
+                  <label for="tipoImpuesto">Tipo de Impuesto:</label>
+                  <select v-model="formData.tipoImpuesto" id="tipoImpuesto"
+                     :class="INPUT_CLASS.basic">
+                     <option value="1">IVA</option>
+                     <option value="2">ISC</option>
+                     <option value="3">Renta</option>
+                     <option value="4">Ninguno</option>
+                     <option value="5">IVA - Renta</option>
+                  </select>
+               </div>
+               <div>
+                  <label for="moneda" >Moneda:</label>
+                  <select v-model="formData.moneda" id="moneda" :class="INPUT_CLASS.basic">
+                     <option value="PYG">PYG</option>
+                  </select>
+               </div>
+               <div>
+                  <label for="presencia">¿Factura presente?</label>
+                  <select v-model="formData.factura.presencia" id="presencia"
+                     :class="INPUT_CLASS.basic">
+                     <option value="1">Sí</option>
+                     <option value="0">No</option>
+                  </select>
+               </div>
+               <div>
+                  <label for="ciCliente">RUC:</label>
+                  <input
+                     type="text"
+                     v-model="formData.cliente.ruc"
+                     id="ciCliente"
+                     :class="INPUT_CLASS.basic"
+                  />
+               </div>
+               <div>
+                  <label for="nombreCliente">Nombre del Cliente:</label>
+                  <input
+                     type="text"
+                     v-model="formData.cliente.nombre"
+                     id="nombreCliente"
+                     :class="INPUT_CLASS.basic"
+                  />
                </div>
 
                <div>
@@ -373,22 +442,65 @@
                </div>
             </div>
          </div>
-         <button
-            type="submit"
-            class="w-full mt-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-         >
-            Generar Factura
-         </button>
-      </form>
+         <div class="col-span-3">
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" 
+               v-model="item.descripcion" 
+               :class="INPUT_CLASS.basic"/>
+         </div>
+         <div class="col-span-2">
+            <label for="precio">Precio:</label>
+            <input type="text" id="precio" v-model="item.precioUnitario" />
+         </div>
+         <div class="col-span-2">
+            <label for="cantidad">Cantidad:</label>
+            <input type="text" id="cantidad" v-model="item.cantidad" />
+         </div>
+         <div class="col-span-2">
+            <label for="totalUnitario">Total Unitario:</label>
+            <input
+               type="text"
+               id="totalUnitario"
+               v-model="item.totalUnitario"
+            />
+         </div>
+         <!-- Contenedor de la tabla -->
+         <div>
+            <table>
+               <!-- Encabezados de la tabla -->
+               <thead>
+                  <tr>
+                     <th class="px-4 py-2">Código</th>
+                     <th class="px-4 py-2">Descripción</th>
+                     <th class="px-4 py-2">Precio Unitario</th>
+                     <th class="px-4 py-2">Cantidad</th>
+                     <th class="px-4 py-2">Total Unitario</th>
+                  </tr>
+               </thead>
+               <!-- Cuerpo de la tabla -->
+               <tbody>
+                  <tr v-for="(item, index) in formData.items" :key="index">
+                     <td class="border px-4 py-2">{{ item.codigo }}</td>
+                     <td class="border px-4 py-2">{{ item.descripcion }}</td>
+                     <td class="border px-4 py-2">{{ item.precioUnitario }}</td>
+                     <td class="border px-4 py-2">{{ item.cantidad }}</td>
+                     <td class="border px-4 py-2">{{ item.totalUnitario }}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <!-- Botón para agregar un nuevo ítem -->
+         <button type="button" @click="agregarItem">Agregar Ítem</button>
+      </div>
    </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+//import { authToken } from "../../stores/auth.store";
 import { saveDE } from "../../utils";
 
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "../../stores/auth.store";
+import { INPUT_CLASS } from  "../../config"
 
 const formData = ref({
    tipoDocumento: "1",
@@ -475,13 +587,11 @@ const authStore = useAuthStore();
 const { authToken } = storeToRefs(authStore);
 
 const submitForm = async () => {
-   console.log("Token:" + authToken.value);
-
-   // try {
-   //    const response = await saveDE(formData.value, authToken.value);
-   //    console.log("Response:", response);
-   // } catch (error) {
-   //    console.error("Error submitting form:", error);
-   // }
+   try {
+      //const response = await saveDE(data, authToken.value);
+      //console.log("Response:", response);
+   } catch (error) {
+      console.error("Error submitting form:", error);
+   }
 };
 </script>
