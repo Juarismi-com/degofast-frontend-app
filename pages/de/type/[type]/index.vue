@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import { TIPO_DOCUMENT_LIST } from "../../../config";
-import ModalSimple from "../../../components/Theme/Modal/Simple.vue";
+import { TIPO_DOCUMENT_LIST } from "~/config";
+import ModalSimple from "~/components/Theme/Modal/Simple.vue";
 import { get } from "~/services/http.service";
 
 definePageMeta({

@@ -95,9 +95,9 @@ export default defineComponent({
 
       const authStore = useAuthStore();
       const { setAuth } = authStore;
-      const { authToken } = storeToRefs(authStore);
+      const { auth } = storeToRefs(authStore);
 
-      return { form, loginFail, authStore, setAuth, authToken };
+      return { form, loginFail, authStore, setAuth, auth };
    },
 
    methods: {
@@ -107,7 +107,7 @@ export default defineComponent({
 
          await this.setAuth(this.form.username, this.form.password);
 
-         if (this.authToken) {
+         if (this.auth.authToken) {
             this.$router.push(HOME_PAGE_PATH);
          } else {
             this.loginFail = true;

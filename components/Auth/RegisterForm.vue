@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { API_BASE_URL } from "~/config";
+import { API_URL } from "~/config";
 export default {
    data() {
       return {
@@ -158,7 +158,7 @@ export default {
             return;
          }
 
-         const res = await useFetch(`${API_BASE_URL}/auth/register`, {
+         const res = await useFetch(`${API_URL}/auth/register`, {
             method: "post",
             body: {
                ...this.form,

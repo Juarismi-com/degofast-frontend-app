@@ -4,8 +4,8 @@
       :class="{ 'overflow-hidden': isSideMenuOpen }"
    >
       <ThemeAside />
-      <ThemeMobileAside />
-      <!--ThemeSidebar /-->
+      <!--ThemeMobileAside /-->
+      <ThemeSidebar />
       <div class="flex flex-col flex-1 w-full">
          <ThemeHeaderBar />
          <main class="h-full overflow-y-auto">

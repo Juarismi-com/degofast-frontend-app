@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+   ssr: false,
    devtools: { enabled: false },
    modules: ["@pinia/nuxt"],
    css: ["~/assets/css/main.css"],
@@ -8,7 +9,7 @@ export default defineNuxtConfig({
     */
    runtimeConfig: {
       public: {
-         apiBaseUrl: process.env.API_BASE_URL || "http://localhost:8000",
+         API_URL: process.env.API_URL || "http://localhost:8000",
       },
    },
    postcss: {

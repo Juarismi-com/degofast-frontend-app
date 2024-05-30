@@ -302,7 +302,8 @@
                   </div>
                </div>
             </div>
-         </div>
+         </form>
+         
 
          <!-- Detalle -->
          <div class="border rounded-lg p-4">
@@ -583,8 +584,8 @@ const agregarItem = () => {
    }
 };
 
-const authStore = useAuthStore();
-const { authToken } = storeToRefs(authStore);
+//const authStore = useAuthStore();
+//const { authToken } = storeToRefs(authStore);
 
 const submitForm = async () => {
    try {

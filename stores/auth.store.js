@@ -1,28 +1,37 @@
 import axios from "axios";
 import { defineStore } from "pinia";
-import { API_BASE_URL } from "~/config";
+import { useConfig } from "../config"
 import { useStorage } from "@vueuse/core";
 
+const { API_URL }  = useConfig()
+
+export const authDefault = {
+   auth: {
+      authToken: localStorage.getItem("authToken") || null,
+   },
+   user: JSON.parse(localStorage.getItem("userData")) || null,
+   contributor: {} || {
+      fechaFirmaDigital: "",
+      ruc: null,
+      razonSocial: "",
+      nombreFantasia: "",
+      actividadesEconomicas: [],
+      timbradoNumero: "",
+      timbradoFecha: "",
+      tipoContribuyente: 1,
+      establecimientos: [],
+   },
+}
+
 export const useAuthStore = defineStore("auth", {
-   state: () => ({
-      authToken: null,
-      userData: null,
-      contributor: {
-         fechaFirmaDigital: "",
-         ruc: null,
-         razonSocial: "",
-         nombreFantasia: "",
-         actividadesEconomicas: [],
-         timbradoNumero: "",
-         timbradoFecha: "",
-         tipoContribuyente: 1,
-         establecimientos: [],
-      },
-   }),
+   state: () => (authDefault),
    actions: {
+      init(){
+         axios.defaults.headers.common["auth_token"] = this.auth.authToken
+      },
       async setAuth(username, password) {
          try {
-            const res = await axios.post(`${API_BASE_URL}/auth/login`, {
+            const res = await axios.post(`${API_URL}/auth/login`, {
                username,
                password,
             });
@@ -30,24 +39,27 @@ export const useAuthStore = defineStore("auth", {
             // load store
             const data = res.data;
             const { token, usuario, contributor } = data;
-            this.authToken = token || "prueba";
-            this.userData = usuario;
+
+            this.auth.authToken = token;
+            this.user = usuario;
             this.contributor = contributor;
 
             // set axios header with authorization
-            axios.defaults.headers.common["auth_token"] = token;
+            this.init();
 
             // save in localstorage token, user and contributor
-            useStorage("authToken", token);
-            useStorage("userData", usuario);
+            useStorage("auth.authToken", token);
+            useStorage("user", usuario);
             useStorage("contributor", contributor);
          } catch (error) {
             console.log(error);
+            axios.defaults.headers.common["auth_token"] = null;
          }
       },
       logout() {
-         this.authToken = null;
-         this.userData = null;
+         this.auth.authToken = null;
+         this.user = null;
+         localStorage.clear();
          axios.defaults.headers.common["auth_token"] = null;
          navigateTo("/auth");
       },

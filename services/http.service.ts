@@ -1,5 +1,9 @@
-import { API_BASE_URL } from "../config";
+import { useConfig } from "../config";
 import axios from "axios";
+
+
+const { API_URL }  = useConfig()
+
 /**
  * Get the services, for this case is static, but we can crear a request to request from api
  * @returns {array}
@@ -35,7 +39,7 @@ export const getServices = () => {
 
 export const create = async (path: string, payload: string) => {
    try {
-      const res = await axios.post(`${API_BASE_URL}/${path}`, payload);
+      const res = await axios.post(`${API_URL}/${path}`, payload);
       return res.data;
    } catch (error) {
       console.error(error);
@@ -45,7 +49,7 @@ export const create = async (path: string, payload: string) => {
 
 export const get = async (path: string, query: string) => {
    try {
-      const res = await axios.get(`${API_BASE_URL}/${path}`);
+      const res = await axios.get(`${API_URL}/${path}`);
       return res.data;
    } catch (error) {
       console.error(error);
