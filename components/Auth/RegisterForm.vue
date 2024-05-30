@@ -133,7 +133,10 @@
 </template>
 
 <script>
-import { API_URL } from "~/config";
+import { useConfig } from "~/config";
+
+const { API_URL } = useConfig()
+
 export default {
    data() {
       return {

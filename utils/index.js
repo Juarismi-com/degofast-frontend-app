@@ -1,5 +1,7 @@
 import axios from "axios";
-import { API_URL } from "../config/index.ts";
+import { useConfig } from "../config";
+
+const { API_URL }  = useConfig()
 
 export const saveDE = async (data, token) => {
    try {
