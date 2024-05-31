@@ -73,8 +73,11 @@
                </div>
                <div>
                   <label for="tipoEmision">Tipo de Emisión:</label>
-                  <select v-model="formData.tipoEmision" id="tipoEmision"
-                     :class="INPUT_CLASS.basic">
+                  <select
+                     v-model="formData.tipoEmision"
+                     id="tipoEmision"
+                     :class="INPUT_CLASS.basic"
+                  >
                      <option value="1">Normal</option>
                      <option value="2">Contingencia</option>
                   </select>
@@ -107,8 +110,11 @@
                </div>
                <div>
                   <label for="tipoImpuesto">Tipo de Impuesto:</label>
-                  <select v-model="formData.tipoImpuesto" id="tipoImpuesto"
-                     :class="INPUT_CLASS.basic">
+                  <select
+                     v-model="formData.tipoImpuesto"
+                     id="tipoImpuesto"
+                     :class="INPUT_CLASS.basic"
+                  >
                      <option value="1">IVA</option>
                      <option value="2">ISC</option>
                      <option value="3">Renta</option>
@@ -117,15 +123,22 @@
                   </select>
                </div>
                <div>
-                  <label for="moneda" >Moneda:</label>
-                  <select v-model="formData.moneda" id="moneda" :class="INPUT_CLASS.basic">
+                  <label for="moneda">Moneda:</label>
+                  <select
+                     v-model="formData.moneda"
+                     id="moneda"
+                     :class="INPUT_CLASS.basic"
+                  >
                      <option value="PYG">PYG</option>
                   </select>
                </div>
                <div>
                   <label for="presencia">¿Factura presente?</label>
-                  <select v-model="formData.factura.presencia" id="presencia"
-                     :class="INPUT_CLASS.basic">
+                  <select
+                     v-model="formData.factura.presencia"
+                     id="presencia"
+                     :class="INPUT_CLASS.basic"
+                  >
                      <option value="1">Sí</option>
                      <option value="0">No</option>
                   </select>
@@ -158,7 +171,7 @@
                      >
                      <textarea
                         v-model="formData.observacion"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="observacion"
                      ></textarea>
                   </div>
@@ -172,7 +185,7 @@
                      <input
                         type="datetime-local"
                         v-model="formData.fecha"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="fecha"
                      />
                   </div>
@@ -184,7 +197,7 @@
                      >
                      <select
                         v-model="formData.tipoEmision"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="tipoEmision"
                      >
                         <option value="1">Normal</option>
@@ -199,7 +212,7 @@
                      >
                      <select
                         v-model="formData.tipoTransaccion"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="tipoTransaccion"
                      >
                         <option value="1">Venta de mercadería</option>
@@ -232,7 +245,7 @@
                      >
                      <select
                         v-model="formData.tipoImpuesto"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="tipoImpuesto"
                      >
                         <option value="1">IVA</option>
@@ -252,7 +265,7 @@
                      >
                      <select
                         v-model="formData.moneda"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="moneda"
                      >
                         <option value="PYG">PYG</option>
@@ -266,7 +279,7 @@
                      >
                      <select
                         v-model="formData.factura.presencia"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="presencia"
                      >
                         <option value="1">Sí</option>
@@ -283,7 +296,7 @@
                      <input
                         type="text"
                         v-model="formData.cliente.ruc"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="ciCliente"
                      />
                   </div>
@@ -296,14 +309,13 @@
                      <input
                         type="text"
                         v-model="formData.cliente.nombre"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="INPUT_CLASS.basic"
                         id="nombreCliente"
                      />
                   </div>
                </div>
             </div>
          </form>
-         
 
          <!-- Detalle -->
          <div class="border rounded-lg p-4">
@@ -314,67 +326,53 @@
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-5 gap-x-6 gap-y-8">
                <div>
-                  <label
-                     for="codigo"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                     >Código:</label
-                  >
+                  <label for="codigo" :class="INPUT_CLASS.basic">Código:</label>
                   <input
                      type="text"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      id="codigo"
                      v-model="item.codigo"
                   />
                </div>
                <div>
-                  <label
-                     for="descripcion"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                  <label for="descripcion" :class="INPUT_CLASS.basic"
                      >Descripción:</label
                   >
                   <input
                      type="text"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      id="descripcion"
                      v-model="item.descripcion"
                   />
                </div>
                <div>
-                  <label
-                     for="precio"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                     >Precio:</label
-                  >
+                  <label for="precio" :class="INPUT_CLASS.basic">Precio:</label>
                   <input
                      type="text"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      id="precio"
                      v-model="item.precioUnitario"
                   />
                </div>
                <div>
-                  <label
-                     for="cantidad"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                  <label for="cantidad" :class="INPUT_CLASS.basic"
                      >Cantidad:</label
                   >
                   <input
                      type="text"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      id="cantidad"
                      v-model="item.cantidad"
                   />
                </div>
                <div>
-                  <label
-                     for="totalUnitario"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                  <label for="totalUnitario" :class="INPUT_CLASS.basic"
                      >Total Unitario:</label
                   >
                   <input
                      type="text"
                      id="totalUnitario"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      v-model="item.totalUnitario"
                   />
                </div>
@@ -443,65 +441,33 @@
                </div>
             </div>
          </div>
-         <div class="col-span-3">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" 
-               v-model="item.descripcion" 
-               :class="INPUT_CLASS.basic"/>
-         </div>
-         <div class="col-span-2">
-            <label for="precio">Precio:</label>
-            <input type="text" id="precio" v-model="item.precioUnitario" />
-         </div>
-         <div class="col-span-2">
-            <label for="cantidad">Cantidad:</label>
-            <input type="text" id="cantidad" v-model="item.cantidad" />
-         </div>
-         <div class="col-span-2">
-            <label for="totalUnitario">Total Unitario:</label>
-            <input
-               type="text"
-               id="totalUnitario"
-               v-model="item.totalUnitario"
-            />
-         </div>
-         <!-- Contenedor de la tabla -->
-         <div>
-            <table>
-               <!-- Encabezados de la tabla -->
-               <thead>
-                  <tr>
-                     <th class="px-4 py-2">Código</th>
-                     <th class="px-4 py-2">Descripción</th>
-                     <th class="px-4 py-2">Precio Unitario</th>
-                     <th class="px-4 py-2">Cantidad</th>
-                     <th class="px-4 py-2">Total Unitario</th>
-                  </tr>
-               </thead>
-               <!-- Cuerpo de la tabla -->
-               <tbody>
-                  <tr v-for="(item, index) in formData.items" :key="index">
-                     <td class="border px-4 py-2">{{ item.codigo }}</td>
-                     <td class="border px-4 py-2">{{ item.descripcion }}</td>
-                     <td class="border px-4 py-2">{{ item.precioUnitario }}</td>
-                     <td class="border px-4 py-2">{{ item.cantidad }}</td>
-                     <td class="border px-4 py-2">{{ item.totalUnitario }}</td>
-                  </tr>
-               </tbody>
-            </table>
-         </div>
-         <!-- Botón para agregar un nuevo ítem -->
-         <button type="button" @click="agregarItem">Agregar Ítem</button>
+
+         <button type="button" @click="agregarItem">Guardar</button>
+
+         <!-- Modal -->
+         <button
+            @click="openModal"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+         >
+            Abrir Modal
+         </button>
+
+         <DECancel
+            :show="showModal"
+            @update:show="showModal = $event"
+            @submit="handleSubmit"
+         />
       </div>
    </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-//import { authToken } from "../../stores/auth.store";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "../../stores/auth.store.js";
 import { saveDE } from "../../utils";
-
-import { INPUT_CLASS } from  "../../config"
+import DECancel from "./../../components/DE/DECancel.vue";
+import { INPUT_CLASS } from "../../config";
 
 const formData = ref({
    tipoDocumento: "1",
@@ -584,15 +550,22 @@ const agregarItem = () => {
    }
 };
 
-//const authStore = useAuthStore();
-//const { authToken } = storeToRefs(authStore);
+const authStore = useAuthStore();
+const { authToken } = storeToRefs(authStore);
 
 const submitForm = async () => {
    try {
-      //const response = await saveDE(data, authToken.value);
-      //console.log("Response:", response);
+      const response = await saveDE(data, authToken.value);
+      console.log("Response:", response);
    } catch (error) {
       console.error("Error submitting form:", error);
    }
+};
+
+// Modal
+const showModal = ref(false);
+
+const openModal = () => {
+   showModal.value = true;
 };
 </script>

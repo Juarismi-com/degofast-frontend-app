@@ -189,8 +189,9 @@ const { contributor } = storeToRefs(authStore);
 const form = ref({ ...contributor.value });
 
 const formActividadEconomica = ref({
-   codigo: "",
-   descripcion: "",
+   codigo: "47721",
+   descripcion:
+      "COMERCIO AL POR MENOR DE PRODUCTOS FARMACÉUTICOS DE USO HUMANO",
 });
 
 const registerFail = ref(false);
@@ -223,8 +224,8 @@ const setContributorDefault = () => {
  * Guarda el formulario
  */
 const saveForm = (e) => {
-   e.preventDefault();
-   if (!form.value.ruc) create("contributor-emitter", form.value);
+   //e.preventDefault();
+   if (form.value.ruc) create("contributor-emitter", form.value);
 };
 
 onMounted(() => {

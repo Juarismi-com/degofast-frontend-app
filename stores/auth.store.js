@@ -1,7 +1,9 @@
 import axios from "axios";
 import { defineStore } from "pinia";
-import { useConfig } from "../config"
+import { useConfig } from "../config";
 import { useStorage } from "@vueuse/core";
+
+const { API_URL } = useConfig();
 
 export const authDefault = {
    auth: {
@@ -19,13 +21,13 @@ export const authDefault = {
       tipoContribuyente: 1,
       establecimientos: [],
    },
-}
+};
 
 export const useAuthStore = defineStore("auth", {
-   state: () => (authDefault),
+   state: () => authDefault,
    actions: {
-      init(){
-         axios.defaults.headers.common["auth_token"] = this.auth.authToken
+      init() {
+         axios.defaults.headers.common["auth_token"] = this.auth.authToken;
       },
       async setAuth(username, password) {
          try {
