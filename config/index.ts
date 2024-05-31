@@ -61,6 +61,7 @@ export const useConfig = () => {
 };
 
 export default {
+   useConfig,
    APP_NAME,
    APP_LOGO_PATH,
    TIPO_DOCUMENT_LIST,

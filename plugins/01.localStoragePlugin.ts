@@ -5,5 +5,5 @@ import { useAuthStore } from "~/stores";
  * @todo Improve localstorage or other storage metodology
  */
 export default defineNuxtPlugin((nuxtApp) => {
-   console.log("Improve localstorage or other storage metodology");
+   //console.log("Improve localstorage or other storage metodology");
 });
