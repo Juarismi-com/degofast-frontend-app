@@ -3,6 +3,9 @@ import { defineStore } from "pinia";
 import { useConfig } from "../config"
 import { useStorage } from "@vueuse/core";
 
+
+const { API_URL } = useConfig();
+
 export const authDefault = {
    auth: {
       authToken: localStorage.getItem("authToken") || null,
