@@ -3,15 +3,9 @@ import { useAuthStore } from "~/stores";
 
 export default defineNuxtRouteMiddleware((to, from) => {
    const authStore = useAuthStore();
-   const { auth } = storeToRefs(authStore);
+   authStore.loadToken();
 
-
-   console.log(
-   authStore.auth.authToken)
-
-   if (!auth.value.authToken) {
+   if (!authStore.auth.authToken) {
       return navigateTo("/auth");
-   }
-
-   authStore.init();
+   }   
 });

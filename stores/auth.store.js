@@ -3,12 +3,15 @@ import { defineStore } from "pinia";
 import { useConfig } from "../config"
 import { useStorage } from "@vueuse/core";
 
+
+const { API_URL } = useConfig();
+
 export const authDefault = {
    auth: {
       authToken: localStorage.getItem("authToken") || null,
    },
-   user: JSON.parse(localStorage.getItem("userData")) || null,
-   contributor: {} || {
+   user: JSON.parse(localStorage.getItem("user")) || null,
+   contributor: JSON.parse(localStorage.getItem("contributor")) || {
       fechaFirmaDigital: "",
       ruc: null,
       razonSocial: "",
@@ -24,7 +27,7 @@ export const authDefault = {
 export const useAuthStore = defineStore("auth", {
    state: () => (authDefault),
    actions: {
-      init(){
+      loadToken(){
          axios.defaults.headers.common["auth_token"] = this.auth.authToken
       },
       async setAuth(username, password) {
@@ -43,20 +46,20 @@ export const useAuthStore = defineStore("auth", {
             this.contributor = contributor;
 
             // set axios header with authorization
-            this.init();
+            this.loadToken()
 
             // save in localstorage token, user and contributor
-            useStorage("auth.authToken", token);
+            useStorage("authToken", token);
             useStorage("user", usuario);
             useStorage("contributor", contributor);
          } catch (error) {
-            console.log(error);
             axios.defaults.headers.common["auth_token"] = null;
          }
       },
       logout() {
          this.auth.authToken = null;
          this.user = null;
+         this.contributor = null;
          localStorage.clear();
          axios.defaults.headers.common["auth_token"] = null;
          navigateTo("/auth");

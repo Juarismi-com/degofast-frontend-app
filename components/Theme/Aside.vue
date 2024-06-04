@@ -22,7 +22,7 @@
                   ]"
                   :to="item.path"
                >
-                  <svg
+                  <!--svg
                      class="w-5 h-5"
                      aria-hidden="true"
                      fill="none"
@@ -33,7 +33,7 @@
                      stroke="currentColor"
                   >
                      <path :d="item.svgIcon"></path>
-                  </svg>
+                  </svg-->
                   <span class="ml-4">{{ item.title }}</span>
                </NuxtLink>
             </li>
