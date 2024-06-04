@@ -414,7 +414,7 @@ const agregarItem = () => {
    }
 };
 
-const authToken = useStorage("authToken", "");
+const authToken = useStorage("authToken");
 
 const submitForm = async () => {
 
