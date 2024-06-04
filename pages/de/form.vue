@@ -5,39 +5,29 @@
       </h2>
       <div>
          <form @submit.prevent="submitForm">
-            <div class="grid grid-cols-3 gap-4">
+            <div class="text-xl pb-4">
+               <h3>Documento Electrónico</h3>
+               <hr>
+            </div>
+            <div class="grid grid-cols-3 gap-4 pb-4">
                <div>
                   <label for="establecimiento">Establecimiento:</label>
-                  <input
-                     type="text"
-                     v-model="formData.establecimiento"
+                  <select 
                      id="establecimiento"
-                     :class="INPUT_CLASS.basic"
-                  />
+                     v-model="formData.establecimiento"
+                     :class="INPUT_CLASS.basic">
+                     <option 
+                        v-for="(establecimiento,index) in contributor.establecimientos" :key="index"
+                        :value="establecimiento.codigo"
+                        >
+                        {{ 
+                           establecimiento.denominacion + " - " + establecimiento.codigo
+                        }}
+                     </option>
+                  </select>
                </div>
                <div>
-                  <label for="codigoSeguridadAleatorio"
-                     >Código de Seguridad Aleatorio:</label
-                  >
-                  <input
-                     type="text"
-                     v-model="formData.codigoSeguridadAleatorio"
-                     id="codigoSeguridadAleatorio"
-                     :class="INPUT_CLASS.basic"
-                  />
-               </div>
-               <div>
-                  <label for="punto">Punto:</label>
-                  <input
-                     type="text"
-                     v-model="formData.punto"
-                     id="punto"
-                     readonly
-                     :class="INPUT_CLASS.basic"
-                  />
-               </div>
-               <div>
-                  <label for="numero">Número de Documento:</label>
+                  <label for="numero">Número de Factura:</label>
                   <input
                      type="text"
                      v-model="formData.numero"
@@ -45,22 +35,6 @@
                      readonly
                      :class="INPUT_CLASS.basic"
                   />
-               </div>
-               <div>
-                  <label for="descripcion">Descripción:</label>
-                  <textarea
-                     v-model="formData.descripcion"
-                     id="descripcion"
-                     :class="INPUT_CLASS.basic"
-                  ></textarea>
-               </div>
-               <div>
-                  <label for="observacion">Observación:</label>
-                  <textarea
-                     v-model="formData.observacion"
-                     id="observacion"
-                     :class="INPUT_CLASS.basic"
-                  ></textarea>
                </div>
                <div>
                   <label for="fecha">Fecha:</label>
@@ -130,6 +104,23 @@
                      <option value="0">No</option>
                   </select>
                </div>
+                     
+               <div>
+                  <label for="descripcion">Descripción (Opcional):</label>
+                  <input
+                     v-model="formData.descripcion"
+                     id="descripcion"
+                     :class="INPUT_CLASS.basic"
+                  ></input>
+               </div>
+            </div>
+
+
+            <div class="text-xl pb-4">
+               <h3>Cliente</h3>
+               <hr>
+            </div>
+            <div class="grid grid-cols-3 gap-4 pb-4">
                <div>
                   <label for="ciCliente">RUC:</label>
                   <input
@@ -148,171 +139,34 @@
                      :class="INPUT_CLASS.basic"
                   />
                </div>
-
-               <div>
-                  <div>
-                     <label
-                        for="observacion"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Observación:</label
-                     >
-                     <textarea
-                        v-model="formData.observacion"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="observacion"
-                     ></textarea>
-                  </div>
-
-                  <div>
-                     <label
-                        for="fecha"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Fecha:</label
-                     >
-                     <input
-                        type="datetime-local"
-                        v-model="formData.fecha"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="fecha"
-                     />
-                  </div>
-                  <div>
-                     <label
-                        for="tipoEmision"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Tipo de Emisión:</label
-                     >
-                     <select
-                        v-model="formData.tipoEmision"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="tipoEmision"
-                     >
-                        <option value="1">Normal</option>
-                        <option value="2">Contingencia</option>
-                     </select>
-                  </div>
-                  <div>
-                     <label
-                        for="tipoTransaccion"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Tipo de Transacción:</label
-                     >
-                     <select
-                        v-model="formData.tipoTransaccion"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="tipoTransaccion"
-                     >
-                        <option value="1">Venta de mercadería</option>
-                        <option value="2">Prestación de servicios</option>
-                        <option value="3">
-                           Mixto (Venta de mercadería y servicios)
-                        </option>
-                        <option value="4">Venta de activo fijo</option>
-                        <option value="5">Venta de divisas</option>
-                        <option value="6">Compra de divisas</option>
-                        <option value="7">
-                           Promoción o entrega de muestras
-                        </option>
-                        <option value="8">Donación</option>
-                        <option value="9">Anticipo</option>
-                        <option value="10">Compra de Productos</option>
-                        <option value="11">Venta de Crédito fiscal</option>
-                        <option value="12">Compra de Crédito fiscal</option>
-                        <option value="13">
-                           Muestras médicas (Art. 3 RG 24/2014)
-                        </option>
-                     </select>
-                  </div>
-
-                  <div>
-                     <label
-                        for="tipoImpuesto"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Tipo de Impuesto:</label
-                     >
-                     <select
-                        v-model="formData.tipoImpuesto"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="tipoImpuesto"
-                     >
-                        <option value="1">IVA</option>
-                        <option value="2">ISC</option>
-                        <option value="3">Renta</option>
-                        <option value="4">Ninguno</option>
-                        <option value="5">IVA - Renta</option>
-                     </select>
-                  </div>
-               </div>
-               <div>
-                  <div>
-                     <label
-                        for="moneda"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Moneda:</label
-                     >
-                     <select
-                        v-model="formData.moneda"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="moneda"
-                     >
-                        <option value="PYG">PYG</option>
-                     </select>
-                  </div>
-                  <div>
-                     <label
-                        for="presencia"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >¿Factura presente?</label
-                     >
-                     <select
-                        v-model="formData.factura.presencia"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="presencia"
-                     >
-                        <option value="1">Sí</option>
-                        <option value="0">No</option>
-                     </select>
-                  </div>
-
-                  <div>
-                     <label
-                        for="ciCliente"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >RUC:</label
-                     >
-                     <input
-                        type="text"
-                        v-model="formData.cliente.ruc"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="ciCliente"
-                     />
-                  </div>
-                  <div>
-                     <label
-                        for="nombreCliente"
-                        class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                        >Nombre del Cliente:</label
-                     >
-                     <input
-                        type="text"
-                        v-model="formData.cliente.nombre"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="nombreCliente"
-                     />
-                  </div>
-               </div>
             </div>
+
+
+            <div class="text-xl pb-4">
+               <h3>Producto / Servicio</h3>
+               <hr>
+            </div>
+
+
+
+
+            
+               <!--div>
+                  <label for="punto">Punto:</label>
+                  <input
+                     type="text"
+                     v-model="formData.punto"
+                     id="punto"
+                     readonly
+                     :class="INPUT_CLASS.basic"
+                  />
+               </div-->
          </form>
          
 
          <!-- Detalle -->
-         <div class="border rounded-lg p-4">
-            <h2
-               class="text-lg font-semibold mb-4 text-gray-700 dark:text-white"
-            >
-               Detalle
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-x-6 gap-y-8">
+         <div class="py-4">
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-8">
                <div>
                   <label
                      for="codigo"
@@ -321,7 +175,7 @@
                   >
                   <input
                      type="text"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      id="codigo"
                      v-model="item.codigo"
                   />
@@ -334,7 +188,7 @@
                   >
                   <input
                      type="text"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      id="descripcion"
                      v-model="item.descripcion"
                   />
@@ -347,7 +201,7 @@
                   >
                   <input
                      type="text"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      id="precio"
                      v-model="item.precioUnitario"
                   />
@@ -360,7 +214,7 @@
                   >
                   <input
                      type="text"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      id="cantidad"
                      v-model="item.cantidad"
                   />
@@ -374,11 +228,17 @@
                   <input
                      type="text"
                      id="totalUnitario"
-                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                     :class="INPUT_CLASS.basic"
                      v-model="item.totalUnitario"
                   />
                </div>
-               <button type="button" @click="agregarItem">Agregar Ítem</button>
+               <div>
+                  <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                      @click="agregarItem">Agregar Detalle</button>
+
+               </div>
+               
+
             </div>
 
             <div>
@@ -443,75 +303,34 @@
                </div>
             </div>
          </div>
-         <div class="col-span-3">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" 
-               v-model="item.descripcion" 
-               :class="INPUT_CLASS.basic"/>
-         </div>
-         <div class="col-span-2">
-            <label for="precio">Precio:</label>
-            <input type="text" id="precio" v-model="item.precioUnitario" />
-         </div>
-         <div class="col-span-2">
-            <label for="cantidad">Cantidad:</label>
-            <input type="text" id="cantidad" v-model="item.cantidad" />
-         </div>
-         <div class="col-span-2">
-            <label for="totalUnitario">Total Unitario:</label>
-            <input
-               type="text"
-               id="totalUnitario"
-               v-model="item.totalUnitario"
-            />
-         </div>
-         <!-- Contenedor de la tabla -->
-         <div>
-            <table>
-               <!-- Encabezados de la tabla -->
-               <thead>
-                  <tr>
-                     <th class="px-4 py-2">Código</th>
-                     <th class="px-4 py-2">Descripción</th>
-                     <th class="px-4 py-2">Precio Unitario</th>
-                     <th class="px-4 py-2">Cantidad</th>
-                     <th class="px-4 py-2">Total Unitario</th>
-                  </tr>
-               </thead>
-               <!-- Cuerpo de la tabla -->
-               <tbody>
-                  <tr v-for="(item, index) in formData.items" :key="index">
-                     <td class="border px-4 py-2">{{ item.codigo }}</td>
-                     <td class="border px-4 py-2">{{ item.descripcion }}</td>
-                     <td class="border px-4 py-2">{{ item.precioUnitario }}</td>
-                     <td class="border px-4 py-2">{{ item.cantidad }}</td>
-                     <td class="border px-4 py-2">{{ item.totalUnitario }}</td>
-                  </tr>
-               </tbody>
-            </table>
-         </div>
-         <!-- Botón para agregar un nuevo ítem -->
-         <button type="button" @click="agregarItem">Agregar Ítem</button>
-      </div>
+        </div>
    </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-//import { authToken } from "../../stores/auth.store";
 import { saveDE } from "../../utils";
-
+import { useAuthStore } from "../../stores";
 import { INPUT_CLASS } from  "../../config"
+import { storeToRefs } from "pinia";
+
+definePageMeta({
+   middleware: ["auth"],
+});
+
+const authStore = useAuthStore();
+const { contributor } = storeToRefs(authStore);
+
 
 const formData = ref({
    tipoDocumento: "1",
-   establecimiento: "2",
-   codigoSeguridadAleatorio: "3",
-   punto: "4",
-   numero: "5",
-   descripcion: "6",
-   observacion: "7",
-   fecha: "8",
+   establecimiento: "001",
+   codigoSeguridadAleatorio: null,
+   punto: "001",
+   numero: "",
+   descripcion: "",
+   observacion: "",
+   fecha: (new Date()).toISOString(),
    tipoEmision: 1,
    tipoTransaccion: 1,
    tipoImpuesto: 1,
@@ -530,10 +349,10 @@ const formData = ref({
       ],
    },
    cliente: {
-      ruc: "123",
-      nombre: "Clara",
-      razonSocial: "HUGO CABRAL",
-      nombreFantasia: "HUGO CABRAL",
+      ruc: "",
+      nombre: "",
+      razonSocial: "",
+      nombreFantasia: "",
       tipoOperacion: "1",
       direccion: null,
       numeroCasa: "0",
@@ -556,11 +375,11 @@ const formData = ref({
 });
 
 const item = ref({
-   codigo: "1",
-   descripcion: "-",
-   precioUnitario: "5",
-   cantidad: "2",
-   totalUnitario: "10",
+   codigo: "",
+   descripcion: "",
+   precioUnitario: "",
+   cantidad: "",
+   totalUnitario: "",
 });
 
 const agregarItem = () => {

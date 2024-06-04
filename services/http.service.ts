@@ -50,6 +50,7 @@ export const create = async (path: string, payload: string) => {
 export const get = async (path: string, query: string) => {
    try {
       const res = await axios.get(`${API_URL}/${path}`);
+      console.log(res);
       return res.data;
    } catch (error) {
       console.error(error);
