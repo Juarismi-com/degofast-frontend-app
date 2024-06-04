@@ -335,7 +335,7 @@ const formData = ref({
    numero: "000001",
    descripcion: "",
    observacion: "",
-   fecha: "",
+   fecha: (new Date()).toISOString(),
    tipoEmision: 1,
    tipoTransaccion: 1,
    tipoImpuesto: 1,
@@ -367,11 +367,21 @@ const formData = ref({
 });
 
 const item = ref({
-   codigo: "1001",
-   descripcion: "Pan Felipe",
-   precioUnitario: "1000",
-   cantidad: "2",
-   totalUnitario: "2000",
+   codigo: "137871",
+   descripcion: "YRENE caja x 21 comp.rec.",
+   observacion: "",
+   unidadMedida: "77",
+   cantidad: "1",
+   precioUnitario: "1",
+   cambio: null,
+   ivaTipo: "1",
+   ivaBase: 100,
+   iva: "5",
+   lote: null,
+   vencimiento: null,
+   numeroSerie: "",
+   numeroPedido: "",
+   numeroSeguimiento: ""
 });
 
 const agregarItem = () => {
@@ -395,16 +405,20 @@ const agregarItem = () => {
    }
 };
 
-
- const authToken = useStorage("authToken", "");
+const authToken = useStorage("authToken", "");
 
 const submitForm = async () => {
 
-   try {
+   try {  
+      /* Adapto manualmente para el formato de fecha */
+      formData.value.fecha = formData.value.fecha.slice(0, -5); 
+      console.log(formData.value.fecha);  
 
+      /* Impresiones de prueba */
       console.log("Token: " +JSON.stringify(authToken.value));      
       console.log("*");
       console.log(JSON.stringify([formData.value]));
+
       const response = await saveLotes([formData.value], authToken.value);
       console.log("Response:", response);
    } catch (error) {
