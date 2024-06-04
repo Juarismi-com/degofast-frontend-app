@@ -4,7 +4,7 @@
          Facturación Electrónica
       </h2>
       <div>
-         <form @submit.prevent="showAlert = true">
+         <form @submit.prevent="submitForm">
             <div class="text-xl pb-4">
                <h3>Documento Electrónico</h3>
                <hr>
@@ -309,15 +309,11 @@
 
          </form>
 
-         <Alert
-            v-if="showAlert"
-            :title="'Confirmación'"
-            :message="'¿Está seguro que desea enviar los datos?'"
+         <Alert 
             :show="showAlert"
-            @confirm="submitForm"
-            @cancel="showAlert = false"
+            :message="alertMessage"
+            @close="showAlert = false"
          />
-         
         </div>
    </div>
 </template>
@@ -328,7 +324,9 @@ import { useAuthStore } from "../../stores";
 import { INPUT_CLASS } from  "../../config"
 import { storeToRefs } from "pinia";
 import { useStorage } from "@vueuse/core";
-import Alert from '../../components/Alert/Alert.vue';
+
+const showAlert = ref(false);
+let alertMessage = '';
 
 definePageMeta({
    middleware: ["auth"],
@@ -418,10 +416,7 @@ const agregarItem = () => {
 
 const authToken = useStorage("authToken", "");
 
-const showAlert = ref(false);
-
 const submitForm = async () => {
-   showAlert.value = false;
 
    try {  
       /* Adapto manualmente para el formato de fecha */
@@ -433,8 +428,14 @@ const submitForm = async () => {
       console.log("*");
       console.log(JSON.stringify([formData.value]));
 
-      const response = await saveLotes([formData.value], authToken.value);
-      console.log("Response:", response);
+      const response = await saveLotes([formData.value], authToken.value);   
+      
+      if (response) {
+         console.log("Response:", response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"]);
+         alertMessage = response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"];
+         showAlert.value = true;
+      }
+
    } catch (error) {
       console.error("Error submitting form:", error);
    }
