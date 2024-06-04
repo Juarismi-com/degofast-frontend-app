@@ -358,7 +358,7 @@ const formData = ref({
          {
             tipo: 1,
             moneda: "PYG",
-            monto: "27520",
+            monto: "",
          },
       ],
    },
@@ -376,16 +376,16 @@ const formData = ref({
 });
 
 const item = ref({
-   codigo: "137871",
-   descripcion: "YRENE caja x 21 comp.rec.",
+   codigo: "",
+   descripcion: "",
    observacion: "",
-   unidadMedida: "77",
-   cantidad: "1",
-   precioUnitario: "1",
+   unidadMedida: "",
+   cantidad: "",
+   precioUnitario: "",
    cambio: null,
-   ivaTipo: "1",
-   ivaBase: 100,
-   iva: "5",
+   ivaTipo: "",
+   ivaBase: null,
+   iva: "",
    lote: null,
    vencimiento: null,
    numeroSerie: "",
@@ -422,11 +422,6 @@ const submitForm = async () => {
       /* Adapto manualmente para el formato de fecha */
       formData.value.fecha = formData.value.fecha.slice(0, -5); 
       console.log(formData.value.fecha);  
-
-      /* Impresiones de prueba */
-      console.log("Token: " +JSON.stringify(authToken.value));      
-      console.log("*");
-      console.log(JSON.stringify([formData.value]));
 
       const response = await saveLotes([formData.value], authToken.value);   
       

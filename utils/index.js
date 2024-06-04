@@ -19,11 +19,7 @@ export const saveDE = async (data, token) => {
 
 export const saveLotes = async (data, token) => {
    try {
-      const response = await axios.post(`${API_URL}/lotes`, data, {
-         headers: {
-            Authorization: `Bearer ${token}`,
-         },
-      });
+      const response = await axios.post(`${API_URL}/lotes`, data);
       return response.data;
    } catch (error) {
       console.error("Error submitting form:", error);
