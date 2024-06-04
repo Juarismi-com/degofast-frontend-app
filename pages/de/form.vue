@@ -134,7 +134,7 @@
                   <label for="nombreCliente">Nombre del Cliente:</label>
                   <input
                      type="text"
-                     v-model="formData.cliente.nombre"
+                     v-model="formData.cliente.razonSocial"
                      id="nombreCliente"
                      :class="INPUT_CLASS.basic"
                   />
@@ -161,7 +161,7 @@
                      :class="INPUT_CLASS.basic"
                   />
                </div-->
-         </form>
+         
          
 
          <!-- Detalle -->
@@ -300,19 +300,24 @@
                         </tbody>
                      </table>
                   </div>
+
                </div>
             </div>
          </div>
+
+         <button type="submit">ENVIAR</button>
+
+         </form>
         </div>
    </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { saveDE } from "../../utils";
 import { useAuthStore } from "../../stores";
 import { INPUT_CLASS } from  "../../config"
 import { storeToRefs } from "pinia";
+import { useStorage } from "@vueuse/core";
 
 definePageMeta({
    middleware: ["auth"],
@@ -325,12 +330,12 @@ const { contributor } = storeToRefs(authStore);
 const formData = ref({
    tipoDocumento: "1",
    establecimiento: "001",
-   codigoSeguridadAleatorio: null,
+   codigoSeguridadAleatorio: "194331023",
    punto: "001",
-   numero: "",
+   numero: "000001",
    descripcion: "",
    observacion: "",
-   fecha: (new Date()).toISOString(),
+   fecha: "",
    tipoEmision: 1,
    tipoTransaccion: 1,
    tipoImpuesto: 1,
@@ -349,37 +354,24 @@ const formData = ref({
       ],
    },
    cliente: {
-      ruc: "",
-      nombre: "",
-      razonSocial: "",
-      nombreFantasia: "",
-      tipoOperacion: "1",
-      direccion: null,
-      numeroCasa: "0",
-      departamento: 1,
-      departamentoDescripcion: "CAPITAL",
-      distrito: 1,
-      distritoDescripcion: "ASUNCION",
-      ciudad: 1,
-      pais: "PRY",
-      paisDescripcion: "Paraguay",
-      tipoContribuyente: 1,
-      documentoTipo: 1,
-      documentoNumero: "",
-      telefono: "",
-      celular: "",
-      email: "",
-      codigo: "",
+      contribuyente: true,
+      razonSocial: "RAZON SOCIAL DE PRUEBA",
+      ruc:"5310689-0",
+      tipoContribuyente:1,
+      tipoOperacion: 2,
+      documentoTipo: 5,
+      documentoNumero: "0",
+      pais: "PRY"
    },
    items: [],
 });
 
 const item = ref({
-   codigo: "",
-   descripcion: "",
-   precioUnitario: "",
-   cantidad: "",
-   totalUnitario: "",
+   codigo: "1001",
+   descripcion: "Pan Felipe",
+   precioUnitario: "1000",
+   cantidad: "2",
+   totalUnitario: "2000",
 });
 
 const agregarItem = () => {
@@ -403,13 +395,18 @@ const agregarItem = () => {
    }
 };
 
-//const authStore = useAuthStore();
-//const { authToken } = storeToRefs(authStore);
+
+ const authToken = useStorage("authToken", "");
 
 const submitForm = async () => {
+
    try {
-      //const response = await saveDE(data, authToken.value);
-      //console.log("Response:", response);
+
+      console.log("Token: " +JSON.stringify(authToken.value));      
+      console.log("*");
+      console.log(JSON.stringify([formData.value]));
+      const response = await saveLotes([formData.value], authToken.value);
+      console.log("Response:", response);
    } catch (error) {
       console.error("Error submitting form:", error);
    }
