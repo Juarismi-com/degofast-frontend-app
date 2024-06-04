@@ -4,7 +4,7 @@
          Facturación Electrónica
       </h2>
       <div>
-         <form @submit.prevent="submitForm">
+         <form @submit.prevent="showAlert = true">
             <div class="text-xl pb-4">
                <h3>Documento Electrónico</h3>
                <hr>
@@ -308,6 +308,16 @@
          <button type="submit">ENVIAR</button>
 
          </form>
+
+         <Alert
+            v-if="showAlert"
+            :title="'Confirmación'"
+            :message="'¿Está seguro que desea enviar los datos?'"
+            :show="showAlert"
+            @confirm="submitForm"
+            @cancel="showAlert = false"
+         />
+         
         </div>
    </div>
 </template>
@@ -318,6 +328,7 @@ import { useAuthStore } from "../../stores";
 import { INPUT_CLASS } from  "../../config"
 import { storeToRefs } from "pinia";
 import { useStorage } from "@vueuse/core";
+import Alert from '../../components/Alert/Alert.vue';
 
 definePageMeta({
    middleware: ["auth"],
@@ -407,7 +418,10 @@ const agregarItem = () => {
 
 const authToken = useStorage("authToken", "");
 
+const showAlert = ref(false);
+
 const submitForm = async () => {
+   showAlert.value = false;
 
    try {  
       /* Adapto manualmente para el formato de fecha */
