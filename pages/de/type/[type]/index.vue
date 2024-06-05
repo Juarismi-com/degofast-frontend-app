@@ -15,12 +15,15 @@
 import { TIPO_DOCUMENT_LIST } from "~/config";
 import ModalSimple from "~/components/Theme/Modal/Simple.vue";
 import { get } from "~/services/http.service";
+import { useAuthStore } from "~/stores";
 
 definePageMeta({
    middleware: ["auth"],
 });
 
 const route = useRoute();
+const authStore = useAuthStore()
+
 const deType = ref(route.params.type);
 const routeList = ref(TIPO_DOCUMENT_LIST);
 const routeSelected = ref(
@@ -30,7 +33,7 @@ const title = ref(routeSelected.value.title);
 const des = ref([]);
 
 const setDes = async () => {
-   des.value = await get(`de?tipoDocumento=${deType.value}`);
+   des.value = (await get(`de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}`))?.data;
 };
 
 onMounted(() => {
