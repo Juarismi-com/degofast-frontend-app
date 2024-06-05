@@ -324,6 +324,7 @@ import { useAuthStore } from "../../stores";
 import { INPUT_CLASS } from  "../../config"
 import { storeToRefs } from "pinia";
 import { useStorage } from "@vueuse/core";
+import { saveDE } from "../../utils/index"; 
 
 const showAlert = ref(false);
 let alertMessage = '';
@@ -423,7 +424,7 @@ const submitForm = async () => {
       formData.value.fecha = formData.value.fecha.slice(0, -5); 
       console.log(formData.value.fecha);  
 
-      const response = await saveLotes([formData.value], authToken.value);   
+       const response = await saveDE(formData.value, authToken.value);   
       
       if (response) {
          console.log("Response:", response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"]);
