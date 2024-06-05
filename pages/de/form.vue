@@ -327,6 +327,8 @@ import { useStorage } from "@vueuse/core";
 
 const showAlert = ref(false);
 let alertMessage = '';
+const authToken = useStorage("authToken");
+
 
 definePageMeta({
    middleware: ["auth"],
@@ -414,15 +416,12 @@ const agregarItem = () => {
    }
 };
 
-const authToken = useStorage("authToken");
-
 const submitForm = async () => {
 
    try {  
       /* Adapto manualmente para el formato de fecha */
       formData.value.fecha = formData.value.fecha.slice(0, -5); 
-      console.log(formData.value.fecha);  
-
+  
       const response = await saveLotes([formData.value], authToken.value);   
       
       if (response) {
