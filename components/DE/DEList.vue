@@ -66,7 +66,7 @@
          <span class="flex items-center col-span-3"> Viendo 21-30 of 100 </span>
          <span class="col-span-2"></span>
          <!-- Pagination -->
-         <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+         <!--span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
             <nav aria-label="Table navigation">
                <ul class="inline-flex items-center">
                   <li>
@@ -152,7 +152,7 @@
                   </li>
                </ul>
             </nav>
-         </span>
+         </span-->
       </div>
    </div>
 </template>
