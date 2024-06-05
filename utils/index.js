@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useConfig } from "../config";
 
-const { API_URL }  = useConfig()
+const { API_URL } = useConfig();
 
 export const saveDE = async (data, token) => {
    try {
@@ -10,6 +10,16 @@ export const saveDE = async (data, token) => {
             Authorization: `Bearer ${token}`,
          },
       });
+      return response.data;
+   } catch (error) {
+      console.error("Error submitting form:", error);
+      throw error;
+   }
+};
+
+export const saveLotes = async (data, token) => {
+   try {
+      const response = await axios.post(`${API_URL}/lotes`, data);
       return response.data;
    } catch (error) {
       console.error("Error submitting form:", error);
