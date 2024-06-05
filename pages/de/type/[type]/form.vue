@@ -4,9 +4,10 @@
          {{ title }}
       </h2>
       <div>
+
          <form @submit.prevent="submitForm">
             <div class="text-xl pb-4">
-               <h3>Documento Electrónico</h3>
+               <h3>Documento Electrónico {{ cdc }}</h3>
                <hr>
             </div>
             <div class="grid grid-cols-3 gap-4 pb-4">
@@ -329,8 +330,7 @@
 
          </form>
 
-         cdc: {{  }}
-
+   
          <Alert 
             :show="showAlert"
             :message="alertMessage"
@@ -341,36 +341,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useAuthStore } from "../../../../stores";
-import { INPUT_CLASS, TIPO_DOCUMENT_LIST } from  "../../../../config"
-import { storeToRefs } from "pinia";
-import { useStorage } from "@vueuse/core";
 
-const showAlert = ref(false);
-let alertMessage = '';
-const authToken = useStorage("authToken");
-
-
-// datos relacionados con eltipo de documento electronic
-// @todo move in a helper
-const route = useRoute();
-const deType = ref(route.params.type);
-const routeList = ref(TIPO_DOCUMENT_LIST);
-const routeSelected = ref(
-   routeList.value.find((item) => item.tipoDocumento == route.params.type),
-);
-const title = ref(routeSelected.value.title);
-
-
-definePageMeta({
-   middleware: ["auth"],
-});
-
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
-
-const formData = ref({
+const deDefault = {
    tipoDocumento: "1",
    establecimiento: "001",
    codigoSeguridadAleatorio: "",
@@ -407,7 +379,38 @@ const formData = ref({
       pais: "PRY"
    },
    items: [],
+}
+
+import { ref } from "vue";
+import { useAuthStore } from "../../../../stores";
+import { INPUT_CLASS, TIPO_DOCUMENT_LIST } from  "../../../../config"
+import { storeToRefs } from "pinia";
+import { useStorage } from "@vueuse/core";
+
+const showAlert = ref(false);
+let alertMessage = '';
+const authToken = useStorage("authToken");
+
+
+// datos relacionados con eltipo de documento electronic
+// @todo move in a helper
+const route = useRoute();
+const deType = ref(route.params.type);
+const routeList = ref(TIPO_DOCUMENT_LIST);
+const routeSelected = ref(
+   routeList.value.find((item) => item.tipoDocumento == route.params.type),
+);
+const title = ref(routeSelected.value.title);
+
+
+definePageMeta({
+   middleware: ["auth"],
 });
+
+const authStore = useAuthStore();
+const { contributor } = storeToRefs(authStore);
+
+const formData = ref(deDefault);
 
 const item = ref({
    codigo: "",
@@ -431,7 +434,7 @@ const item = ref({
 });
 
 
-const ivaList = ref([0,5,10])
+const cdc = ref("");
 
 const agregarItem = () => {
    if (
@@ -483,9 +486,10 @@ const submitForm = async () => {
          const response = await saveDE(formData.value, authToken.value);  
          
          if (response) {
-            console.log("Response:", response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"]);
-            alertMessage = response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"];
+            cdc.value = response['sifenResponse']['ns2:Id']
             showAlert.value = true;
+            formData.value = deDefault;
+            alert("Enviado correctamente");
          }
       }
    } catch (error) {
