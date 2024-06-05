@@ -134,7 +134,7 @@
                   <label for="nombreCliente">Nombre del Cliente:</label>
                   <input
                      type="text"
-                     v-model="formData.cliente.nombre"
+                     v-model="formData.cliente.razonSocial"
                      id="nombreCliente"
                      :class="INPUT_CLASS.basic"
                   />
@@ -161,7 +161,7 @@
                      :class="INPUT_CLASS.basic"
                   />
                </div-->
-         </form>
+         
          
 
          <!-- Detalle -->
@@ -300,19 +300,33 @@
                         </tbody>
                      </table>
                   </div>
+
                </div>
             </div>
          </div>
+
+         <button type="submit" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enviar</button>
+
+         </form>
+
+         <Alert 
+            :show="showAlert"
+            :message="alertMessage"
+            @close="showAlert = false"
+         />
         </div>
    </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { saveDE } from "../../utils";
 import { useAuthStore } from "../../stores";
 import { INPUT_CLASS } from  "../../config"
 import { storeToRefs } from "pinia";
+import { useStorage } from "@vueuse/core";
+
+const showAlert = ref(false);
+let alertMessage = '';
 
 definePageMeta({
    middleware: ["auth"],
@@ -325,9 +339,9 @@ const { contributor } = storeToRefs(authStore);
 const formData = ref({
    tipoDocumento: "1",
    establecimiento: "001",
-   codigoSeguridadAleatorio: null,
+   codigoSeguridadAleatorio: "194331023",
    punto: "001",
-   numero: "",
+   numero: "000001",
    descripcion: "",
    observacion: "",
    fecha: (new Date()).toISOString(),
@@ -344,32 +358,19 @@ const formData = ref({
          {
             tipo: 1,
             moneda: "PYG",
-            monto: "27520",
+            monto: "",
          },
       ],
    },
    cliente: {
-      ruc: "",
-      nombre: "",
-      razonSocial: "",
-      nombreFantasia: "",
-      tipoOperacion: "1",
-      direccion: null,
-      numeroCasa: "0",
-      departamento: 1,
-      departamentoDescripcion: "CAPITAL",
-      distrito: 1,
-      distritoDescripcion: "ASUNCION",
-      ciudad: 1,
-      pais: "PRY",
-      paisDescripcion: "Paraguay",
-      tipoContribuyente: 1,
-      documentoTipo: 1,
-      documentoNumero: "",
-      telefono: "",
-      celular: "",
-      email: "",
-      codigo: "",
+      contribuyente: true,
+      razonSocial: "RAZON SOCIAL DE PRUEBA",
+      ruc:"5310689-0",
+      tipoContribuyente:1,
+      tipoOperacion: 2,
+      documentoTipo: 5,
+      documentoNumero: "0",
+      pais: "PRY"
    },
    items: [],
 });
@@ -377,9 +378,19 @@ const formData = ref({
 const item = ref({
    codigo: "",
    descripcion: "",
-   precioUnitario: "",
+   observacion: "",
+   unidadMedida: "",
    cantidad: "",
-   totalUnitario: "",
+   precioUnitario: "",
+   cambio: null,
+   ivaTipo: "",
+   ivaBase: null,
+   iva: "",
+   lote: null,
+   vencimiento: null,
+   numeroSerie: "",
+   numeroPedido: "",
+   numeroSeguimiento: ""
 });
 
 const agregarItem = () => {
@@ -403,13 +414,23 @@ const agregarItem = () => {
    }
 };
 
-//const authStore = useAuthStore();
-//const { authToken } = storeToRefs(authStore);
+const authToken = useStorage("authToken");
 
 const submitForm = async () => {
-   try {
-      //const response = await saveDE(data, authToken.value);
-      //console.log("Response:", response);
+
+   try {  
+      /* Adapto manualmente para el formato de fecha */
+      formData.value.fecha = formData.value.fecha.slice(0, -5); 
+      console.log(formData.value.fecha);  
+
+      const response = await saveLotes([formData.value], authToken.value);   
+      
+      if (response) {
+         console.log("Response:", response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"]);
+         alertMessage = response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"];
+         showAlert.value = true;
+      }
+
    } catch (error) {
       console.error("Error submitting form:", error);
    }
