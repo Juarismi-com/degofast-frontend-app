@@ -10,6 +10,7 @@
                   <th class="px-4 py-3">Identificador</th>
                   <th class="px-4 py-3">Estado</th>
                   <th class="px-4 py-3">Fecha</th>
+                  <th class="px-4 py-3"></th>
                </tr>
             </thead>
             <tbody
@@ -52,10 +53,19 @@
                      <span
                         class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
                      >
-                        {{ item.estado == 'PENDING'? 'ACEPTADO' : '' }}
+                        {{ item.estado }}
                      </span>
                   </td>
                   <td class="px-4 py-3 text-sm">{{ item.fecha }}</td>
+                  <td class="px-4 py-3">
+                     <!-- Botón "Ver detalles" -->
+                     <button
+                        @click="verDetalles(item._id)"
+                        class="text-blue-600 hover:underline focus:outline-none"
+                     >
+                        Ver detalles
+                     </button>
+                  </td>
                </tr>
             </tbody>
          </table>
@@ -66,7 +76,7 @@
          <span class="flex items-center col-span-3"> Viendo 21-30 of 100 </span>
          <span class="col-span-2"></span>
          <!-- Pagination -->
-         <!--span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+         <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
             <nav aria-label="Table navigation">
                <ul class="inline-flex items-center">
                   <li>
@@ -152,18 +162,26 @@
                   </li>
                </ul>
             </nav>
-         </span-->
+         </span>
       </div>
    </div>
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
+
 const props = defineProps({
    items: {
       type: Array,
       default: [],
    },
 });
+
+const router = useRouter();
+
+const verDetalles = (id) => {
+   router.push(`/de/detail/${id}`);
+};
 
 const { items } = toRefs(props);
 </script>
