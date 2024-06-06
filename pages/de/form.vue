@@ -1,12 +1,13 @@
 <template>
    <div>
-      <h2 class="my-4 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-         Facturación Electrónica
+      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+         {{ title }}
       </h2>
       <div>
+
          <form @submit.prevent="submitForm">
             <div class="text-xl pb-4">
-               <h3>Documento Electrónico</h3>
+               <h3>Documento Electrónico {{ cdc }}</h3>
                <hr>
             </div>
             <div class="grid grid-cols-3 gap-4 pb-4">
@@ -27,12 +28,11 @@
                   </select>
                </div>
                <div>
-                  <label for="numero">Número de Factura:</label>
+                  <label for="numero">Número de Factura (solo test):</label>
                   <input
                      type="text"
                      v-model="formData.numero"
                      id="numero"
-                     readonly
                      :class="INPUT_CLASS.basic"
                   />
                </div>
@@ -221,6 +221,19 @@
                </div>
                <div>
                   <label
+                     for="iva"
+                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     >IVA:</label
+                  >
+                  <select v-model="item.iva" id="iva"
+                     :class="INPUT_CLASS.basic">
+                     <option value="0">0</option>
+                     <option value="5">5</option>
+                     <option value="10">10</option>
+                  </select>
+               </div>
+               <!--div>
+                  <label
                      for="totalUnitario"
                      class="my-4 text-l font-semibold text-gray-700 dark:text-white"
                      >Total Unitario:</label
@@ -228,13 +241,13 @@
                   <input
                      type="text"
                      id="totalUnitario"
-                     :class="INPUT_CLASS.basic"
+                     :class="INPUT_CLASS.basic + ' text-right'"
                      v-model="item.totalUnitario"
                   />
-               </div>
+               </div-->
                <div>
                   <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                      @click="agregarItem">Agregar Detalle</button>
+                      @click="agregarItem">Agregar</button>
 
                </div>
                
@@ -249,7 +262,7 @@
                         <thead>
                            <tr class="bg-gray-50 dark:bg-gray-800">
                               <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
                               >
                                  Código
                               </th>
@@ -259,17 +272,22 @@
                                  Descripción
                               </th>
                               <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
                               >
                                  Precio Unitario
                               </th>
                               <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
                               >
                                  Cantidad
                               </th>
                               <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
+                              >
+                                 IVA
+                              </th>
+                              <th
+                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
                               >
                                  Total Unitario
                               </th>
@@ -281,19 +299,22 @@
                               :key="index"
                               class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white"
                            >
-                              <td class="px-4 py-2 whitespace-nowrap">
+                              <td class="px-4 py-2 whitespace-nowrap text-right">
                                  {{ item.codigo }}
                               </td>
                               <td class="px-4 py-2 whitespace-nowrap">
                                  {{ item.descripcion }}
                               </td>
-                              <td class="px-4 py-2 whitespace-nowrap">
+                              <td class="px-4 py-2 whitespace-nowrap text-right">
                                  {{ item.precioUnitario }}
                               </td>
-                              <td class="px-4 py-2 whitespace-nowrap">
+                              <td class="px-4 py-2 whitespace-nowrap text-right">
                                  {{ item.cantidad }}
                               </td>
-                              <td class="px-4 py-2 whitespace-nowrap">
+                              <td class="px-4 py-2 whitespace-nowrap text-right">
+                                 {{ item.iva }}%
+                              </td>
+                              <td class="px-4 py-2 whitespace-nowrap text-right">
                                  {{ item.totalUnitario }}
                               </td>
                            </tr>
@@ -309,6 +330,7 @@
 
          </form>
 
+   
          <Alert 
             :show="showAlert"
             :message="alertMessage"
@@ -319,36 +341,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useAuthStore } from "../../stores";
-import { INPUT_CLASS } from  "../../config"
-import { storeToRefs } from "pinia";
-import { useStorage } from "@vueuse/core";
 
-const showAlert = ref(false);
-let alertMessage = '';
-const authToken = useStorage("authToken");
-
-
-definePageMeta({
-   middleware: ["auth"],
-});
-
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
-
-
-const formData = ref({
+const deDefault = {
    tipoDocumento: "1",
    establecimiento: "001",
-   codigoSeguridadAleatorio: "194331023",
+   codigoSeguridadAleatorio: "",
    punto: "001",
-   numero: "000001",
+   numero: "0000013",
    descripcion: "",
    observacion: "",
-   fecha: (new Date()).toISOString(),
+   fecha: "",
    tipoEmision: 1,
-   tipoTransaccion: 1,
+   tipoTransaccion: 2,
    tipoImpuesto: 1,
    moneda: "PYG",
    factura: {
@@ -360,14 +364,14 @@ const formData = ref({
          {
             tipo: 1,
             moneda: "PYG",
-            monto: "",
+            monto: 100,
          },
       ],
    },
    cliente: {
       contribuyente: true,
       razonSocial: "RAZON SOCIAL DE PRUEBA",
-      ruc:"5310689-0",
+      ruc:"",
       tipoContribuyente:1,
       tipoOperacion: 2,
       documentoTipo: 5,
@@ -375,34 +379,71 @@ const formData = ref({
       pais: "PRY"
    },
    items: [],
+}
+
+import { ref } from "vue";
+import { useAuthStore } from "../../../../stores";
+import { INPUT_CLASS, TIPO_DOCUMENT_LIST } from  "../../../../config"
+import { storeToRefs } from "pinia";
+import { useStorage } from "@vueuse/core";
+
+const showAlert = ref(false);
+let alertMessage = '';
+const authToken = useStorage("authToken");
+
+
+// datos relacionados con eltipo de documento electronic
+// @todo move in a helper
+const route = useRoute();
+const deType = ref(route.params.type);
+const routeList = ref(TIPO_DOCUMENT_LIST);
+const routeSelected = ref(
+   routeList.value.find((item) => item.tipoDocumento == route.params.type),
+);
+const title = ref(routeSelected.value.title);
+
+
+definePageMeta({
+   middleware: ["auth"],
 });
+
+const authStore = useAuthStore();
+const { contributor } = storeToRefs(authStore);
+
+const formData = ref(deDefault);
 
 const item = ref({
    codigo: "",
    descripcion: "",
    observacion: "",
-   unidadMedida: "",
+   
+   // @todo defined in comerce
+   unidadMedida: "77",
    cantidad: "",
    precioUnitario: "",
    cambio: null,
-   ivaTipo: "",
-   ivaBase: null,
-   iva: "",
+   ivaTipo: "1",
+   ivaBase: 100,
+   iva: "10",
    lote: null,
    vencimiento: null,
    numeroSerie: "",
    numeroPedido: "",
-   numeroSeguimiento: ""
+   numeroSeguimiento: "",
+   precioPorCantidad: ""
 });
+
+
+const cdc = ref("");
 
 const agregarItem = () => {
    if (
       item.value.codigo &&
       item.value.descripcion &&
       item.value.precioUnitario &&
-      item.value.cantidad &&
-      item.value.totalUnitario
+      item.value.cantidad
    ) {
+      item.value.totalUnitario = item.value.precioUnitario * item.value.cantidad
       formData.value.items.push({ ...item.value });
       item.value = {
          codigo: "",
@@ -410,26 +451,47 @@ const agregarItem = () => {
          precioUnitario: "",
          cantidad: "",
          totalUnitario: "",
+         iva: "10"
       };
    } else {
       alert("Por favor, complete todos los campos del nuevo ítem.");
    }
 };
 
+/**
+ * @todo move this in a helper
+ */
+const getRandomNumber = () => {
+   const min = 100000000;
+   const max = 999999999;
+
+   const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+   return randomNumber;
+}
+
 const submitForm = async () => {
 
    try {  
       /* Adapto manualmente para el formato de fecha */
-      formData.value.fecha = formData.value.fecha.slice(0, -5); 
-  
-      const response = await saveLotes([formData.value]);   
-      
-      if (response) {
-         console.log("Response:", response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"]);
-         alertMessage = response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"];
-         showAlert.value = true;
-      }
+      /**
+       * todo 
+       */
 
+      if (confirm("Desea agregar el de?")){
+         formData.value.fecha = "2024-06-05T00:00:00"; 
+         formData.value.tipoDocumento = deType.value
+         formData.value.codigoSeguridadAleatorio = getRandomNumber();
+   
+         //const response = await saveLotes([formData.value], authToken.value);   
+         const response = await saveDE(formData.value, authToken.value);  
+         
+         if (response) {
+            cdc.value = response['sifenResponse']['ns2:Id']
+            showAlert.value = true;
+            formData.value = deDefault;
+            alert("Enviado correctamente");
+         }
+      }
    } catch (error) {
       console.error("Error submitting form:", error);
    }
