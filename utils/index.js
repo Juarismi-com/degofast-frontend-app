@@ -26,3 +26,13 @@ export const saveLotes = async (data, token) => {
       throw error;
    }
 };
+
+export const getDesById = async (id) => {
+   try {
+      const response = await axios.get(`${API_URL}/de/${id}`);
+      return response.data;
+   } catch (error) {
+      console.error("Error getting DES by ID:", error);
+      throw error;
+   }
+};
