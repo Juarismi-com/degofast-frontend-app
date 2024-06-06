@@ -10,6 +10,7 @@
                   <th class="px-4 py-3">Identificador</th>
                   <th class="px-4 py-3">Estado</th>
                   <th class="px-4 py-3">Fecha</th>
+                  <th class="px-4 py-3"></th>
                </tr>
             </thead>
             <tbody
@@ -56,6 +57,15 @@
                      </span>
                   </td>
                   <td class="px-4 py-3 text-sm">{{ item.fecha }}</td>
+                  <td class="px-4 py-3">
+                     <!-- Botón "Ver detalles" -->
+                     <button
+                        @click="verDetalles(item._id)"
+                        class="text-blue-600 hover:underline focus:outline-none"
+                     >
+                        Ver detalles
+                     </button>
+                  </td>
                </tr>
             </tbody>
          </table>
@@ -158,12 +168,20 @@
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
+
 const props = defineProps({
    items: {
       type: Array,
       default: [],
    },
 });
+
+const router = useRouter();
+
+const verDetalles = (id) => {
+   router.push(`/de/detail/${id}`);
+};
 
 const { items } = toRefs(props);
 </script>

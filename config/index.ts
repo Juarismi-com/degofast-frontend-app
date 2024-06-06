@@ -4,8 +4,8 @@ export const APP_LOGO_PATH = "";
 export const HOME_PAGE_PATH = "/dashboard";
 
 export const INPUT_CLASS = {
-   basic: "bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-}
+   basic: "bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500",
+};
 
 export const TIPO_DOCUMENT_LIST = [
    {
@@ -66,5 +66,5 @@ export default {
    APP_LOGO_PATH,
    TIPO_DOCUMENT_LIST,
    HOME_PAGE_PATH,
-   INPUT_CLASS
+   INPUT_CLASS,
 };

@@ -422,7 +422,7 @@ const submitForm = async () => {
       /* Adapto manualmente para el formato de fecha */
       formData.value.fecha = formData.value.fecha.slice(0, -5); 
   
-      const response = await saveLotes([formData.value], authToken.value);   
+      const response = await saveLotes([formData.value]);   
       
       if (response) {
          console.log("Response:", response["ns2:rResEnviLoteDe"]["ns2:dMsgRes"]);
