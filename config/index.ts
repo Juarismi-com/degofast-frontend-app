@@ -50,6 +50,7 @@ export const useConfig = () => {
 
    return {
       API_URL: config.API_URL,
+      APP_ENV: config.APP_ENV
    };
 };
 

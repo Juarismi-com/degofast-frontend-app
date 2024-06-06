@@ -383,7 +383,7 @@ const deDefault = {
 
 import { ref } from "vue";
 import { useAuthStore } from "../../../../stores";
-import { INPUT_CLASS, TIPO_DOCUMENT_LIST } from  "../../../../config"
+import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from  "../../../../config"
 import { storeToRefs } from "pinia";
 import { useStorage } from "@vueuse/core";
 
@@ -402,6 +402,7 @@ const routeSelected = ref(
 );
 const title = ref(routeSelected.value.title);
 
+const { APP_ENV } = useConfig();
 
 definePageMeta({
    middleware: ["auth"],
@@ -482,8 +483,13 @@ const submitForm = async () => {
          formData.value.tipoDocumento = deType.value
          formData.value.codigoSeguridadAleatorio = getRandomNumber();
    
-         //const response = await saveLotes([formData.value], authToken.value);   
-         const response = await saveDE(formData.value, authToken.value);  
+         //const response = await saveLotes([formData.value], authToken.value);
+         let response;   
+         if (APP_ENV == "prod"){
+            response = await saveLotes([formData.value])
+         } else {
+            response = await saveDE(formData.value, authToken.value);
+         }
          
          if (response) {
             cdc.value = response['sifenResponse']['ns2:Id']
