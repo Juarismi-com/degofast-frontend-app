@@ -128,6 +128,7 @@
                      v-model="formData.cliente.ruc"
                      id="ciCliente"
                      :class="INPUT_CLASS.basic"
+                     @blur="formData.cliente.ruc = formatNumber(formData.cliente.ruc)"
                   />
                </div>
                <div>
@@ -315,7 +316,7 @@
                                  {{ item.iva }}%
                               </td>
                               <td class="px-4 py-2 whitespace-nowrap text-right">
-                              {{ formatNumber(item.totalUnitario) }}
+                              {{ item.totalUnitario }}
                               </td>
                                <td class="px-4 py-2 whitespace-nowrap text-right">
                                     <button type="button" @click="eliminarItem(index)" class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2.5 py-1.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Eliminar</button>
@@ -438,11 +439,10 @@ const item = ref({
    precioPorCantidad: ""
 });
 
-
 const cdc = ref("");
 
 const agregarItem = () => {
-   
+
     if (
         item.value.codigo &&
         item.value.descripcion &&
@@ -451,6 +451,7 @@ const agregarItem = () => {
     ) {              
       
         const total = Math.floor(item.value.precioUnitario * item.value.cantidad);
+        
         item.value.totalUnitario = formatNumber(total);
 
         formData.value.items.push({ ...item.value });
