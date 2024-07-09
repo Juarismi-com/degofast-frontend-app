@@ -1,0 +1,66 @@
+<div>
+                     <label class="font-bold">Nombre o Razón Social: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.cliente.razonSocial }}</span>
+                  </div>
+                  <div>
+                     <label class="font-bold">Fecha y Hora de emisión: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.fecha }}</span>
+                  </div>
+                  <div>
+                     <label class="font-bold">Documento de identidad: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.cliente.ruc }}</span>
+                  </div>
+                  <div>
+                     <label class="font-bold">Condicion de Venta: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.condicion.tipo }}</span>
+                  </div>
+
+                  <div>
+                     <label class="font-bold">Contrato: </label>
+                  </div>
+                  <div>
+                     <span></span>
+                  </div>
+
+                  <div>
+                     <label class="font-bold">Moneda: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.moneda }}</span>
+                  </div>
+
+                  <div>
+                     <label class="font-bold">Dirección: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.cliente.direccion }}</span>
+                  </div>
+
+                  <div>
+                     <label class="font-bold">Tipo de Operación: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.cliente.tipoOperacion }}</span>
+                  </div>
+
+                  <div>
+                     <label class="font-bold">Correo: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.cliente.email }}</span>
+                  </div>
+
+                  <div>
+                     <label class="font-bold">Teléfono: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.cliente.telefono }}</span>
+                  </div>
