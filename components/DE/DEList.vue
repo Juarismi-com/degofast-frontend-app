@@ -180,7 +180,7 @@ const props = defineProps({
 const router = useRouter();
 
 const verDetalles = (id) => {
-   router.push(`/de/detail/${id}`);
+   router.push(`/de/kude/${id}`);
 };
 
 const { items } = toRefs(props);
