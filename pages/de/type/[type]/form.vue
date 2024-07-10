@@ -132,6 +132,7 @@
                      v-model="formData.cliente.ruc"
                      id="ciCliente"
                      :class="INPUT_CLASS.basic"
+                     @blur="formData.cliente.ruc = formatNumber(formData.cliente.ruc)"
                   />
                </div>
                <div>
@@ -178,7 +179,7 @@
                      >Código:</label
                   >
                   <input
-                     type="text"
+                     type="number"
                      :class="INPUT_CLASS.basic"
                      id="codigo"
                      v-model="item.codigo"
@@ -204,7 +205,7 @@
                      >Precio:</label
                   >
                   <input
-                     type="text"
+                     type="number"
                      :class="INPUT_CLASS.basic"
                      id="precio"
                      v-model="item.precioUnitario"
@@ -217,7 +218,7 @@
                      >Cantidad:</label
                   >
                   <input
-                     type="text"
+                     type="number"
                      :class="INPUT_CLASS.basic"
                      id="cantidad"
                      v-model="item.cantidad"
@@ -304,23 +305,26 @@
                               class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white"
                            >
                               <td class="px-4 py-2 whitespace-nowrap text-right">
-                                 {{ item.codigo }}
+                                 {{ formatNumber(item.codigo) }}
                               </td>
                               <td class="px-4 py-2 whitespace-nowrap">
                                  {{ item.descripcion }}
                               </td>
                               <td class="px-4 py-2 whitespace-nowrap text-right">
-                                 {{ item.precioUnitario }}
+                                 {{ formatNumber(item.precioUnitario) }}
                               </td>
                               <td class="px-4 py-2 whitespace-nowrap text-right">
-                                 {{ item.cantidad }}
+                                 {{ formatNumber(item.cantidad) }}
                               </td>
                               <td class="px-4 py-2 whitespace-nowrap text-right">
                                  {{ item.iva }}%
                               </td>
                               <td class="px-4 py-2 whitespace-nowrap text-right">
-                                 {{ item.totalUnitario }}
+                              {{ item.totalUnitario }}
                               </td>
+                               <td class="px-4 py-2 whitespace-nowrap text-right">
+                                    <button type="button" @click="eliminarItem(index)" class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2.5 py-1.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Eliminar</button>
+                                 </td>
                            </tr>
                         </tbody>
                      </table>
@@ -345,6 +349,7 @@
 </template>
 
 <script setup>
+import { formatNumber } from '../../../../helpers/number.helper';
 
 
 import { ref } from "vue";
@@ -439,29 +444,37 @@ const item = ref({
    precioPorCantidad: ""
 });
 
-
 const cdc = ref("");
 
 const agregarItem = () => {
-   if (
-      item.value.codigo &&
-      item.value.descripcion &&
-      item.value.precioUnitario &&
-      item.value.cantidad
-   ) {
-      item.value.totalUnitario = item.value.precioUnitario * item.value.cantidad
-      formData.value.items.push({ ...item.value });
-      item.value = {
-         codigo: "",
-         descripcion: "",
-         precioUnitario: "",
-         cantidad: "",
-         totalUnitario: "",
-         iva: "10"
-      };
-   } else {
-      alert("Por favor, complete todos los campos del nuevo ítem.");
-   }
+
+    if (
+        item.value.codigo &&
+        item.value.descripcion &&
+        item.value.precioUnitario &&
+        item.value.cantidad
+    ) {              
+      
+        const total = Math.floor(item.value.precioUnitario * item.value.cantidad);
+        
+        item.value.totalUnitario = formatNumber(total);
+
+        formData.value.items.push({ ...item.value });
+        item.value = {
+            codigo: "",
+            descripcion: "",
+            precioUnitario: "",
+            cantidad: "",
+            totalUnitario:"",
+            iva: "10"
+        };
+    } else {
+        alert("Por favor, complete todos los campos del nuevo ítem.");
+    }
+};
+
+const eliminarItem = (index) => {
+   formData.value.items.splice(index, 1);
 };
 
 /**
