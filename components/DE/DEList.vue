@@ -180,7 +180,7 @@ const props = defineProps({
 const router = useRouter();
 
 const verDetalles = (id) => {
-   router.push(`/de/kude/${id}`);
+   window.open(`/de/kude/${id}`, "_blank");
 };
 
 const { items } = toRefs(props);
