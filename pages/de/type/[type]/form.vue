@@ -179,9 +179,10 @@
                      >Código:</label
                   >
                   <input
-                     type="number"
+                     type="text"
                      :class="INPUT_CLASS.basic"
                      id="codigo"
+                     @input="item.codigo = formatNumber(item.codigo)"
                      v-model="item.codigo"
                   />
                </div>
@@ -205,9 +206,10 @@
                      >Precio:</label
                   >
                   <input
-                     type="number"
+                     type="text"
                      :class="INPUT_CLASS.basic"
                      id="precio"
+                     @input="item.precioUnitario = formatNumber(item.precioUnitario)"
                      v-model="item.precioUnitario"
                   />
                </div>
@@ -218,9 +220,10 @@
                      >Cantidad:</label
                   >
                   <input
-                     type="number"
+                     type="text"
                      :class="INPUT_CLASS.basic"
                      id="cantidad"
+                     @input="item.cantidad = formatNumber(item.cantidad)"
                      v-model="item.cantidad"
                   />
                </div>
@@ -457,7 +460,7 @@ const agregarItem = () => {
       
         const total = Math.floor(item.value.precioUnitario * item.value.cantidad);
         
-        item.value.totalUnitario = formatNumber(total);
+        item.value.totalUnitario = formatNumber(String(total));
 
         formData.value.items.push({ ...item.value });
         item.value = {
