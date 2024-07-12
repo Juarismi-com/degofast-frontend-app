@@ -3,6 +3,8 @@
       <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-4 gap-2">
          <!-- Cuadro 1 -->
 
+         {{ detalle }}
+
          <div
             class="rounded border border-gray-300 p-4 shadow-md md:col-span-3"
          >
@@ -49,7 +51,9 @@
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
                         >
                            FACTURA ELECTRÓNICA: <br />
-                           001-001-0000001 <br />
+                           00{{ detalle.establecimiento }}-{{
+                              detalle.punto
+                           }}-{{ detalle.numero }} <br />
                         </td>
                      </tr>
                      <tr>
@@ -84,7 +88,9 @@
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
                            Fecha y hora de emisión:
-                           <label class="font-bold">{{ detalle.fecha }}</label>
+                           <label class="font-bold">{{
+                              formatDateTime(detalle.fecha)
+                           }}</label>
                         </td>
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
@@ -371,9 +377,7 @@
                class="md:col-span-3 text-center border border-gray-300 p-4 shadow-md rounded"
             >
                <label class="text-lg font-bold">CDC: </label>
-               <label class="text-lg"
-                  >0180 0005 1980 0100 2800 0915 1202 0102 2110 3069 8874</label
-               >
+               <label class="text-lg">{{ detalle.cdc }}</label>
             </div>
          </div>
       </div>
@@ -388,7 +392,7 @@
 import { ref, onMounted } from "vue";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
-import { formatNumber } from "@/helpers/number.helper";
+import { formatNumber, formatDateTime } from "@/helpers/number.helper";
 
 definePageMeta({
    middleware: ["auth"],
