@@ -131,8 +131,7 @@
                      type="text"
                      v-model="formData.cliente.ruc"
                      id="ciCliente"
-                     :class="INPUT_CLASS.basic"
-                     @blur="formData.cliente.ruc = formatNumber(formData.cliente.ruc)"
+                     :class="INPUT_CLASS.basic"                     
                   />
                </div>
                <div>
