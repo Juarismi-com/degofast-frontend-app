@@ -29,16 +29,12 @@
                </div>
                <div>
                   <label for="numero">Número de Factura (solo test):</label>
-                  <!--input
+                  <input
                      type="text"
-                     v-model="formData.establecimiento[1].nroActual"
+                     v-model="formData.numero"
                      id="numero"
                      :class="INPUT_CLASS.basic"
-                  /-->
-
-                  <!-- TODO: INVOCAR POR PUNTO DE EXPEDICION -->
-                   <br/>
-                  {{  formData?.numero  }}
+                  />
                </div>
                <div>
                   <label for="fecha">Fecha:</label>
@@ -131,7 +127,7 @@
                      type="text"
                      v-model="formData.cliente.ruc"
                      id="ciCliente"
-                     :class="INPUT_CLASS.basic"                     
+                     :class="INPUT_CLASS.basic"                    
                   />
                </div>
                <div>
@@ -178,10 +174,9 @@
                      >Código:</label
                   >
                   <input
-                     type="text"
+                     type="number"
                      :class="INPUT_CLASS.basic"
                      id="codigo"
-                     @input="item.codigo = formatNumber(item.codigo)"
                      v-model="item.codigo"
                   />
                </div>
@@ -205,10 +200,9 @@
                      >Precio:</label
                   >
                   <input
-                     type="text"
+                     type="number"
                      :class="INPUT_CLASS.basic"
                      id="precio"
-                     @input="item.precioUnitario = formatNumber(item.precioUnitario)"
                      v-model="item.precioUnitario"
                   />
                </div>
@@ -219,10 +213,9 @@
                      >Cantidad:</label
                   >
                   <input
-                     type="text"
+                     type="number"
                      :class="INPUT_CLASS.basic"
                      id="cantidad"
-                     @input="item.cantidad = formatNumber(item.cantidad)"
                      v-model="item.cantidad"
                   />
                </div>
@@ -255,10 +248,8 @@
                <div>
                   <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                       @click="agregarItem">Agregar</button>
-
                </div>
-               
-
+            
             </div>
 
             <div>
@@ -353,6 +344,44 @@
 <script setup>
 import { formatNumber } from '../../../../helpers/number.helper';
 
+const deDefault = {
+   tipoDocumento: "1",
+   establecimiento: "001",
+   codigoSeguridadAleatorio: "",
+   punto: "001",
+   numero: "0000013",
+   descripcion: "",
+   observacion: "",
+   fecha: "",
+   tipoEmision: 1,
+   tipoTransaccion: 2,
+   tipoImpuesto: 1,
+   moneda: "PYG",
+   factura: {
+      presencia: 1,
+   },
+   condicion: {
+      tipo: 1,
+      entregas: [
+         {
+            tipo: 1,
+            moneda: "PYG",
+            monto: 100,
+         },
+      ],
+   },
+   cliente: {
+      contribuyente: true,
+      razonSocial: "RAZON SOCIAL DE PRUEBA",
+      ruc:"",
+      tipoContribuyente:1,
+      tipoOperacion: 2,
+      documentoTipo: 5,
+      documentoNumero: "0",
+      pais: "PRY"
+   },
+   items: [],
+}
 
 import { ref } from "vue";
 import { useAuthStore } from "../../../../stores";
@@ -383,45 +412,6 @@ definePageMeta({
 
 const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
-
-const deDefault = {
-   tipoDocumento: "1",
-   establecimiento: "001",
-   codigoSeguridadAleatorio: "",
-   punto: "001",
-   numero: contributor.value.establecimientos[0]?.puntoExpedicion[0]?.nroActual,
-   descripcion: "",
-   observacion: "",
-   fecha: "",
-   tipoEmision: 1,
-   tipoTransaccion: 2,
-   tipoImpuesto: 1,
-   moneda: "PYG",
-   factura: {
-      presencia: 1,
-   },
-   condicion: {
-      tipo: 1,
-      entregas: [
-         {
-            tipo: 1,
-            moneda: "PYG",
-            monto: 100,
-         },
-      ],
-   },
-   cliente: {
-      contribuyente: true,
-      razonSocial: "",
-      ruc:"",
-      tipoContribuyente:1,
-      tipoOperacion: 2,
-      documentoTipo: 5,
-      documentoNumero: "0",
-      pais: "PRY"
-   },
-   items: [],
-}
 
 const formData = ref(deDefault);
 
@@ -459,7 +449,7 @@ const agregarItem = () => {
       
         const total = Math.floor(item.value.precioUnitario * item.value.cantidad);
         
-        item.value.totalUnitario = formatNumber(String(total));
+        item.value.totalUnitario = formatNumber(total);
 
         formData.value.items.push({ ...item.value });
         item.value = {
@@ -490,22 +480,6 @@ const getRandomNumber = () => {
    return randomNumber;
 }
 
-/**
- * @todo validate number of invoice, i.e 000001
- * @param numero 
- */
-const getInvoiceNumber = (numero) => {
-   let val = numero.toString();
-   const ceroLength = 7 - val.length 
-
-   for (let i = 0; i < ceroLength; i++) {
-      val ='0' + val;
-   }
-   
-   return val;
-}
-
-
 const submitForm = async () => {
 
    try {  
@@ -515,32 +489,19 @@ const submitForm = async () => {
        */
 
       if (confirm("Desea agregar el de?")){
-         //formData.value.fecha = "2024-06-05T00:00:00"; 
-                                 
-         
-         console.log(formData.value.fecha);
-         formData.value.fecha += ':00'
+         formData.value.fecha = "2024-06-05T00:00:00"; 
          formData.value.tipoDocumento = deType.value
          formData.value.codigoSeguridadAleatorio = getRandomNumber();
    
          //const response = await saveLotes([formData.value], authToken.value);
          let response;   
-
-         let payload = {
-            ...formData.value,
-            fecha: formData.value.fecha,
-            numero: getInvoiceNumber(formData.value.numero)
-         }
-
          if (APP_ENV == "prod"){
-            response = await saveLotes([formData.value]) 
+            response = await saveLotes([formData.value])
          } else {
-            response = await saveDE(payload, authToken.value);
+            response = await saveDE(formData.value, authToken.value);
          }
-         
          
          if (response) {
-            formData.value.numero = formData.value.numero++;
             cdc.value = response['sifenResponse']['ns2:Id']
             showAlert.value = true;
             formData.value = deDefault;
@@ -549,7 +510,6 @@ const submitForm = async () => {
       }
    } catch (error) {
       console.error("Error submitting form:", error);
-      alert(error?.message);
    }
 };
 </script>

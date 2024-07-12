@@ -1,15 +1,8 @@
 export function formatNumber(value) {
-   if (value === null || value === undefined) {
+   if (value === null || value === undefined || isNaN(value)) {
       return "";
    }
 
-   // Remove non-digit characters
-   const cleanedValue = value.replace(/\D/g, "");
-
-   // Convert to a number and then back to a formatted string
-   const number = parseInt(cleanedValue, 10);
-   if (isNaN(number)) {
-      return "";
-   }
+   const number = parseInt(value);
    return number.toLocaleString("es-AR");
 }

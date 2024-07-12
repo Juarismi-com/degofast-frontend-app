@@ -191,7 +191,7 @@
          </div>
 
          <!-- Detalle -->
-         <div class="md:col-span-3 p-1 shadow-md rounded">
+         <div class="md:col-span-2 p-1 shadow-md rounded">
             <table class="min-w-full border border-gray-200">
                <thead class="bg-gray-300 text-gray-800">
                   <tr>
@@ -245,7 +245,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.codigo }}
+                           {{ formatNumber(item.codigo) }}
                         </div>
                      </td>
                      <td
@@ -259,28 +259,28 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.unidadMedida }}
+                           {{ formatNumber(item.unidadMedida) }}
                         </div>
                      </td>
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.cantidad }}
+                           {{ formatNumber(item.cantidad) }}
                         </div>
                      </td>
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.precioUnitario }}
+                           {{ formatNumber(item.precioUnitario) }}
                         </div>
                      </td>
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.descuento }}
+                           {{ formatNumber(item.descuento) }}
                         </div>
                      </td>
                      <td
@@ -303,7 +303,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        1500000
+                        {{ formatNumber("1500000") }}
                      </td>
                   </tr>
                   <tr>
@@ -316,7 +316,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        1500000
+                        {{ formatNumber("1500000") }}
                      </td>
                   </tr>
                   <tr>
@@ -329,7 +329,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        1500000
+                        {{ formatNumber("1500000") }}
                      </td>
                   </tr>
                   <tr>
@@ -355,7 +355,9 @@
 
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
-                     ></td>
+                     >
+                        {{ formatNumber("1500000") }}
+                     </td>
                   </tr>
                </tfoot>
             </table>
@@ -386,6 +388,7 @@
 import { ref, onMounted } from "vue";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
+import { formatNumber } from "@/helpers/number.helper";
 
 definePageMeta({
    middleware: ["auth"],
