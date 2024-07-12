@@ -7,21 +7,20 @@ export function formatNumber(value) {
    return number.toLocaleString("es-AR");
 }
 
-
 /**
  * @todo validate number of invoice, i.e 000001
- * @param numero 
+ * @param numero
  */
 export const getInvoiceNumber = (numero) => {
    let val = numero.toString();
-   const ceroLength = 7 - val.length 
+   const ceroLength = 7 - val.length;
 
    for (let i = 0; i < ceroLength; i++) {
-      val ='0' + val;
+      val = "0" + val;
    }
-   
+
    return val;
-}
+};
 
 /**
  * @todo move this in a helper
@@ -32,4 +31,13 @@ export const getRandomNumber = () => {
 
    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
    return randomNumber;
+};
+
+export function formatDateTime(dateTimeString) {
+   if (!dateTimeString) {
+      return "";
+   }
+   let formattedString = dateTimeString.replace(".000Z", "");
+   formattedString = formattedString.replace("T", " ");
+   return formattedString;
 }

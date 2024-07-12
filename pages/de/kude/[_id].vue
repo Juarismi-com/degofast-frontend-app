@@ -16,56 +16,20 @@
                   <table class="w-full border-collapse">
                      <tr>
                         <td
-                           class="w-1/2 px-2 py-1 text-left text-sm font-normal"
-                           rowspan="3"
+                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
                         >
-                           <div class="justify-left flex h-full items-center">
-                              <img
-                                 src="/public/images/e-kuatia.png"
-                                 alt="Membrete"
-                                 class="max-h-full object-contain"
-                                 style="width: 280px; height: 100px"
-                              />
-                           </div>
-                           Sistema integrado de facturación electrónica
-                           nacional. <br />
-                           Avenida Gonzalez Vidal <br />
-                           Ciudad: Asunción <br />
-                           Telefono: 021 553321 <br />
-                           facturacionelectronica@set.gov.py <br />
-                           Actividad económica: facturacion electrónica
+                           FACTURA ELECTRÓNICA: <br />
+                           00{{ detalle.establecimiento }}-{{
+                              detalle.punto
+                           }}-{{ detalle.numero }} <br />
                         </td>
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-base font-normal"
                         >
-                           RUC: 80000519-8 <br />
-                           Timbrado N°: 12557904 <br />
-                           Fecha de inicio de vigencia: 01/07/17 <br />
-                           Fecha de fin de vigencia: 01/07/17
+                           Timbrado N°: <br />
+                           Fecha de inicio de vigencia: <br />
+                           Fecha de fin de vigencia:
                         </td>
-                     </tr>
-                     <tr>
-                        <td
-                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
-                        >
-                           FACTURA ELECTRÓNICA: <br />
-                           001-001-0000001 <br />
-                        </td>
-                     </tr>
-                     <tr>
-                        <td
-                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
-                        ></td>
-                     </tr>
-                     <tr>
-                        <td
-                           class="w-1/2 px-2 py-1 text-left text-sm font-medium"
-                        >
-                           <div class="truncate"></div>
-                        </td>
-                        <td
-                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
-                        ></td>
                      </tr>
                   </table>
                </div>
@@ -84,7 +48,9 @@
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
                            Fecha y hora de emisión:
-                           <label class="font-bold">{{ detalle.fecha }}</label>
+                           <label class="font-bold">{{
+                              formatDateTime(detalle.fecha)
+                           }}</label>
                         </td>
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
@@ -133,18 +99,15 @@
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
                            Moneda:
-                           <label class="font-bold"
-                              >{{ detalle.moneda }} Tipo de cambio:
-                              {{ detalle.cambio }}</label
-                           >
+                           <label class="font-bold">{{ detalle.moneda }}</label>
                         </td>
                         <td
-                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                           class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
-                           Teléfono:
-                           <label class="font-bold">{{
-                              detalle.cliente.telefono
-                           }}</label>
+                           Tipo de cambio:
+                           <label class="font-bold">
+                              {{ detalle.cambio }}</label
+                           >
                         </td>
                      </tr>
                      <tr>
@@ -158,7 +121,7 @@
                         >
                            Correo electrónico:
                            <label class="font-bold">{{
-                              detalle.cliente.correo
+                              detalle.cliente.email
                            }}</label>
                         </td>
                      </tr>
@@ -183,6 +146,14 @@
                         >
                            Tipo de documento asociado: FE o preimpreso
                            (opcional):
+                        </td>
+                        <td
+                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Teléfono:
+                           <label class="font-bold">{{
+                              detalle.cliente.telefono
+                           }}</label>
                         </td>
                      </tr>
                   </table>
@@ -245,7 +216,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.codigo }}
+                           {{ formatNumber(item.codigo) }}
                         </div>
                      </td>
                      <td
@@ -259,28 +230,28 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.unidadMedida }}
+                           {{ formatNumber(item.unidadMedida) }}
                         </div>
                      </td>
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.cantidad }}
+                           {{ formatNumber(item.cantidad) }}
                         </div>
                      </td>
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.precioUnitario }}
+                           {{ formatNumber(item.precioUnitario) }}
                         </div>
                      </td>
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.descuento }}
+                           {{ formatNumber(item.descuento) }}
                         </div>
                      </td>
                      <td
@@ -303,7 +274,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        1500000
+                        {{ formatNumber("1500000") }}
                      </td>
                   </tr>
                   <tr>
@@ -316,7 +287,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        1500000
+                        {{ formatNumber(detalle.condicion.entregas[0].monto) }}
                      </td>
                   </tr>
                   <tr>
@@ -329,7 +300,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        1500000
+                        {{ formatNumber(detalle.condicion.entregas[0].monto) }}
                      </td>
                   </tr>
                   <tr>
@@ -369,9 +340,7 @@
                class="md:col-span-3 text-center border border-gray-300 p-4 shadow-md rounded"
             >
                <label class="text-lg font-bold">CDC: </label>
-               <label class="text-lg"
-                  >0180 0005 1980 0100 2800 0915 1202 0102 2110 3069 8874</label
-               >
+               <label class="text-lg">{{ detalle.cdc }}</label>
             </div>
          </div>
       </div>
@@ -386,6 +355,7 @@
 import { ref, onMounted } from "vue";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
+import { formatNumber, formatDateTime } from "@/helpers/number.helper";
 
 definePageMeta({
    layout: "empty",
