@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const de = {
   tipoDocumento: {
     1: "Factura electrónica",
@@ -164,3 +166,71 @@ const de = {
     },   
   },  
 };
+
+
+
+export const deFormData =  {
+   tipoDocumento: "1",
+   establecimiento: "001",
+   codigoSeguridadAleatorio: "",
+   puntoExpedicionList: [],
+   punto: "001",
+   // contributor.value.establecimientos[0]?.puntoExpedicion[0]?.nroActual
+   numero: "",
+   descripcion: "",
+   observacion: "",
+   // (new Date()).toISOString().toString().substring(0, 19)
+   fecha: moment().format("YYYY-MM-DDTHH:mm"),
+   tipoEmision: 1,
+   tipoTransaccion: 2,
+   tipoImpuesto: 1,
+   moneda: "PYG",
+   factura: {
+      presencia: 1,
+   },
+   condicion: {
+      tipo: 1,
+      entregas: [
+         {
+            tipo: 1,
+            moneda: "PYG",
+            monto: 0,
+         },
+      ],
+   },
+   cliente: {
+      contribuyente: true,
+      razonSocial: "",
+      ruc:"",
+      tipoContribuyente:1,
+      tipoOperacion: 2,
+      documentoTipo: 5,
+      documentoNumero: "0",
+      email: "",
+      telefono: "",
+      pais: "PRY"
+   },
+   items: [],
+}
+
+
+export const deItemData = {
+  codigo: "1",
+  descripcion: "",
+  observacion: "",
+  
+  // @todo defined in comerce
+  unidadMedida: "77",
+  cantidad: "",
+  precioUnitario: "",
+  cambio: null,
+  ivaTipo: "1",
+  ivaBase: 100,
+  iva: "10",
+  lote: null,
+  vencimiento: null,
+  numeroSerie: "",
+  numeroPedido: "",
+  numeroSeguimiento: "",
+  precioPorCantidad: ""
+}

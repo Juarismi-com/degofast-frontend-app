@@ -388,6 +388,7 @@ import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
 
 definePageMeta({
+   layout: "empty",
    middleware: ["auth"],
 });
 

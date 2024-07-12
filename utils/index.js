@@ -3,13 +3,9 @@ import { useConfig } from "../config";
 
 const { API_URL } = useConfig();
 
-export const saveDE = async (data, token) => {
+export const saveDE = async (data) => {
    try {
-      const response = await axios.post(`${API_URL}/de`, data, {
-         headers: {
-            Authorization: `Bearer ${token}`,
-         },
-      });
+      const response = await axios.post(`${API_URL}/de`, data);
       return response.data;
    } catch (error) {
       console.error("Error submitting form:", error);
@@ -30,9 +26,32 @@ export const saveLotes = async (data, token) => {
 export const getDesById = async (id) => {
    try {
       const response = await axios.get(`${API_URL}/de/${id}`);
+
       return response.data;
    } catch (error) {
       console.error("Error getting DES by ID:", error);
+      throw error;
+   }
+};
+
+
+export const getLoteByLoteResponseId = async (loteResponseId) => {
+   try {
+      const response = await axios.get(`${API_URL}/lotes/${loteResponseId}`);
+      return response.data;
+   } catch (error) {
+      console.error("getLoteByLoteResponseId():", error);
+      throw error;
+   }
+};
+
+
+export const getContributor = async () => {
+   try {
+      const response = await axios.get(`${API_URL}/contributor-emitter/668fdf76b226d95bece9a011`);
+      return response.data;
+   } catch (error) {
+      console.error("getContributor():", error);
       throw error;
    }
 };

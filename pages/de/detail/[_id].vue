@@ -282,6 +282,10 @@ import { ref, onMounted } from "vue";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
 
+definePageMeta({
+   middleware: ['auth']
+})
+
 const activeTab = ref(0);
 const detalle = ref(null);
 
@@ -292,6 +296,7 @@ const fetchDetalle = async () => {
       const id = route.params._id;
       const response = await getDesById(id);
       detalle.value = response;
+      console.log(detalle);
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
