@@ -2,9 +2,6 @@
    <div>
       <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-4 gap-2">
          <!-- Cuadro 1 -->
-
-         {{ detalle }}
-
          <div
             class="rounded border border-gray-300 p-4 shadow-md md:col-span-3"
          >
@@ -164,7 +161,7 @@
                         >
                            Correo electrónico:
                            <label class="font-bold">{{
-                              detalle.cliente.correo
+                              detalle.cliente.email
                            }}</label>
                         </td>
                      </tr>

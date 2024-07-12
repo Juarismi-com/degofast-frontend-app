@@ -372,7 +372,7 @@ const deDefault = {
    },
    cliente: {
       contribuyente: true,
-      razonSocial: "RAZON SOCIAL DE PRUEBA",
+      razonSocial: "",
       ruc:"",
       tipoContribuyente:1,
       tipoOperacion: 2,
