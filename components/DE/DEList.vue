@@ -19,12 +19,11 @@
             >
                <tr
                   class="text-gray-700 dark:text-gray-400"
-                  v-for="(item, index) in items"
+                  v-for="(item, index) in paginatedItems"
                   :key="index"
                >
                   <td class="px-4 py-3">
                      <div class="flex items-center text-sm">
-                        <!-- Avatar with inset shadow -->
                         <div
                            class="relative hidden w-8 h-8 mr-3 rounded-full md:block"
                         >
@@ -54,14 +53,13 @@
                      <span
                         class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
                      >
-                        {{ item.estado == "ENVIADO" }}
+                        {{ item.estado }}
                      </span>
                   </td>
                   <td class="px-4 py-3 text-sm">
                      {{ moment(item.fecha).format("YYYY-MM-DD HH:mm:ss") }}
                   </td>
                   <td class="px-4 py-3">
-                     <!-- Botón "Ver detalles" -->
                      <button
                         @click="verDetalles(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
@@ -70,7 +68,6 @@
                      </button>
                   </td>
                   <td class="px-4 py-3">
-                     <!-- Botón "Ver detalles" -->
                      <button
                         @click="verKude(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
@@ -85,16 +82,19 @@
       <div
          class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
       >
-         <span class="flex items-center col-span-3"> Viendo 21-30 of 100 </span>
+         <span class="flex items-center col-span-3"
+            >Viendo {{ rangeStart }}-{{ rangeEnd }} de {{ total }}</span
+         >
          <span class="col-span-2"></span>
-         <!-- Pagination -->
          <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
             <nav aria-label="Table navigation">
                <ul class="inline-flex items-center">
                   <li>
                      <button
+                        @click="prevPage"
                         class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                         aria-label="Previous"
+                        :disabled="currentPage === 1"
                      >
                         <svg
                            aria-hidden="true"
@@ -109,55 +109,23 @@
                         </svg>
                      </button>
                   </li>
-                  <li>
+                  <li v-for="page in visiblePages" :key="page">
                      <button
+                        @click="setPage(page)"
                         class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                        :class="{
+                           'bg-purple-600 text-white': page === currentPage,
+                        }"
                      >
-                        1
+                        {{ page }}
                      </button>
                   </li>
                   <li>
                      <button
-                        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                     >
-                        2
-                     </button>
-                  </li>
-                  <li>
-                     <button
-                        class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple"
-                     >
-                        3
-                     </button>
-                  </li>
-                  <li>
-                     <button
-                        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                     >
-                        4
-                     </button>
-                  </li>
-                  <li>
-                     <span class="px-3 py-1">...</span>
-                  </li>
-                  <li>
-                     <button
-                        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                     >
-                        8
-                     </button>
-                  </li>
-                  <li>
-                     <button
-                        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                     >
-                        9
-                     </button>
-                  </li>
-                  <li>
-                     <button
+                        @click="nextPage"
                         class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                         aria-label="Next"
+                        :disabled="currentPage === totalPages"
                      >
                         <svg
                            class="w-4 h-4 fill-current"
@@ -180,17 +148,26 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { ref, computed, toRefs } from "vue";
 import moment from "moment";
 
 const props = defineProps({
+   currentPage: {
+      type: Number,
+      default: 1,
+   },
+   pageSize: {
+      type: Number,
+      default: 20,
+   },
+   total: {
+      type: Number,
+   },
    items: {
       type: Array,
       default: [],
    },
 });
-
-const router = useRouter();
 
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
@@ -201,4 +178,49 @@ const verDetalles = (id) => {
 };
 
 const { items } = toRefs(props);
+const currentPage = ref(props.currentPage);
+
+const totalPages = computed(() => {
+   return Math.ceil(props.total / props.pageSize);
+});
+
+// Computar las páginas visibles (máximo 10)
+const visiblePages = computed(() => {
+   const pages = [];
+   const start = Math.max(1, currentPage.value - 4);
+   const end = Math.min(totalPages.value, start + 9);
+   for (let i = start; i <= end; i++) {
+      pages.push(i);
+   }
+   return pages;
+});
+
+const paginatedItems = computed(() => {
+   const start = (currentPage.value - 1) * props.pageSize;
+   const end = start + props.pageSize;
+   return items.value.slice(start, end);
+});
+
+const rangeStart = computed(() => (currentPage.value - 1) * props.pageSize + 1);
+const rangeEnd = computed(() =>
+   Math.min(currentPage.value * props.pageSize, props.total),
+);
+
+const prevPage = () => {
+   if (currentPage.value > 1) {
+      currentPage.value--;
+   }
+};
+
+const nextPage = () => {
+   if (currentPage.value < totalPages.value) {
+      currentPage.value++;
+   }
+};
+
+const setPage = (page) => {
+   if (page >= 1 && page <= totalPages.value) {
+      currentPage.value = page;
+   }
+};
 </script>

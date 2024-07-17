@@ -17,7 +17,7 @@
          </a>
       </div>
 
-      <DEList uploadFiles="uploadFiles" :items="des" />
+      <DEList uploadFiles="uploadFiles" :items="des" :total="total" />
    </div>
 </template>
 
@@ -40,15 +40,16 @@ const routeSelected = ref(
    routeList.value.find((item) => item.tipoDocumento == route.params.type),
 );
 const title = ref(routeSelected.value.title);
+const total = ref(0);
 const des = ref([]);
 
 const setDes = async () => {
    try {
-      des.value = (
-         await get(
-            `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}`,
-         )
-      )?.data;
+      const response = await get(
+         `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}`,
+      );
+      des.value = response.data;
+      total.value = response.total;
    } catch (error) {
       console.error("Error en la solicitud:", error);
    }
