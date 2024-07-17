@@ -26,9 +26,22 @@
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-base font-normal"
                         >
-                           Timbrado N°: <br />
-                           Fecha de inicio de vigencia: <br />
-                           Fecha de fin de vigencia:
+                           Timbrado N°:
+                           <label class="font-bold"
+                              >{{
+                                 authStore.contributor.timbradoNumero
+                              }} </label
+                           ><br />
+
+                           Fecha de timbrado:
+                           <label class="font-bold">
+                              {{
+                                 moment(
+                                    authStore.contributor.timbradoFecha,
+                                 ).format("YYYY-MM-DD")
+                              }}</label
+                           >
+                           <br />
                         </td>
                      </tr>
                   </table>
@@ -331,12 +344,15 @@ import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
 import { formatNumber, formatDateTime } from "@/helpers/number.helper";
 import { deValues } from "~/config/de";
+import { useAuthStore } from "~/stores";
+import moment from "moment";
 
 definePageMeta({
    layout: "empty",
    middleware: ["auth"],
 });
 
+const authStore = useAuthStore();
 const route = useRoute();
 const detalle = ref(null);
 
