@@ -11,6 +11,7 @@
                   <th class="px-4 py-3">Estado</th>
                   <th class="px-4 py-3">Fecha</th>
                   <th class="px-4 py-3"></th>
+                  <th class="px-4 py-3"></th>
                </tr>
             </thead>
             <tbody
@@ -56,7 +57,9 @@
                         {{ item.estado == "ENVIADO" }}
                      </span>
                   </td>
-                  <td class="px-4 py-3 text-sm">{{ item.fecha }}</td>
+                  <td class="px-4 py-3 text-sm">
+                     {{ moment(item.fecha).format("YYYY-MM-DD HH:mm:ss") }}
+                  </td>
                   <td class="px-4 py-3">
                      <!-- Botón "Ver detalles" -->
                      <button
@@ -64,6 +67,15 @@
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Ver detalles
+                     </button>
+                  </td>
+                  <td class="px-4 py-3">
+                     <!-- Botón "Ver detalles" -->
+                     <button
+                        @click="verKude(item._id)"
+                        class="text-blue-600 hover:underline focus:outline-none"
+                     >
+                        Ver kude
                      </button>
                   </td>
                </tr>
@@ -169,6 +181,7 @@
 
 <script setup>
 import { useRouter } from "vue-router";
+import moment from "moment";
 
 const props = defineProps({
    items: {
@@ -179,8 +192,12 @@ const props = defineProps({
 
 const router = useRouter();
 
-const verDetalles = (id) => {
+const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
+};
+
+const verDetalles = (id) => {
+   window.open(`/de/detail/${id}`, "_blank");
 };
 
 const { items } = toRefs(props);

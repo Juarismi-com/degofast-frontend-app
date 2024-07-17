@@ -385,6 +385,7 @@ import { formatDate, useStorage } from "@vueuse/core";
 import { deFormData, deItemData } from '~/config/de';
 import Ajv from 'ajv';
 import axios from 'axios';
+import moment from 'moment';
 
 const authToken = useStorage("authToken");
 
@@ -442,8 +443,7 @@ const submitForm = async () => {
       
       if (validateForm()){
          if (confirm("Desea crear el de?")){
-            let fecha = formData.value.fecha + ':00'
-            fecha = fecha.substring(0,19);
+            let fecha = moment(formData.value.fecha).format('YYYY-MM-DDTHH:mm:ss');
             formData.value.tipoDocumento = deType.value // trae desde paramaetro
 
             formData.value.codigoSeguridadAleatorio = getRandomNumber();

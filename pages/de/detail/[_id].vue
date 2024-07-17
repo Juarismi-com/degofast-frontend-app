@@ -19,7 +19,11 @@
             </div>
             <div>
                <label class="text-xg font-bold">Fecha/Hora de envío: </label>
-               <label class="text-xg">{{ detalle.fecha }}</label>
+               <label class="text-xg">
+                  {{
+                     moment(detalle.fecha).format("YYYY-MM-DD HH:mm:ss")
+                  }}</label
+               >
             </div>
          </div>
 
@@ -108,7 +112,7 @@
                      <label class="font-bold">Establecimiento: </label>
                   </div>
                   <div>
-                     <span>{{ detalle.establecimiento }}</span>
+                     <span>00{{ detalle.establecimiento }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Punto: </label>
@@ -191,82 +195,73 @@
                </div>
             </div>
             <div v-else class="p-4">
-               <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                     <tr>
-                        <th
-                           scope="col"
-                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                           Código
-                        </th>
-                        <th
-                           scope="col"
-                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                           Descripción
-                        </th>
-                        <th
-                           scope="col"
-                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                           Unidad de Medida
-                        </th>
-                        <th
-                           scope="col"
-                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                           Cantidad
-                        </th>
-                        <th
-                           scope="col"
-                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                           Precio Unitario
-                        </th>
-                        <th
-                           scope="col"
-                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                           IVA
-                        </th>
-                     </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                     <tr v-for="item in detalle.items" :key="item._id">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <div class="text-sm text-gray-900">
-                              {{ item.codigo }}
-                           </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <div class="text-sm text-gray-900">
-                              {{ item.descripcion }}
-                           </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <div class="text-sm text-gray-900">
-                              {{ item.unidadMedida }}
-                           </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <div class="text-sm text-gray-900">
-                              {{ item.cantidad }}
-                           </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <div class="text-sm text-gray-900">
-                              {{ item.precioUnitario }}
-                           </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <div class="text-sm text-gray-900">
-                              {{ item.iva }}
-                           </div>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
+               <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                     <thead class="bg-gray-50">
+                        <tr>
+                           <th
+                              scope="col"
+                              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                           >
+                              Código
+                           </th>
+                           <th
+                              scope="col"
+                              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                           >
+                              Descripción
+                           </th>
+                           <th
+                              scope="col"
+                              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                           >
+                              Cantidad
+                           </th>
+                           <th
+                              scope="col"
+                              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                           >
+                              Precio Unitario
+                           </th>
+                           <th
+                              scope="col"
+                              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                           >
+                              IVA
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody class="bg-white divide-y divide-gray-200">
+                        <tr v-for="item in detalle.items" :key="item._id">
+                           <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm text-gray-900 text-right">
+                                 {{ formatNumber(item.codigo) }}
+                              </div>
+                           </td>
+                           <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm text-gray-900">
+                                 {{ item.descripcion }}
+                              </div>
+                           </td>
+                           <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm text-gray-900 text-right">
+                                 {{ formatNumber(item.cantidad) }}
+                              </div>
+                           </td>
+                           <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm text-gray-900 text-right">
+                                 {{ formatNumber(item.precioUnitario) }}
+                              </div>
+                           </td>
+                           <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm text-gray-900 text-right">
+                                 {{ formatNumber(item.iva) }}
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
             </div>
          </div>
       </div>
@@ -279,12 +274,14 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import moment from "moment";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
+import { formatNumber, formatDateTime } from "@/helpers/number.helper";
 
 definePageMeta({
-   middleware: ['auth']
-})
+   middleware: ["auth"],
+});
 
 const activeTab = ref(0);
 const detalle = ref(null);
