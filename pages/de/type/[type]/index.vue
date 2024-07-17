@@ -18,7 +18,6 @@
       </div>
 
       <DEList uploadFiles="uploadFiles" :items="des" />
-      
    </div>
 </template>
 
@@ -33,7 +32,7 @@ definePageMeta({
 });
 
 const route = useRoute();
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 
 const deType = ref(route.params.type);
 const routeList = ref(TIPO_DOCUMENT_LIST);
@@ -44,7 +43,15 @@ const title = ref(routeSelected.value.title);
 const des = ref([]);
 
 const setDes = async () => {
-   des.value = (await get(`de`))?.data;
+   try {
+      des.value = (
+         await get(
+            `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}`,
+         )
+      )?.data;
+   } catch (error) {
+      console.error("Error en la solicitud:", error);
+   }
 };
 
 onMounted(() => {

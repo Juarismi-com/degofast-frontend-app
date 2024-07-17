@@ -106,7 +106,7 @@
                         >
                            Tipo de cambio:
                            <label class="font-bold">
-                              {{ detalle.cambio ??  "-" }}</label
+                              {{ detalle.cambio ?? "-" }}</label
                            >
                         </td>
                      </tr>
@@ -182,12 +182,6 @@
                         scope="col"
                         class="px-6 py-1 text-left text-xs font-medium text-gray-800 uppercase tracking-wider border-b"
                      >
-                        Unidad de Medida
-                     </th>
-                     <th
-                        scope="col"
-                        class="px-6 py-1 text-left text-xs font-medium text-gray-800 uppercase tracking-wider border-b"
-                     >
                         Cantidad
                      </th>
                      <th
@@ -213,7 +207,7 @@
                <tbody class="bg-white divide-y divide-gray-200">
                   <tr v-for="item in detalle.items" :key="item._id">
                      <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
                            {{ formatNumber(item.codigo) }}
@@ -227,35 +221,28 @@
                         </div>
                      </td>
                      <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
-                     >
-                        <div class="text-sm text-gray-900">
-                           {{ formatNumber(item.unidadMedida) }}
-                        </div>
-                     </td>
-                     <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
                            {{ formatNumber(item.cantidad) }}
                         </div>
                      </td>
                      <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
                            {{ formatNumber(item.precioUnitario) }}
                         </div>
                      </td>
                      <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
                            {{ formatNumber(item.descuento) }}
                         </div>
                      </td>
                      <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
                            {{ item.iva }}
@@ -266,7 +253,7 @@
                <tfoot class="bg-gray-300 text-gray-800">
                   <tr>
                      <td
-                        colspan="6"
+                        colspan="5"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         Subtotal:
@@ -279,7 +266,7 @@
                   </tr>
                   <tr>
                      <td
-                        colspan="6"
+                        colspan="5"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         Total de la operación:
@@ -305,14 +292,14 @@
                         (10%)
                      </td>
                      <td
-                        colspan="2"
+                        colspan="1"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         Total IVA:
                      </td>
 
                      <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      ></td>
                   </tr>
                </tfoot>
@@ -364,32 +351,28 @@ const fetchDetalle = async () => {
    }
 };
 
-
-const getContributor = () => {
-
-}
+const getContributor = () => {};
 
 /**
  * Genera un mapper para mostrar informacion del documento electronico
- * @param de 
+ * @param de
  */
 const mapperDeName = (de) => {
-   let sum = 0
+   let sum = 0;
    for (let i = 0; i < de.items.length; i++) {
       const item = de.items[i];
       console.log(item);
-      sum += item?.precioUnitario * item?.cantidad
+      sum += item?.precioUnitario * item?.cantidad;
    }
 
    return {
       ...de,
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
-      tipoOperacionName: deValues.cliente.tipoOperacion[
-         de.cliente.tipoOperacion || 2
-      ],
-      total: sum
+      tipoOperacionName:
+         deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 2],
+      total: sum,
    };
-}
+};
 
 onMounted(() => {
    if (route.params._id) {
