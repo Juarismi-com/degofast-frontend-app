@@ -1,6 +1,6 @@
 <template>
-   <div>
-      <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-4 gap-2">
+   <div class="container mx-auto pt-5">
+      <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-3 gap-2">
          <!-- Cuadro 1 -->
 
          <div
@@ -67,7 +67,7 @@
                         >
                            Condición de venta:
                            <label class="font-bold">{{
-                              detalle.condicion.tipo
+                              detalle.condicionName
                            }}</label>
                         </td>
                         <td
@@ -106,7 +106,7 @@
                         >
                            Tipo de cambio:
                            <label class="font-bold">
-                              {{ detalle.cambio }}</label
+                              {{ detalle.cambio ??  "-" }}</label
                            >
                         </td>
                      </tr>
@@ -114,18 +114,18 @@
                         <td
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
-                           Tipo de cambio global o por item (opcional):
+                           Tipo de cambio: -
                         </td>
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
                         >
                            Correo electrónico:
                            <label class="font-bold">{{
-                              detalle.cliente.email
+                              detalle?.cliente?.email
                            }}</label>
                         </td>
                      </tr>
-                     <tr>
+                     <!--tr>
                         <td
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
@@ -136,7 +136,7 @@
                         >
                            Tipo de operación:
                            <label class="font-bold">{{
-                              detalle.cliente.tipoOperacion
+                              detalle.tipoOperacionName
                            }}</label>
                         </td>
                      </tr>
@@ -155,7 +155,7 @@
                               detalle.cliente.telefono
                            }}</label>
                         </td>
-                     </tr>
+                     </tr-->
                   </table>
                </div>
             </div>
@@ -272,9 +272,9 @@
                         Subtotal:
                      </td>
                      <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatNumber("1500000") }}
+                        {{ formatNumber(detalle.total) }}
                      </td>
                   </tr>
                   <tr>
@@ -285,22 +285,9 @@
                         Total de la operación:
                      </td>
                      <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatNumber(detalle.condicion.entregas[0].monto) }}
-                     </td>
-                  </tr>
-                  <tr>
-                     <td
-                        colspan="6"
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
-                     >
-                        Total en guaranies:
-                     </td>
-                     <td
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
-                     >
-                        {{ formatNumber(detalle.condicion.entregas[0].monto) }}
+                        {{ formatNumber(detalle.total) }}
                      </td>
                   </tr>
                   <tr>
@@ -356,27 +343,53 @@ import { ref, onMounted } from "vue";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
 import { formatNumber, formatDateTime } from "@/helpers/number.helper";
+import { deValues } from "~/config/de";
 
 definePageMeta({
    layout: "empty",
    middleware: ["auth"],
 });
 
-const activeTab = ref(0);
-const detalle = ref(null);
-
 const route = useRoute();
+const detalle = ref(null);
 
 const fetchDetalle = async () => {
    try {
       const id = route.params._id;
       if (!id) return;
-      const response = await getDesById(id);
-      detalle.value = response;
+      const deRes = await getDesById(id);
+      detalle.value = mapperDeName(deRes);
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
 };
+
+
+const getContributor = () => {
+
+}
+
+/**
+ * Genera un mapper para mostrar informacion del documento electronico
+ * @param de 
+ */
+const mapperDeName = (de) => {
+   let sum = 0
+   for (let i = 0; i < de.items.length; i++) {
+      const item = de.items[i];
+      console.log(item);
+      sum += item?.precioUnitario * item?.cantidad
+   }
+
+   return {
+      ...de,
+      condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
+      tipoOperacionName: deValues.cliente.tipoOperacion[
+         de.cliente.tipoOperacion || 2
+      ],
+      total: sum
+   };
+}
 
 onMounted(() => {
    if (route.params._id) {

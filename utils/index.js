@@ -46,9 +46,9 @@ export const getLoteByLoteResponseId = async (loteResponseId) => {
 };
 
 
-export const getContributor = async () => {
+export const getContributor = async (contributorId) => {
    try {
-      const response = await axios.get(`${API_URL}/contributor-emitter/668fdf76b226d95bece9a011`);
+      const response = await axios.get(`${API_URL}/contributor-emitter/${contributorId}`);
       return response.data;
    } catch (error) {
       console.error("getContributor():", error);

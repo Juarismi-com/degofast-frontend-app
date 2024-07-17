@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const de = {
+export const deValues = {
   tipoDocumento: {
     1: "Factura electrónica",
     4: "Autofactura electrónica",

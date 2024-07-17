@@ -44,7 +44,7 @@ const title = ref(routeSelected.value.title);
 const des = ref([]);
 
 const setDes = async () => {
-   des.value = (await get(`de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}`))?.data;
+   des.value = (await get(`de`))?.data;
 };
 
 onMounted(() => {

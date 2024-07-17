@@ -437,8 +437,6 @@ const eliminarItem = (index) => {
    formData.value.items.splice(index, 1);
 };
 
-
-
 const submitForm = async () => {
    try {  
       
@@ -486,10 +484,15 @@ const submitLote = async (payload) => {
 
 
 const submitDe = async (payload) => {
-   const response = await saveDE(payload, authToken.value);
-   formData.value.numero = formData.value.numero++;
-   cdc.value = response['sifenResponse']['ns2:Id']
-   alert("Enviado correctamente");
+   try {
+      const response = await saveDE(payload, authToken.value);
+      formData.value.numero = formData.value.numero++;
+      cdc.value = response['sifenResponse']['ns2:Id']
+      alert("Enviado correctamente");
+   } catch (error) {
+      const data = error?.response?.data?.error;
+      alert(data['ns2:dMsgRes']);
+   }
 }
 
 const selectEstablecimiento = (e) => {
@@ -497,6 +500,13 @@ const selectEstablecimiento = (e) => {
    const punto = parseInt(codigo);
    formData.value.puntoExpedicionList = contributor.value.establecimientos[punto - 1]?.puntoExpedicion;
 }
+
+onMounted(async () => {
+   const contributorRes = await getContributor(contributor.value?._id)
+
+   let numero = contributorRes.establecimientos[0].puntoExpedicion[0]?.nroActual || 0;
+   formData.value.numero = ++numero;
+});
 
 
 const validateForm = () => {
