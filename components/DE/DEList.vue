@@ -152,14 +152,6 @@ import { ref, computed, toRefs } from "vue";
 import moment from "moment";
 
 const props = defineProps({
-   currentPage: {
-      type: Number,
-      default: 1,
-   },
-   pageSize: {
-      type: Number,
-      default: 20,
-   },
    total: {
       type: Number,
    },
@@ -177,14 +169,15 @@ const verDetalles = (id) => {
    window.open(`/de/detail/${id}`, "_blank");
 };
 
+/*  Pagination  */
 const { items } = toRefs(props);
-const currentPage = ref(props.currentPage);
+const currentPage = ref(1);
+const pageSize = 20;
 
 const totalPages = computed(() => {
-   return Math.ceil(props.total / props.pageSize);
+   return Math.ceil(props.total / pageSize);
 });
 
-// Computar las páginas visibles (máximo 10)
 const visiblePages = computed(() => {
    const pages = [];
    const start = Math.max(1, currentPage.value - 4);
@@ -196,14 +189,15 @@ const visiblePages = computed(() => {
 });
 
 const paginatedItems = computed(() => {
-   const start = (currentPage.value - 1) * props.pageSize;
-   const end = start + props.pageSize;
+   const start = (currentPage.value - 1) * pageSize;
+   const end = start + pageSize;
    return items.value.slice(start, end);
 });
 
-const rangeStart = computed(() => (currentPage.value - 1) * props.pageSize + 1);
+const rangeStart = computed(() => (currentPage.value - 1) * pageSize + 1);
+
 const rangeEnd = computed(() =>
-   Math.min(currentPage.value * props.pageSize, props.total),
+   Math.min(currentPage.value * pageSize, props.total),
 );
 
 const prevPage = () => {
