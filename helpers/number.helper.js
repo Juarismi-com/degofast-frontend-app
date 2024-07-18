@@ -1,11 +1,22 @@
 export function formatNumber(value) {
-   if (value === null || value === undefined || isNaN(value)) {
-      return "";
-   }
-
    const number = parseInt(value);
-   return number.toLocaleString("es-AR");
+   return number.toLocaleString("es-PY");
 }
+
+export const formatPriceNumber = (price, geo = "es-PY") => {
+   console.log(price);
+
+   const priceFormat = new Intl.NumberFormat("es-PY", {
+      style: "currency",
+      currency: "PYG",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+   }).format(parseFloat(price.toString()));
+
+   console.log(priceFormat);
+   console.log("-------");
+   return priceFormat;
+};
 
 /**
  * @todo validate number of invoice, i.e 000001

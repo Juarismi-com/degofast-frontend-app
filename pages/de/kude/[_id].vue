@@ -19,9 +19,10 @@
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
                         >
                            FACTURA ELECTRÓNICA: <br />
-                           00{{ detalle.establecimiento }}-{{
-                              detalle.punto
-                           }}-{{ detalle.numero }} <br />
+                           {{ detalle.establecimiento }}-{{ detalle.punto }}-{{
+                              detalle.numero
+                           }}
+                           <br />
                         </td>
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-base font-normal"
@@ -96,7 +97,7 @@
                         <td
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
-                           Cuotas: <label class="font-bold"> </label>
+                           Cuotas: -
                         </td>
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
@@ -251,7 +252,11 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ formatNumber(item.descuento) }}
+                           {{
+                              formatNumber(
+                                 item.descuento ? item.descuento : "0",
+                              )
+                           }}
                         </div>
                      </td>
                      <td
@@ -274,7 +279,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatNumber(detalle.total) }}
+                        {{ formatPriceNumber(detalle.total) }}
                      </td>
                   </tr>
                   <tr>
@@ -287,7 +292,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatNumber(detalle.total) }}
+                        {{ formatPriceNumber(detalle.total) }}
                      </td>
                   </tr>
                   <tr>
@@ -342,7 +347,11 @@
 import { ref, onMounted } from "vue";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
-import { formatNumber, formatDateTime } from "@/helpers/number.helper";
+import {
+   formatNumber,
+   formatDateTime,
+   formatPriceNumber,
+} from "@/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
 import moment from "moment";
@@ -366,14 +375,22 @@ const fetchDetalle = async () => {
       console.error("Error al obtener los detalles de la factura:", error);
    }
 };
-
-const getContributor = () => {};
-
 /**
  * Genera un mapper para mostrar informacion del documento electronico
  * @param de
  */
 const mapperDeName = (de) => {
+   const formatEstablecimiento = (value) => {
+      const stringValue = value.toString();
+      if (stringValue.length === 1) {
+         return `00${stringValue}`;
+      } else if (stringValue.length === 2) {
+         return `0${stringValue}`;
+      } else {
+         return stringValue;
+      }
+   };
+
    let sum = 0;
    for (let i = 0; i < de.items.length; i++) {
       const item = de.items[i];
@@ -383,6 +400,7 @@ const mapperDeName = (de) => {
 
    return {
       ...de,
+      establecimiento: formatEstablecimiento(de.establecimiento),
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
       tipoOperacionName:
          deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 2],
