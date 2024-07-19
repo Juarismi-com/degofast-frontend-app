@@ -182,39 +182,39 @@
                   <tr>
                      <th
                         scope="col"
-                        class="px-6 py-1 text-left text-xs font-medium text-gray-800 uppercase tracking-wider border-b"
+                        class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
                         Código
                      </th>
                      <th
                         scope="col"
-                        class="px-6 py-1 text-left text-xs font-medium text-gray-800 uppercase tracking-wider border-b"
+                        class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
                         Descripción
                      </th>
                      <th
                         scope="col"
-                        class="px-6 py-1 text-left text-xs font-medium text-gray-800 uppercase tracking-wider border-b"
+                        class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
                         Cantidad
                      </th>
                      <th
                         scope="col"
-                        class="px-6 py-1 text-left text-xs font-medium text-gray-800 uppercase tracking-wider border-b"
+                        class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
                         Precio Unitario
                      </th>
                      <th
                         scope="col"
-                        class="px-6 py-1 text-left text-xs font-medium text-gray-800 uppercase tracking-wider border-b"
+                        class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
                         Descuento
                      </th>
                      <th
                         scope="col"
-                        class="px-6 py-1 text-left text-xs font-medium text-gray-800 uppercase tracking-wider border-b"
+                        class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
-                        IVA
+                        Monto IVA
                      </th>
                   </tr>
                </thead>
@@ -245,7 +245,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ formatNumber(item.precioUnitario) }}
+                           {{ formatPriceNumber(item.precioUnitario) }}
                         </div>
                      </td>
                      <td
@@ -263,7 +263,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.ivaBase }}
+                           {{ formatPriceNumber(item.ivaBase) }}
                         </div>
                      </td>
                   </tr>
@@ -272,20 +272,22 @@
                   <tr>
                      <td
                         colspan="5"
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 font-bold"
                      >
                         Subtotal:
                      </td>
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatPriceNumber(detalle.total) }}
+                        {{
+                           formatPriceNumber(detalle.total - detalle.totalIva)
+                        }}
                      </td>
                   </tr>
                   <tr>
                      <td
                         colspan="5"
-                        class="px-6 py-1 whitespace-nowrap border border-gray-200"
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 font-bold"
                      >
                         Total de la operación:
                      </td>
@@ -300,7 +302,7 @@
                         colspan="2"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        Liquidacion IVA: (5%)
+                        <label class="font-bold">IVA (5%):</label>
                         {{ formatPriceNumber(detalle.iva5) }}
                      </td>
 
@@ -308,13 +310,14 @@
                         colspan="2"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        (10%) {{ formatPriceNumber(detalle.iva10) }}
+                        <label class="font-bold">IVA (10%):</label>
+                        {{ formatPriceNumber(detalle.iva10) }}
                      </td>
                      <td
                         colspan="1"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        Total IVA:
+                        <label class="font-bold">Total IVA:</label>
                      </td>
 
                      <td
@@ -390,7 +393,6 @@ const mapperDeName = (de) => {
    let iva5 = 0;
    for (let i = 0; i < de.items.length; i++) {
       const item = de.items[i];
-      console.log(item);
       sum += item?.precioUnitario * item?.cantidad;
 
       if (item?.iva === 10) {

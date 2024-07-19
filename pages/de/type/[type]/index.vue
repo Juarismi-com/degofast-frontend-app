@@ -23,7 +23,6 @@
 
 <script setup>
 import { TIPO_DOCUMENT_LIST } from "~/config";
-import ModalSimple from "~/components/Theme/Modal/Simple.vue";
 import { get } from "~/services/http.service";
 import { useAuthStore } from "~/stores";
 
@@ -44,14 +43,53 @@ const des = ref([]);
 
 const setDes = async () => {
    try {
-      des.value = (
+      const deRes = (
          await get(
             `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}`,
          )
       )?.data;
+
+      des.value = deRes.map(mapperDeName);
    } catch (error) {
       console.error("Error en la solicitud:", error);
    }
+};
+
+const mapperDeName = (de) => {
+   let sum = 0;
+
+   const formatEstado = (value) => {
+      switch (value) {
+         case "PENDING":
+            return "P";
+         case "ACCEPTED_WITH_OBSERVATION":
+            return "AO";
+         case "ACCEPTED":
+            return "A";
+         case "REJECTED":
+            return "R";
+         case "SENDING":
+            return "S";
+         case "TEMPORAL":
+            return "T";
+         default:
+            return value;
+      }
+   };
+
+   if (Array.isArray(de.items)) {
+      for (let i = 0; i < de.items.length; i++) {
+         const item = de.items[i];
+         console.log(JSON.stringify(item));
+         sum += item?.precioUnitario * item?.cantidad;
+      }
+   }
+
+   return {
+      ...de,
+      estado: formatEstado(de.estado),
+      total: sum,
+   };
 };
 
 onMounted(() => {
