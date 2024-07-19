@@ -58,36 +58,16 @@ const setDes = async () => {
 const mapperDeName = (de) => {
    let sum = 0;
 
-   const formatEstado = (value) => {
-      switch (value) {
-         case "PENDING":
-            return "P";
-         case "ACCEPTED_WITH_OBSERVATION":
-            return "AO";
-         case "ACCEPTED":
-            return "A";
-         case "REJECTED":
-            return "R";
-         case "SENDING":
-            return "S";
-         case "TEMPORAL":
-            return "T";
-         default:
-            return value;
-      }
-   };
-
    if (Array.isArray(de.items)) {
       for (let i = 0; i < de.items.length; i++) {
          const item = de.items[i];
-         console.log(JSON.stringify(item));
          sum += item?.precioUnitario * item?.cantidad;
       }
    }
 
    return {
       ...de,
-      estado: formatEstado(de.estado),
+      estado: de.estado.substring(1, de.estado),
       total: sum,
    };
 };

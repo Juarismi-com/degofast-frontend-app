@@ -1,28 +1,18 @@
 export const formatNumber = (price, geo = "es-PY") => {
-   console.log(price);
-
    const priceFormat = new Intl.NumberFormat("es-PY", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
    }).format(parseFloat(price.toString()));
-
-   console.log(priceFormat);
-   console.log("-------");
    return priceFormat;
 };
 
 export const formatPriceNumber = (price, geo = "es-PY") => {
-   console.log(price);
-
    const priceFormat = new Intl.NumberFormat("es-PY", {
       style: "currency",
       currency: "PYG",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
    }).format(parseFloat(price.toString()));
-
-   console.log(priceFormat);
-   console.log("-------");
    return priceFormat;
 };
 
