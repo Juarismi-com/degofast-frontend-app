@@ -54,7 +54,7 @@
                      <span
                         class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
                      >
-                        {{ item.estado == "ENVIADO" }}
+                        {{ item.estado }}
                      </span>
                   </td>
                   <td class="px-4 py-3 text-sm">
@@ -197,7 +197,7 @@ const verKude = (id) => {
 };
 
 const verDetalles = (id) => {
-   window.open(`/de/detail/${id}`, "_blank");
+   router.push({ path: `/de/detail/${id}` });
 };
 
 const { items } = toRefs(props);

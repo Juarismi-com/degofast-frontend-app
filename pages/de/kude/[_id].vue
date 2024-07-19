@@ -19,9 +19,10 @@
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
                         >
                            FACTURA ELECTRÓNICA: <br />
-                           00{{ detalle.establecimiento }}-{{
-                              detalle.punto
-                           }}-{{ detalle.numero }} <br />
+                           {{ detalle.establecimiento }}-{{ detalle.punto }}-{{
+                              detalle.numero
+                           }}
+                           <br />
                         </td>
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-base font-normal"
@@ -96,7 +97,7 @@
                         <td
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
-                           Cuotas: <label class="font-bold"> </label>
+                           Cuotas: -
                         </td>
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
@@ -251,14 +252,18 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ formatNumber(item.descuento) }}
+                           {{
+                              formatNumber(
+                                 item.descuento ? item.descuento : "0",
+                              )
+                           }}
                         </div>
                      </td>
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.iva }}
+                           {{ item.ivaBase }}
                         </div>
                      </td>
                   </tr>
@@ -274,7 +279,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatNumber(detalle.total) }}
+                        {{ formatPriceNumber(detalle.total) }}
                      </td>
                   </tr>
                   <tr>
@@ -287,7 +292,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatNumber(detalle.total) }}
+                        {{ formatPriceNumber(detalle.total) }}
                      </td>
                   </tr>
                   <tr>
@@ -296,13 +301,14 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         Liquidacion IVA: (5%)
+                        {{ formatPriceNumber(detalle.iva5) }}
                      </td>
 
                      <td
                         colspan="2"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        (10%)
+                        (10%) {{ formatPriceNumber(detalle.iva10) }}
                      </td>
                      <td
                         colspan="1"
@@ -313,7 +319,9 @@
 
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
-                     ></td>
+                     >
+                        {{ formatPriceNumber(detalle.totalIva) }}
+                     </td>
                   </tr>
                </tfoot>
             </table>
@@ -342,7 +350,13 @@
 import { ref, onMounted } from "vue";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
-import { formatNumber, formatDateTime } from "@/helpers/number.helper";
+import {
+   formatNumber,
+   formatDateTime,
+   formatPriceNumber,
+   getInvoiceNumber,
+   getEstablecimientoNumber,
+} from "@/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
 import moment from "moment";
@@ -366,27 +380,37 @@ const fetchDetalle = async () => {
       console.error("Error al obtener los detalles de la factura:", error);
    }
 };
-
-const getContributor = () => {};
-
 /**
  * Genera un mapper para mostrar informacion del documento electronico
  * @param de
  */
 const mapperDeName = (de) => {
    let sum = 0;
+   let iva10 = 0;
+   let iva5 = 0;
    for (let i = 0; i < de.items.length; i++) {
       const item = de.items[i];
       console.log(item);
       sum += item?.precioUnitario * item?.cantidad;
+
+      if (item?.iva === 10) {
+         iva10 += item?.ivaBase;
+      } else if (item?.iva === 5) {
+         iva5 += item?.ivaBase;
+      }
    }
 
    return {
       ...de,
+      establecimiento: getEstablecimientoNumber(de.establecimiento),
+      numero: getInvoiceNumber(de.numero),
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
       tipoOperacionName:
          deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 2],
       total: sum,
+      iva10: iva10,
+      iva5: iva5,
+      totalIva: iva10 + iva5,
    };
 };
 

@@ -97,6 +97,12 @@
                      <span>{{ detalle.numero }}</span>
                   </div>
                   <div>
+                     <label class="font-bold">Condicion de Venta: </label>
+                  </div>
+                  <div>
+                     <span>{{ detalle.condicionTipo }}</span>
+                  </div>
+                  <div>
                      <label class="font-bold">Tipo de documento: </label>
                   </div>
                   <div>
@@ -112,7 +118,7 @@
                      <label class="font-bold">Establecimiento: </label>
                   </div>
                   <div>
-                     <span>00{{ detalle.establecimiento }}</span>
+                     <span>{{ detalle.establecimiento }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Punto: </label>
@@ -124,49 +130,33 @@
                      <label class="font-bold">Factura Presencia: </label>
                   </div>
                   <div>
-                     <span>{{ detalle.factura.presencia }}</span>
+                     <span>{{ detalle.facturaPresencia }}</span>
                   </div>
-                  <div>
-                     <label class="font-bold">Factura DNCP: </label>
-                  </div>
-                  <div>
-                     <span>{{ detalle.factura.dncp }}</span>
-                  </div>
+
                   <div>
                      <label class="font-bold">Tipo de Operación: </label>
                   </div>
                   <div>
-                     <span>{{ detalle.cliente.tipoOperacion }}</span>
+                     <span>{{ detalle.clienteTipoOperacion }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Tipo de Impuesto: </label>
                   </div>
                   <div>
-                     <span>{{ detalle.cliente.tipoImpuesto }}</span>
+                     <span>{{ detalle.tipoImpuesto }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Tipo Contribuyente: </label>
                   </div>
                   <div>
-                     <span>{{ detalle.cliente.tipoContribuyente }}</span>
+                     <span>{{ detalle.clienteTipoContribuyente }}</span>
                   </div>
-                  <div>
-                     <label class="font-bold">Documento Tipo: </label>
-                  </div>
-                  <div>
-                     <span>{{ detalle.cliente.documentoTipo }}</span>
-                  </div>
+
                   <div>
                      <label class="font-bold">Condicion Tipo de cambio: </label>
                   </div>
                   <div>
                      <span>{{ detalle.condicionTipoCambio }}</span>
-                  </div>
-                  <div>
-                     <label class="font-bold">Documento Número: </label>
-                  </div>
-                  <div>
-                     <span>{{ detalle.cliente.documentoNumero }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Moneda: </label>
@@ -175,7 +165,7 @@
                      <span>{{ detalle.moneda }}</span>
                   </div>
                   <div>
-                     <label class="font-bold">Condicion de anticipo: </label>
+                     <label class="font-bold">Condicion de Anticipo: </label>
                   </div>
                   <div>
                      <span>{{ detalle.condicionAnticipo }}</span>
@@ -184,13 +174,25 @@
                      <label class="font-bold">Cambio: </label>
                   </div>
                   <div>
-                     <span>{{ detalle.cambio }}</span>
+                     <span>{{ detalle.cambio ? detalle.cambio : "-" }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Estado: </label>
                   </div>
                   <div>
                      <span>{{ detalle.estado }}</span>
+                  </div>
+                  <div>
+                     <label class="font-bold">Subtotal: </label>
+                  </div>
+                  <div>
+                     <span>{{ formatPriceNumber(detalle.total) }}</span>
+                  </div>
+                  <div>
+                     <label class="font-bold">Total: </label>
+                  </div>
+                  <div>
+                     <span>{{ formatPriceNumber(detalle.total) }}</span>
                   </div>
                </div>
             </div>
@@ -275,9 +277,15 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import moment from "moment";
+import { deValues } from "~/config/de";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
-import { formatNumber, formatDateTime } from "@/helpers/number.helper";
+import {
+   formatNumber,
+   formatPriceNumber,
+   getInvoiceNumber,
+   getEstablecimientoNumber,
+} from "@/helpers/number.helper";
 
 definePageMeta({
    middleware: ["auth"],
@@ -291,12 +299,44 @@ const route = useRoute();
 const fetchDetalle = async () => {
    try {
       const id = route.params._id;
-      const response = await getDesById(id);
-      detalle.value = response;
-      console.log(detalle);
+      if (!id) return;
+      const deRes = await getDesById(id);
+      detalle.value = mapperDeName(deRes);
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
+};
+
+const mapperDeName = (de) => {
+   let sum = 0;
+   for (let i = 0; i < de.items.length; i++) {
+      const item = de.items[i];
+      console.log(item);
+      sum += item?.precioUnitario * item?.cantidad;
+   }
+
+   return {
+      ...de,
+      establecimiento: getEstablecimientoNumber(de.establecimiento),
+      numero: getInvoiceNumber(de.numero),
+      condicionTipo: deValues.condicion.tipo[de.condicion.tipo || 1],
+      tipoEmision: deValues.tipoEmision[de.tipoEmision || 1],
+      tipoTransaccion: deValues.tipoTransaccion[de.tipoTransaccion || 1],
+      tipoDocumento: deValues.tipoDocumento[de.tipoDocumento || 1],
+      facturaPresencia: deValues.factura.presencia[de.factura.presencia || 1],
+      clienteTipoOperacion:
+         deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 1],
+      tipoImpuesto: deValues.tipoImpuesto[de.tipoImpuesto || 1],
+      condicionAnticipo: deValues.condicionAnticipo[de.condicionAnticipo || 1],
+      condicionTipoCambio:
+         deValues.condicionTipoCambio[de.condicionTipoCambio || 1],
+      clienteTipoContribuyente:
+         deValues.cliente.tipoContribuyente[de.cliente.tipoContribuyente || 1],
+      condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
+      clienteDocumentoTipo:
+         deValues.cliente.documentoTipo[de.cliente.documentoTipo || 1],
+      total: sum,
+   };
 };
 
 onMounted(() => {
