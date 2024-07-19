@@ -335,6 +335,7 @@ const mapperDeName = (de) => {
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
       clienteDocumentoTipo:
          deValues.cliente.documentoTipo[de.cliente.documentoTipo || 1],
+      estado: de.estado.substring(1, de.estado),
       total: sum,
    };
 };
