@@ -39,7 +39,7 @@
                               {{
                                  moment(
                                     authStore.contributor.timbradoFecha,
-                                 ).format("YYYY-MM-DD")
+                                 ).format("DD/MM/YYYY")
                               }}</label
                            >
                            <br />
@@ -63,7 +63,9 @@
                         >
                            Fecha y hora de emisión:
                            <label class="font-bold">{{
-                              formatDateTime(detalle.fecha)
+                              moment(detalle.fecha).format(
+                                 "DD/MM/YYYY HH:mm:ss",
+                              )
                            }}</label>
                         </td>
                         <td
