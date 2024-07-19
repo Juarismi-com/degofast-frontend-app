@@ -263,7 +263,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ item.iva }}
+                           {{ item.ivaBase }}
                         </div>
                      </td>
                   </tr>
@@ -301,13 +301,14 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         Liquidacion IVA: (5%)
+                        {{ formatPriceNumber(detalle.iva5) }}
                      </td>
 
                      <td
                         colspan="2"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
-                        (10%)
+                        (10%) {{ formatPriceNumber(detalle.iva10) }}
                      </td>
                      <td
                         colspan="1"
@@ -318,7 +319,9 @@
 
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
-                     ></td>
+                     >
+                        {{ formatPriceNumber(detalle.totalIva) }}
+                     </td>
                   </tr>
                </tfoot>
             </table>
@@ -383,10 +386,18 @@ const fetchDetalle = async () => {
  */
 const mapperDeName = (de) => {
    let sum = 0;
+   let iva10 = 0;
+   let iva5 = 0;
    for (let i = 0; i < de.items.length; i++) {
       const item = de.items[i];
       console.log(item);
       sum += item?.precioUnitario * item?.cantidad;
+
+      if (item?.iva === 10) {
+         iva10 += item?.ivaBase;
+      } else if (item?.iva === 5) {
+         iva5 += item?.ivaBase;
+      }
    }
 
    return {
@@ -397,6 +408,9 @@ const mapperDeName = (de) => {
       tipoOperacionName:
          deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 2],
       total: sum,
+      iva10: iva10,
+      iva5: iva5,
+      totalIva: iva10 + iva5,
    };
 };
 
