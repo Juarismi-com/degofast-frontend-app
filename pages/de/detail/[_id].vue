@@ -118,7 +118,7 @@
                      <label class="font-bold">Establecimiento: </label>
                   </div>
                   <div>
-                     <span>00{{ detalle.establecimiento }}</span>
+                     <span>{{ detalle.establecimiento }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Punto: </label>
@@ -280,7 +280,12 @@ import moment from "moment";
 import { deValues } from "~/config/de";
 import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
-import { formatNumber, formatPriceNumber } from "@/helpers/number.helper";
+import {
+   formatNumber,
+   formatPriceNumber,
+   getInvoiceNumber,
+   getEstablecimientoNumber,
+} from "@/helpers/number.helper";
 
 definePageMeta({
    middleware: ["auth"],
@@ -312,6 +317,8 @@ const mapperDeName = (de) => {
 
    return {
       ...de,
+      establecimiento: getEstablecimientoNumber(de.establecimiento),
+      numero: getInvoiceNumber(de.numero),
       condicionTipo: deValues.condicion.tipo[de.condicion.tipo || 1],
       tipoEmision: deValues.tipoEmision[de.tipoEmision || 1],
       tipoTransaccion: deValues.tipoTransaccion[de.tipoTransaccion || 1],
