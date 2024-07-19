@@ -33,6 +33,17 @@ export const getInvoiceNumber = (numero) => {
    return val;
 };
 
+export const getEstablecimientoNumber = (numero) => {
+   let val = numero.toString();
+   const ceroLength = 3 - val.length;
+
+   for (let i = 0; i < ceroLength; i++) {
+      val = "0" + val;
+   }
+
+   return val;
+};
+
 /**
  * @todo move this in a helper
  */

@@ -351,6 +351,8 @@ import {
    formatNumber,
    formatDateTime,
    formatPriceNumber,
+   getInvoiceNumber,
+   getEstablecimientoNumber,
 } from "@/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
@@ -380,17 +382,6 @@ const fetchDetalle = async () => {
  * @param de
  */
 const mapperDeName = (de) => {
-   const formatEstablecimiento = (value) => {
-      const stringValue = value.toString();
-      if (stringValue.length === 1) {
-         return `00${stringValue}`;
-      } else if (stringValue.length === 2) {
-         return `0${stringValue}`;
-      } else {
-         return stringValue;
-      }
-   };
-
    let sum = 0;
    for (let i = 0; i < de.items.length; i++) {
       const item = de.items[i];
@@ -400,7 +391,8 @@ const mapperDeName = (de) => {
 
    return {
       ...de,
-      establecimiento: formatEstablecimiento(de.establecimiento),
+      establecimiento: getEstablecimientoNumber(de.establecimiento),
+      numero: getInvoiceNumber(de.numero),
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
       tipoOperacionName:
          deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 2],
