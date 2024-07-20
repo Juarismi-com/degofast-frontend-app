@@ -1,20 +1,18 @@
-export function formatNumber(value) {
-   const number = parseInt(value);
-   return number.toLocaleString("es-PY");
-}
+export const formatNumber = (price, geo = "es-PY") => {
+   const priceFormat = new Intl.NumberFormat("es-PY", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+   }).format(parseFloat(price.toString()));
+   return priceFormat;
+};
 
 export const formatPriceNumber = (price, geo = "es-PY") => {
-   console.log(price);
-
    const priceFormat = new Intl.NumberFormat("es-PY", {
       style: "currency",
       currency: "PYG",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
    }).format(parseFloat(price.toString()));
-
-   console.log(priceFormat);
-   console.log("-------");
    return priceFormat;
 };
 

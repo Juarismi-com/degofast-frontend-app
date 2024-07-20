@@ -21,7 +21,7 @@
                <label class="text-xg font-bold">Fecha/Hora de envío: </label>
                <label class="text-xg">
                   {{
-                     moment(detalle.fecha).format("YYYY-MM-DD HH:mm:ss")
+                     moment(detalle.fecha).format("DD/MM/YYYY HH:mm:ss")
                   }}</label
                >
             </div>
@@ -186,7 +186,9 @@
                      <label class="font-bold">Subtotal: </label>
                   </div>
                   <div>
-                     <span>{{ formatPriceNumber(detalle.total) }}</span>
+                     <span>{{
+                        formatPriceNumber(detalle.total - detalle.totalIva)
+                     }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Total: </label>
@@ -309,10 +311,17 @@ const fetchDetalle = async () => {
 
 const mapperDeName = (de) => {
    let sum = 0;
+   let iva10 = 0;
+   let iva5 = 0;
    for (let i = 0; i < de.items.length; i++) {
       const item = de.items[i];
-      console.log(item);
       sum += item?.precioUnitario * item?.cantidad;
+
+      if (item?.iva === 10) {
+         iva10 += item?.ivaBase;
+      } else if (item?.iva === 5) {
+         iva5 += item?.ivaBase;
+      }
    }
 
    return {
@@ -335,7 +344,9 @@ const mapperDeName = (de) => {
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
       clienteDocumentoTipo:
          deValues.cliente.documentoTipo[de.cliente.documentoTipo || 1],
+      estado: de.estado.substring(1, de.estado),
       total: sum,
+      totalIva: iva10 + iva5,
    };
 };
 
