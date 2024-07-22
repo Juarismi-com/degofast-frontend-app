@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useConfig } from "../config";
 
-const { API_URL } = useConfig();
+const { API_URL, DEGOFAST_RUCPY_API } = useConfig();
 
 export const getClientByRuc = async (ruc) => {
    try {
+      console.log(useConfig());
+      console.log(DEGOFAST_RUCPY_API);
       const response = await axios.get(
-         `${API_URL}/contributor/search?q=${ruc}`,
+         `${DEGOFAST_RUCPY_API}/contributor/search?q=${ruc}`,
       );
       return response.data;
    } catch (error) {

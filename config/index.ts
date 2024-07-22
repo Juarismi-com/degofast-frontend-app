@@ -50,7 +50,8 @@ export const useConfig = () => {
 
    return {
       API_URL: config.API_URL,
-      APP_ENV: config.APP_ENV
+      APP_ENV: config.APP_ENV,
+      DEGOFAST_RUCPY_API: config.DEGOFAST_RUCPY_API
    };
 };
 

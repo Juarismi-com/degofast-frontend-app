@@ -10,6 +10,7 @@ export default defineNuxtConfig({
    runtimeConfig: {
       public: {
          API_URL: process.env.API_URL || "http://localhost:8000",
+         DEGOFAST_RUCPY_API: process.env.DEGOFAST_RUCPY_API,
          APP_ENV: process.env.APP_ENV || "dev"
       },
    },
