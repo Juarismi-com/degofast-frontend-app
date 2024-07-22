@@ -12,16 +12,11 @@
             <div class="grid grid-cols-3 gap-4 pb-4">
                <div>
                   <label for="establecimiento">Establecimiento:</label>
-                  <select 
-                     id="establecimiento"
-                     v-model="formData.establecimiento"
-                     :class="INPUT_CLASS.basic"
+                  <select id="establecimiento" v-model="formData.establecimiento" :class="INPUT_CLASS.basic"
                      @change="selectEstablecimiento($event)">
-                     <option 
-                        v-for="(establecimiento,index) in contributor.establecimientos" :key="index"
-                        :value="establecimiento.codigo"
-                        >
-                        {{ 
+                     <option v-for="(establecimiento, index) in contributor.establecimientos" :key="index"
+                        :value="establecimiento.codigo">
+                        {{
                            establecimiento.denominacion + " - " + establecimiento.codigo
                         }}
                      </option>
@@ -30,15 +25,9 @@
 
                <div v-if="formData.puntoExpedicionList?.length > 0">
                   <label for="punto_expedicion">Punto de Expedicion:</label>
-                  <select 
-                     id="punto_expedicion"
-                     v-model="formData.punto"
-                     :class="INPUT_CLASS.basic">
-                     <option 
-                        v-for="(item,index) in formData.puntoExpedicionList" :key="index"
-                        :value="item.codigo"
-                        >
-                        {{ 
+                  <select id="punto_expedicion" v-model="formData.punto" :class="INPUT_CLASS.basic">
+                     <option v-for="(item, index) in formData.puntoExpedicionList" :key="index" :value="item.codigo">
+                        {{
                            item.codigo
                         }}
                      </option>
@@ -47,38 +36,23 @@
 
                <div>
                   <label for="numero">Número de Factura (solo test):</label>
-                  <input
-                     type="text"
-                     v-model="formData.numero"
-                     id="numero"
-                     :class="INPUT_CLASS.basic"
-                  />
+                  <input type="text" v-model="formData.numero" id="numero" :class="INPUT_CLASS.basic" />
                </div>
 
                <div>
                   <label for="fecha">Fecha:</label>
-                  <input
-                     type="datetime-local"
-                     v-model="formData.fecha"
-                     id="fecha"
-                     :class="INPUT_CLASS.basic"
-                  />
+                  <input type="datetime-local" v-model="formData.fecha" id="fecha" :class="INPUT_CLASS.basic" />
                </div>
                <div>
                   <label for="tipoEmision">Tipo de Emisión:</label>
-                  <select v-model="formData.tipoEmision" id="tipoEmision"
-                     :class="INPUT_CLASS.basic">
+                  <select v-model="formData.tipoEmision" id="tipoEmision" :class="INPUT_CLASS.basic">
                      <option value="1">Normal</option>
                      <option value="2">Contingencia</option>
                   </select>
                </div>
                <div>
                   <label for="tipoTransaccion">Tipo de Transacción:</label>
-                  <select
-                     v-model="formData.tipoTransaccion"
-                     id="tipoTransaccion"
-                     :class="INPUT_CLASS.basic"
-                  >
+                  <select v-model="formData.tipoTransaccion" id="tipoTransaccion" :class="INPUT_CLASS.basic">
                      <option value="1">Venta de mercadería</option>
                      <option value="2">Prestación de servicios</option>
                      <option value="3">
@@ -100,8 +74,7 @@
                </div>
                <div>
                   <label for="tipoImpuesto">Tipo de Impuesto:</label>
-                  <select v-model="formData.tipoImpuesto" id="tipoImpuesto"
-                     :class="INPUT_CLASS.basic">
+                  <select v-model="formData.tipoImpuesto" id="tipoImpuesto" :class="INPUT_CLASS.basic">
                      <option value="1">IVA</option>
                      <option value="2">ISC</option>
                      <option value="3">Renta</option>
@@ -110,74 +83,60 @@
                   </select>
                </div>
                <div>
-                  <label for="moneda" >Moneda:</label>
+                  <label for="moneda">Moneda:</label>
                   <select v-model="formData.moneda" id="moneda" :class="INPUT_CLASS.basic">
                      <option value="PYG">PYG</option>
                   </select>
                </div>
                <div>
                   <label for="presencia">¿Factura presente?</label>
-                  <select v-model="formData.factura.presencia" id="presencia"
-                     :class="INPUT_CLASS.basic">
+                  <select v-model="formData.factura.presencia" id="presencia" :class="INPUT_CLASS.basic">
                      <option value="1">Sí</option>
                      <option value="0">No</option>
                   </select>
                </div>
-                     
+
                <div>
                   <label for="descripcion">Descripción (Opcional):</label>
-                  <input
-                     v-model="formData.descripcion"
-                     id="descripcion"
-                     :class="INPUT_CLASS.basic"
-                  ></input>
+                  <input v-model="formData.descripcion" id="descripcion" :class="INPUT_CLASS.basic"></input>
                </div>
             </div>
-
 
             <div class="text-xl pb-4">
                <h3>Cliente</h3>
                <hr>
             </div>
-            <div class="grid grid-cols-4 gap-4 pb-4">
-               <div>
-                  <label for="ciCliente">RUC:</label>
-                  <input
-                     type="text"
-                     v-model="formData.cliente.ruc"
-                     id="ciCliente"
-                     :class="INPUT_CLASS.basic"
-                  />
+            <div class="pb-4">
+               <div class="grid grid-cols-3 gap-4 pb-1">
+                  <div>
+                     <label for="ciCliente" class="mr-2">RUC:</label>
+                     <input type="text" v-model="formData.cliente.ruc" id="ciCliente" :class="INPUT_CLASS.basic"
+                        class="mr-2" />
+                  </div>
+                  <div>
+                     <button type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        @click="buscarCliente(formData.cliente.ruc)">Buscar</button>
+
+                  </div>
                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-4 pb-4">
                <div>
                   <label for="nombreCliente">Nombre del Cliente:</label>
-                  <input
-                     type="text"
-                     v-model="formData.cliente.razonSocial"
-                     id="nombreCliente"
-                     :class="INPUT_CLASS.basic"
-                  />
+                  <input type="text" v-model="formData.cliente.razonSocial" id="nombreCliente"
+                     :class="INPUT_CLASS.basic" />
                </div>
                <div>
-                  <label for="telefonoCliente">Telefono:</label>
-                  <input
-                     type="text"
-                     v-model="formData.cliente.telefono"
-                     id="telefonoCliente"
-                     :class="INPUT_CLASS.basic"
-                  />
+                  <label for="telefonoCliente">Teléfono:</label>
+                  <input type="text" v-model="formData.cliente.telefono" id="telefonoCliente"
+                     :class="INPUT_CLASS.basic" />
                </div>
                <div>
                   <label for="emailCliente">Email:</label>
-                  <input
-                     type="text"
-                     v-model="formData.cliente.email"
-                     id="emailCliente"
-                     :class="INPUT_CLASS.basic"
-                  />
+                  <input type="text" v-model="formData.cliente.email" id="emailCliente" :class="INPUT_CLASS.basic" />
                </div>
             </div>
-
 
             <div class="text-xl pb-4">
                <h3>Producto / Servicio</h3>
@@ -194,75 +153,36 @@
                   :class="INPUT_CLASS.basic"
                />
             </div-->
-         <!-- Detalle -->
-         <div class="py-4">
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-8">
-               <div>
-                  <label
-                     for="codigo"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                     >Código:</label
-                  >
-                  <input
-                     type="text"
-                     :class="INPUT_CLASS.basic"
-                     id="codigo"
-                     v-model="item.codigo"
-                  />
-               </div>
-               <div>
-                  <label
-                     for="descripcion"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                     >Descripción:</label
-                  >
-                  <input
-                     type="text"
-                     :class="INPUT_CLASS.basic"
-                     id="descripcion"
-                     v-model="item.descripcion"
-                  />
-               </div>
-               <div>
-                  <label
-                     for="precio"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                     >Precio:</label
-                  >
-                  <input
-                     type="number"
-                     :class="INPUT_CLASS.basic"
-                     id="precio"
-                     v-model="item.precioUnitario"
-                  />
-               </div>
-               <div>
-                  <label
-                     for="cantidad"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                     >Cantidad:</label
-                  >
-                  <input
-                     type="number"
-                     :class="INPUT_CLASS.basic"
-                     id="cantidad"
-                     v-model="item.cantidad"
-                  />
-               </div>
-               <div>
-                  <label
-                     for="iva"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
-                     >IVA:</label
-                  >
-                  <select v-model="item.iva" id="iva"
-                     :class="INPUT_CLASS.basic">
-                     <option value="0">0</option>
-                     <option value="5">5</option>
-                     <option value="10">10</option>
-                  </select>
-               </div>
-               <!--div>
+            <!-- Detalle -->
+            <div class="py-4">
+               <div class="grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-8">
+                  <div>
+                     <label for="codigo" class="my-4 text-l font-semibold text-gray-700 dark:text-white">Código:</label>
+                     <input type="text" :class="INPUT_CLASS.basic" id="codigo" v-model="item.codigo" />
+                  </div>
+                  <div>
+                     <label for="descripcion"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white">Descripción:</label>
+                     <input type="text" :class="INPUT_CLASS.basic" id="descripcion" v-model="item.descripcion" />
+                  </div>
+                  <div>
+                     <label for="precio" class="my-4 text-l font-semibold text-gray-700 dark:text-white">Precio:</label>
+                     <input type="number" :class="INPUT_CLASS.basic" id="precio" v-model="item.precioUnitario" />
+                  </div>
+                  <div>
+                     <label for="cantidad"
+                        class="my-4 text-l font-semibold text-gray-700 dark:text-white">Cantidad:</label>
+                     <input type="number" :class="INPUT_CLASS.basic" id="cantidad" v-model="item.cantidad" />
+                  </div>
+                  <div>
+                     <label for="iva" class="my-4 text-l font-semibold text-gray-700 dark:text-white">IVA:</label>
+                     <select v-model="item.iva" id="iva" :class="INPUT_CLASS.basic">
+                        <option value="0">0</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                     </select>
+                  </div>
+                  <!--div>
                   <label
                      for="totalUnitario"
                      class="my-4 text-l font-semibold text-gray-700 dark:text-white"
@@ -275,117 +195,109 @@
                      v-model="item.totalUnitario"
                   />
                </div-->
-               <div>
-                  <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                      @click="agregarItem">Agregar</button>
+                  <div>
+                     <button type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        @click="agregarItem">Agregar</button>
 
-               </div>
-               
-
-            </div>
-
-            <div>
-               <!-- Tabla -->
-               <div class="w-full mt-8">
-                  <div class="overflow-x-auto">
-                     <table class="w-full">
-                        <thead>
-                           <tr class="bg-gray-50 dark:bg-gray-800">
-                              <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
-                              >
-                                 Código
-                              </th>
-                              <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                 Descripción
-                              </th>
-                              <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
-                              >
-                                 Precio Unitario
-                              </th>
-                              <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
-                              >
-                                 Cantidad
-                              </th>
-                              <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
-                              >
-                                 IVA
-                              </th>
-                              <th
-                                 class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
-                              >
-                                 Total Unitario
-                              </th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr
-                              v-for="(item, index) in formData.items"
-                              :key="index"
-                              class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white"
-                           >
-                              <td class="px-4 py-2 whitespace-nowrap text-right">
-                                 {{ formatNumber(item.codigo) }}
-                              </td>
-                              <td class="px-4 py-2 whitespace-nowrap">
-                                 {{ item.descripcion }}
-                              </td>
-                              <td class="px-4 py-2 whitespace-nowrap text-right">
-                                 {{ formatNumber(item.precioUnitario) }}
-                              </td>
-                              <td class="px-4 py-2 whitespace-nowrap text-right">
-                                 {{ formatNumber(item.cantidad) }}
-                              </td>
-                              <td class="px-4 py-2 whitespace-nowrap text-right">
-                                 {{ item.iva }}%
-                              </td>
-                              <td class="px-4 py-2 whitespace-nowrap text-right">
-                              {{ item.totalUnitario }}
-                              </td>
-                               <td class="px-4 py-2 whitespace-nowrap text-right">
-                                    <button type="button" @click="eliminarItem(index)" class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2.5 py-1.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Eliminar</button>
-                                 </td>
-                           </tr>
-                        </tbody>
-                     </table>
                   </div>
 
+
+               </div>
+
+               <div>
+                  <!-- Tabla -->
+                  <div class="w-full mt-8">
+                     <div class="overflow-x-auto">
+                        <table class="w-full">
+                           <thead>
+                              <tr class="bg-gray-50 dark:bg-gray-800">
+                                 <th
+                                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">
+                                    Código
+                                 </th>
+                                 <th
+                                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Descripción
+                                 </th>
+                                 <th
+                                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">
+                                    Precio Unitario
+                                 </th>
+                                 <th
+                                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Cantidad
+                                 </th>
+                                 <th
+                                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    IVA
+                                 </th>
+                                 <th
+                                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Total Unitario
+                                 </th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr v-for="(item, index) in formData.items" :key="index"
+                                 class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white">
+                                 <td class="px-4 py-2 whitespace-nowrap text-right">
+                                    {{ formatNumber(item.codigo) }}
+                                 </td>
+                                 <td class="px-4 py-2 whitespace-nowrap">
+                                    {{ item.descripcion }}
+                                 </td>
+                                 <td class="px-4 py-2 whitespace-nowrap text-right">
+                                    {{ formatNumber(item.precioUnitario) }}
+                                 </td>
+                                 <td class="px-4 py-2 whitespace-nowrap text-right">
+                                    {{ formatNumber(item.cantidad) }}
+                                 </td>
+                                 <td class="px-4 py-2 whitespace-nowrap text-right">
+                                    {{ item.iva }}%
+                                 </td>
+                                 <td class="px-4 py-2 whitespace-nowrap text-right">
+                                    {{ item.totalUnitario }}
+                                 </td>
+                                 <td class="px-4 py-2 whitespace-nowrap text-right">
+                                    <button type="button" @click="eliminarItem(index)"
+                                       class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2.5 py-1.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">Eliminar</button>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+
+                  </div>
                </div>
             </div>
-         </div>
 
-         <button type="submit" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enviar</button>
+            <button type="submit"
+               class="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enviar</button>
 
          </form>
 
-   
+
          <!--Alert 
             :show="showAlert"
             :message="alertMessage"
             @close="showAlert = false"
          /-->
-        </div>
+      </div>
    </div>
 </template>
 
 <script setup>
-import { formatNumber, getInvoiceNumber, getRandomNumber } from '../../../../helpers/number.helper';
-
 
 import { ref } from "vue";
-import { useAuthStore } from "../../../../stores";
-import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from  "../../../../config"
 import { storeToRefs } from "pinia";
-import { formatDate, useStorage } from "@vueuse/core";
-import { deFormData, deItemData } from '~/config/de';
-import Ajv from 'ajv';
-import axios from 'axios';
+import { useStorage } from "@vueuse/core";
 import moment from 'moment';
+import { useAuthStore } from "../../../../stores";
+import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../../config"
+import { deFormData, deItemData } from '~/config/de';
+import { formatNumber, getInvoiceNumber, getRandomNumber } from '../../../../helpers/number.helper';
+import { getClientByRuc } from "~/utils";
 
 const authToken = useStorage("authToken");
 
@@ -408,30 +320,35 @@ definePageMeta({
 const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
 
-const formData = ref({...deFormData});
-const item = ref({...deItemData});
+const formData = ref({ ...deFormData });
+const item = ref({ ...deItemData });
 const cdc = ref("");
+
+const buscarCliente = async (ruc) => {
+   const response = await getClientByRuc(ruc);
+   formData.value.cliente.razonSocial = response.rows[0].nombre;
+}
 
 const agregarItem = () => {
 
-    if (
-        item.value.codigo &&
-        item.value.descripcion &&
-        item.value.precioUnitario &&
-        item.value.cantidad
-    ) {              
-      
-        const total = Math.floor(item.value.precioUnitario * item.value.cantidad);
-        
-        item.value.totalUnitario = formatNumber(total);
+   if (
+      item.value.codigo &&
+      item.value.descripcion &&
+      item.value.precioUnitario &&
+      item.value.cantidad
+   ) {
 
-        formData.value.items.push({ ...item.value });
-        item.value = {
-            ...deItemData
-        };
-    } else {
-        alert("Por favor, complete todos los campos del nuevo ítem.");
-    }
+      const total = Math.floor(item.value.precioUnitario * item.value.cantidad);
+
+      item.value.totalUnitario = formatNumber(total);
+
+      formData.value.items.push({ ...item.value });
+      item.value = {
+         ...deItemData
+      };
+   } else {
+      alert("Por favor, complete todos los campos del nuevo ítem.");
+   }
 };
 
 const eliminarItem = (index) => {
@@ -439,22 +356,22 @@ const eliminarItem = (index) => {
 };
 
 const submitForm = async () => {
-   try {  
-      
-      if (validateForm()){
-         if (confirm("Desea crear el de?")){
+   try {
+
+      if (validateForm()) {
+         if (confirm("Desea crear el de?")) {
             let fecha = moment(formData.value.fecha).format('YYYY-MM-DDTHH:mm:ss');
             formData.value.tipoDocumento = deType.value // trae desde paramaetro
 
             formData.value.codigoSeguridadAleatorio = getRandomNumber();
-      
+
             let payload = {
                ...formData.value,
                fecha,
                numero: getInvoiceNumber(formData.value.numero)
             }
 
-            if (APP_ENV == "prod"){
+            if (APP_ENV == "prod") {
                submitLote(payload)
             } else {
                submitDe(payload)
@@ -467,21 +384,19 @@ const submitForm = async () => {
    }
 };
 
-
 const submitLote = async (payload) => {
-   const response = await saveLotes([payload]) 
+   const response = await saveLotes([payload])
    const loteResponseId = response.loteResponseId;
 
    setTimeout(async () => {
       const data = await getLoteByLoteResponseId(loteResponseId);
       alert(data.lote[0].details?.mensaje)
 
-      if (confirm("Desea Generar un nuevo DE?\n Sino sera redirigido al Detalle")){
+      if (confirm("Desea Generar un nuevo DE?\n Sino sera redirigido al Detalle")) {
          formData.value = { ...deFormData }
       }
    }, 10000)
 }
-
 
 const submitDe = async (payload) => {
    try {
@@ -511,27 +426,27 @@ onMounted(async () => {
 
 const validateForm = () => {
    const errors = [];
-   const { fecha, numero, cliente, punto, items } =  formData.value
+   const { fecha, numero, cliente, punto, items } = formData.value
 
    if (!fecha)
       errors.push("Fecha es requerido");
 
-   if (!numero) 
+   if (!numero)
       errors.push("Numero es requerido")
 
-   if (!establecimiento) 
+   if (!establecimiento)
       errors.push("Establecimiento es requerido")
 
-   if (!punto) 
+   if (!punto)
       errors.push("Punto de Expedicion es requerido")
 
-   if (!cliente.ruc) 
+   if (!cliente.ruc)
       errors.push("Ruc de Cliente es requerido")
 
-   if (!cliente.razonSocial) 
+   if (!cliente.razonSocial)
       errors.push("Nombre de Cliente es requerido")
 
-   if (items.length == 0) 
+   if (items.length == 0)
       errors.push("Detalle es requerido")
 
    if (errors.length > 0) {

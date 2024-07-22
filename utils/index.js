@@ -3,6 +3,18 @@ import { useConfig } from "../config";
 
 const { API_URL } = useConfig();
 
+export const getClientByRuc = async (ruc) => {
+   try {
+      const response = await axios.get(
+         `${API_URL}/contributor/search?q=${ruc}`,
+      );
+      return response.data;
+   } catch (error) {
+      console.error("getContributor():", error);
+      throw error;
+   }
+};
+
 export const saveDE = async (data) => {
    try {
       const response = await axios.post(`${API_URL}/de`, data);
@@ -34,7 +46,6 @@ export const getDesById = async (id) => {
    }
 };
 
-
 export const getLoteByLoteResponseId = async (loteResponseId) => {
    try {
       const response = await axios.get(`${API_URL}/lotes/${loteResponseId}`);
@@ -45,10 +56,11 @@ export const getLoteByLoteResponseId = async (loteResponseId) => {
    }
 };
 
-
 export const getContributor = async (contributorId) => {
    try {
-      const response = await axios.get(`${API_URL}/contributor-emitter/${contributorId}`);
+      const response = await axios.get(
+         `${API_URL}/contributor-emitter/${contributorId}`,
+      );
       return response.data;
    } catch (error) {
       console.error("getContributor():", error);

@@ -10,6 +10,9 @@
                   <th class="px-4 py-3">Identificador</th>
                   <th class="px-4 py-3">Estado</th>
                   <th class="px-4 py-3">Fecha</th>
+                  <th class="px-4 py-3">Total</th>
+                  <th class="px-4 py-3"></th>
+                  <th class="px-4 py-3"></th>
                   <th class="px-4 py-3"></th>
                   <th class="px-4 py-3"></th>
                </tr>
@@ -58,7 +61,10 @@
                      </span>
                   </td>
                   <td class="px-4 py-3 text-sm">
-                     {{ moment(item.fecha).format("YYYY-MM-DD HH:mm:ss") }}
+                     {{ moment(item.fecha).format("DD/MM/YYYY") }}
+                  </td>
+                  <td class="px-4 py-3 text-sm">
+                     {{ formatPriceNumber(item.total) }}
                   </td>
                   <td class="px-4 py-3">
                      <!-- Botón "Ver detalles" -->
@@ -70,12 +76,30 @@
                      </button>
                   </td>
                   <td class="px-4 py-3">
-                     <!-- Botón "Ver detalles" -->
+                     <!-- Botón "Ver kude" -->
                      <button
                         @click="verKude(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Ver kude
+                     </button>
+                  </td>
+                  <td class="px-4 py-3">
+                     <!-- Botón "Generar evento" -->
+                     <button
+                        @click="verKude(item._id)"
+                        class="text-blue-600 hover:underline focus:outline-none"
+                     >
+                        Generar evento
+                     </button>
+                  </td>
+                  <td class="px-4 py-3">
+                     <!-- Botón "Consultar sifen" -->
+                     <button
+                        @click="consultarSifen(item.cdc)"
+                        class="text-blue-600 hover:underline focus:outline-none"
+                     >
+                        Consultar sifen
                      </button>
                   </td>
                </tr>
@@ -182,6 +206,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import moment from "moment";
+import { formatPriceNumber } from "@/helpers/number.helper";
 
 const props = defineProps({
    items: {
@@ -198,6 +223,11 @@ const verKude = (id) => {
 
 const verDetalles = (id) => {
    router.push({ path: `/de/detail/${id}` });
+};
+
+const consultarSifen = (cdc) => {
+   const url = `https://ekuatia.set.gov.py/consultas/150/${cdc}`;
+   window.open(url, "_blank");
 };
 
 const { items } = toRefs(props);
