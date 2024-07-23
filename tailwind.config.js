@@ -7,6 +7,7 @@ module.exports = {
       "./plugins/**/*.{js,ts}",
       "./nuxt.config.{js,ts}",
       "./node_modules/vue-tailwind-datepicker/**/*.js",
+      "./node_modules/flowbite/**/*.js",
    ],
    theme: {
       /*colors: {
@@ -28,5 +29,5 @@ module.exports = {
       },
       extend: {},
    },
-   plugins: [require("@tailwindcss/forms")],
+   plugins: [require("@tailwindcss/forms"), require("flowbite/plugin")],
 };
