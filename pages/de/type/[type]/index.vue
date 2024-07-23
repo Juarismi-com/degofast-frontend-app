@@ -49,7 +49,11 @@ const setDes = async () => {
          )
       )?.data;
 
-      des.value = deRes.map(mapperDeName);
+      const sortedDeRes = deRes.sort(
+         (a, b) => new Date(b.fecha) - new Date(a.fecha),
+      );
+
+      des.value = sortedDeRes.map(mapperDeName);
    } catch (error) {
       console.error("Error en la solicitud:", error);
    }
