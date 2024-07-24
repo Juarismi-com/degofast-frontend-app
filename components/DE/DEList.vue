@@ -1,6 +1,8 @@
 <template>
    <div class="w-full overflow-hidden rounded-lg shadow-xs">
-      <div class="w-full overflow-x-auto">
+      <Loader v-if="loading" />
+
+      <div v-else class="w-full overflow-x-auto">
          <table class="w-full whitespace-no-wrap">
             <thead>
                <tr
@@ -87,7 +89,6 @@
                   <td class="px-4 py-3">
                      <!-- Botón "Generar evento" -->
                      <button
-                        @click="verKude(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Generar evento
@@ -109,7 +110,7 @@
       <div
          class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
       >
-         <span class="flex items-center col-span-3"> Viendo 21-30 of 100 </span>
+         <span class="flex items-center col-span-3">Viendo 21-30 de 100</span>
          <span class="col-span-2"></span>
          <!-- Pagination -->
          <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
@@ -162,20 +163,10 @@
                      </button>
                   </li>
                   <li>
-                     <span class="px-3 py-1">...</span>
-                  </li>
-                  <li>
                      <button
                         class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                      >
-                        8
-                     </button>
-                  </li>
-                  <li>
-                     <button
-                        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                     >
-                        9
+                        5
                      </button>
                   </li>
                   <li>
@@ -184,8 +175,8 @@
                         aria-label="Next"
                      >
                         <svg
-                           class="w-4 h-4 fill-current"
                            aria-hidden="true"
+                           class="w-4 h-4 fill-current"
                            viewBox="0 0 20 20"
                         >
                            <path
@@ -204,9 +195,11 @@
 </template>
 
 <script setup>
+import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
 import { formatPriceNumber } from "@/helpers/number.helper";
+import Loader from "@/components/Loader/Loader.vue";
 
 const props = defineProps({
    items: {
@@ -216,6 +209,7 @@ const props = defineProps({
 });
 
 const router = useRouter();
+const loading = ref(true);
 
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
@@ -231,4 +225,12 @@ const consultarSifen = (cdc) => {
 };
 
 const { items } = toRefs(props);
+
+onMounted(() => {
+   loading.value = items.value.length === 0;
+});
+
+watch(items, (newItems) => {
+   loading.value = newItems.length === 0;
+});
 </script>
