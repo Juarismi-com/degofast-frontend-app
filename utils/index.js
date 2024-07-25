@@ -6,7 +6,7 @@ const { API_URL, DEGOFAST_RUCPY_API } = useConfig();
 export const getClientByRuc = async (ruc) => {
    try {
       console.log(useConfig());
-      console.log(DEGOFAST_RUCPY_API);
+      console.log("ruc api" + DEGOFAST_RUCPY_API);
       const response = await axios.get(
          `${DEGOFAST_RUCPY_API}/contributor/search?q=${ruc}`,
       );

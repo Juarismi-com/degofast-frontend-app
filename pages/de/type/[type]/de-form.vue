@@ -325,8 +325,19 @@ const item = ref({ ...deItemData });
 const cdc = ref("");
 
 const buscarCliente = async (ruc) => {
-   const response = await getClientByRuc(ruc);
-   formData.value.cliente.razonSocial = response.rows[0].nombre;
+   try {
+      const rucSinDv = ruc.split('-')[0];
+      const response = await getClientByRuc(rucSinDv);
+      if (response && response.rows.length > 0) {
+         formData.value.cliente.ruc = `${response.rows[0].ruc_sin_dv}-${response.rows[0].dv}`;
+         formData.value.cliente.razonSocial = response.rows[0].nombre;
+      } else {
+         alert("No se encontró el cliente")
+      }
+   } catch (error) {
+      console.error("Error al buscar el cliente:", error);      
+      alert(error?.message);
+   }
 }
 
 const agregarItem = () => {
