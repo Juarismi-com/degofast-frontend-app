@@ -87,6 +87,13 @@
                   </select>
                </div>
                <div>
+                  <label for="condicionVenta">Condición de Venta:</label>
+                  <select v-model="formData.condicion.tipo" id="tipoEmision" :class="INPUT_CLASS.basic">
+                     <option value="1">Contado</option>
+                     <option value="2">Crédito</option>
+                  </select>
+               </div>
+               <div>
                   <label for="moneda">Moneda:</label>
                   <select v-model="formData.moneda" id="moneda" :class="INPUT_CLASS.basic">
                      <option value="PYG">PYG</option>
