@@ -265,7 +265,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ formatPriceNumber(item.ivaBase) }}
+                           {{ calculateIVA(item) }}
                         </div>
                      </td>
                   </tr>
@@ -398,9 +398,9 @@ const mapperDeName = (de) => {
       sum += item?.precioUnitario * item?.cantidad;
 
       if (item?.iva === 10) {
-         iva10 += item?.ivaBase;
+         iva10 = item?.precioUnitario * item?.cantidad * 0.1;
       } else if (item?.iva === 5) {
-         iva5 += item?.ivaBase;
+         iva5 = item?.precioUnitario * item?.cantidad * 0.05;
       }
    }
 
@@ -416,6 +416,15 @@ const mapperDeName = (de) => {
       iva5: iva5,
       totalIva: iva10 + iva5,
    };
+};
+
+const calculateIVA = (item) => {
+   if (item?.iva === 5) {
+      return formatPriceNumber(item.precioUnitario * item.cantidad * 0.05);
+   } else if (item?.iva === 10) {
+      return formatPriceNumber(item.precioUnitario * item.cantidad * 0.1);
+   }
+   return 0;
 };
 
 onMounted(() => {
