@@ -3,6 +3,10 @@
       <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
          {{ title }}
       </h2>
+      <ToastSuccess
+         v-if="showToast"
+         message="Enviado correctamente"
+      />
       <div>
          <form @submit.prevent="submitForm">
             <div class="text-xl pb-4">
@@ -298,6 +302,8 @@ import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../../config"
 import { deFormData, deItemData } from '~/config/de';
 import { formatNumber, getInvoiceNumber, getRandomNumber } from '../../../../helpers/number.helper';
 import { getClientByRuc } from "~/utils";
+import ToastDanger from "~/components/Toast/ToastDanger.vue";
+import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
 
 const authToken = useStorage("authToken");
 
@@ -324,9 +330,12 @@ const formData = ref({ ...deFormData });
 const item = ref({ ...deItemData });
 const cdc = ref("");
 
+const showToast = ref(false);
+
+
 const buscarCliente = async (ruc) => {
    const response = await getClientByRuc(ruc);
-   formData.value.cliente.razonSocial = response.rows[0].nombre;
+   formData.value.cliente.razonSocial = response.rows[0].nombre;   
 }
 
 const agregarItem = () => {
@@ -403,7 +412,15 @@ const submitDe = async (payload) => {
       const response = await saveDE(payload, authToken.value);
       formData.value.numero = formData.value.numero++;
       cdc.value = response['sifenResponse']['ns2:Id']
-      alert("Enviado correctamente");
+
+      showToast.value = true;
+
+      setTimeout(() => {
+         showToast.value = false;
+      }, 3000);
+
+      resetForm();
+     
    } catch (error) {
       const data = error?.response?.data?.error;
       alert(data['ns2:dMsgRes']);
@@ -458,5 +475,20 @@ const validateForm = () => {
 
    return true;
 }
+
+const resetForm = () => {
+  formData.value = {
+    ...formData.value,       
+    numero: '',    
+    descripcion: '',
+    cliente: {
+      ruc: '',
+      razonSocial: '',
+      telefono: '',
+      email: '',
+    },
+    items: [],
+  };
+};
 
 </script>
