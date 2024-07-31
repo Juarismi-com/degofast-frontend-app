@@ -8,9 +8,10 @@
          >
             Iniciar Sesión
          </h1>
-         <div v-if="loginFail" class="text-center">
-            Email o contraseña invalido
-         </div>
+         <ToastDanger
+            v-if="showToast"
+            message="Email o contraseña inválidos."
+         />
          <form
             class="space-y-4 md:space-y-6"
             action="#"
@@ -84,6 +85,8 @@ import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
 import { HOME_PAGE_PATH } from "../../config";
 
+import ToastDanger from "../Toast/ToastDanger.vue";
+
 export default defineComponent({
    setup() {
       const form = {
@@ -92,12 +95,13 @@ export default defineComponent({
       };
 
       const loginFail = false;
+      const showToast = ref(false);
 
       const authStore = useAuthStore();
       const { setAuth } = authStore;
       const { auth } = storeToRefs(authStore);
 
-      return { form, loginFail, authStore, setAuth, auth };
+      return { form, loginFail, showToast, authStore, setAuth, auth };
    },
 
    methods: {
@@ -111,6 +115,11 @@ export default defineComponent({
             this.$router.push(HOME_PAGE_PATH);
          } else {
             this.loginFail = true;
+            this.showToast = true;
+
+            setTimeout(() => {
+               this.showToast = false;
+            }, 3000);
          }
       },
    },

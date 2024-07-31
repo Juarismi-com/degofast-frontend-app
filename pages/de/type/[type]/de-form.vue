@@ -3,6 +3,10 @@
       <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
          {{ title }}
       </h2>
+      <ToastSuccess
+         v-if="showToast"
+         message="Enviado correctamente"
+      />
       <div>
          <form @submit.prevent="submitForm">
             <div class="text-xl pb-4">
@@ -80,6 +84,13 @@
                      <option value="3">Renta</option>
                      <option value="4">Ninguno</option>
                      <option value="5">IVA - Renta</option>
+                  </select>
+               </div>
+               <div>
+                  <label for="condicionVenta">Condición de Venta:</label>
+                  <select v-model="formData.condicion.tipo" id="tipoEmision" :class="INPUT_CLASS.basic">
+                     <option value="1">Contado</option>
+                     <option value="2">Crédito</option>
                   </select>
                </div>
                <div>
@@ -298,6 +309,8 @@ import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../../config"
 import { deFormData, deItemData } from '~/config/de';
 import { formatNumber, getInvoiceNumber, getRandomNumber } from '../../../../helpers/number.helper';
 import { getClientByRuc } from "~/utils";
+import ToastDanger from "~/components/Toast/ToastDanger.vue";
+import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
 
 const authToken = useStorage("authToken");
 
@@ -324,7 +337,11 @@ const formData = ref({ ...deFormData });
 const item = ref({ ...deItemData });
 const cdc = ref("");
 
+const showToast = ref(false);
+
+
 const buscarCliente = async (ruc) => {
+<<<<<<< HEAD
    try {
       const rucSinDv = ruc.split('-')[0];
       const response = await getClientByRuc(rucSinDv);
@@ -338,6 +355,10 @@ const buscarCliente = async (ruc) => {
       console.error("Error al buscar el cliente:", error);      
       alert(error?.message);
    }
+=======
+   const response = await getClientByRuc(ruc);
+   formData.value.cliente.razonSocial = response.rows[0].nombre;   
+>>>>>>> origin/develop
 }
 
 const agregarItem = () => {
@@ -414,7 +435,15 @@ const submitDe = async (payload) => {
       const response = await saveDE(payload, authToken.value);
       formData.value.numero = formData.value.numero++;
       cdc.value = response['sifenResponse']['ns2:Id']
-      alert("Enviado correctamente");
+
+      showToast.value = true;
+
+      setTimeout(() => {
+         showToast.value = false;
+      }, 3000);
+
+      resetForm();
+     
    } catch (error) {
       const data = error?.response?.data?.error;
       alert(data['ns2:dMsgRes']);
@@ -469,5 +498,20 @@ const validateForm = () => {
 
    return true;
 }
+
+const resetForm = () => {
+  formData.value = {
+    ...formData.value,       
+    numero: '',    
+    descripcion: '',
+    cliente: {
+      ruc: '',
+      razonSocial: '',
+      telefono: '',
+      email: '',
+    },
+    items: [],
+  };
+};
 
 </script>
