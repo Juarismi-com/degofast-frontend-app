@@ -341,7 +341,6 @@ const showToast = ref(false);
 
 
 const buscarCliente = async (ruc) => {
-<<<<<<< HEAD
    try {
       const rucSinDv = ruc.split('-')[0];
       const response = await getClientByRuc(rucSinDv);
@@ -355,10 +354,6 @@ const buscarCliente = async (ruc) => {
       console.error("Error al buscar el cliente:", error);      
       alert(error?.message);
    }
-=======
-   const response = await getClientByRuc(ruc);
-   formData.value.cliente.razonSocial = response.rows[0].nombre;   
->>>>>>> origin/develop
 }
 
 const agregarItem = () => {
