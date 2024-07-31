@@ -1,4 +1,4 @@
-<template lang="">
+<template>
    <div class="flex justify-center items-center h-64">
       <div role="status">
          <svg
@@ -21,4 +21,3 @@
       </div>
    </div>
 </template>
-<script setup></script>

@@ -7,7 +7,10 @@
          v-if="showToast"
          message="Enviado correctamente"
       />
-      <div>
+
+      <Loader v-if="loading" />
+
+      <div v-if="!loading" s>
          <form @submit.prevent="submitForm">
             <div class="text-xl pb-4">
                <h3>Documento Electrónico {{ cdc }}</h3>
@@ -39,7 +42,7 @@
                </div>
 
                <div>
-                  <label for="numero">Número de Factura (solo test):</label>
+                  <label for="numero">Número de Factura:</label>
                   <input type="text" v-model="formData.numero" id="numero" :class="INPUT_CLASS.basic" />
                </div>
 
@@ -309,7 +312,7 @@ import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../../config"
 import { deFormData, deItemData } from '~/config/de';
 import { formatNumber, getInvoiceNumber, getRandomNumber } from '../../../../helpers/number.helper';
 import { getClientByRuc } from "~/utils";
-import ToastDanger from "~/components/Toast/ToastDanger.vue";
+//import ToastDanger from "~/components/Toast/ToastDanger.vue";
 import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
 
 const authToken = useStorage("authToken");
@@ -324,7 +327,7 @@ const routeSelected = ref(
 );
 const title = ref(routeSelected.value.title);
 
-const { APP_ENV } = useConfig();
+const { DE_SUBMIT_FORM } = useConfig();
 
 definePageMeta({
    middleware: ["auth"],
@@ -339,20 +342,30 @@ const cdc = ref("");
 
 const showToast = ref(false);
 
+const loading = ref(false);
 
 const buscarCliente = async (ruc) => {
    try {
+      if (ruc.length == 0)
+         throw { message: "Asigne un ruc" };
+
+      loading.value = true;
       const rucSinDv = ruc.split('-')[0];
       const response = await getClientByRuc(rucSinDv);
+
       if (response && response.rows.length > 0) {
-         formData.value.cliente.ruc = `${response.rows[0].ruc_sin_dv}-${response.rows[0].dv}`;
+         const {ruc_sin_dv, dv, nombre } = response.rows[0];
+         formData.value.cliente.ruc = `${ruc_sin_dv}-${dv}`;
          formData.value.cliente.razonSocial = response.rows[0].nombre;
       } else {
          alert("No se encontró el cliente")
       }
+
+      loading.value = false;
    } catch (error) {
       console.error("Error al buscar el cliente:", error);      
       alert(error?.message);
+      loading.value = false;
    }
 }
 
@@ -387,7 +400,8 @@ const submitForm = async () => {
 
       if (validateForm()) {
          if (confirm("Desea crear el de?")) {
-            let fecha = moment(formData.value.fecha).format('YYYY-MM-DDTHH:mm:ss');
+            let fecha = moment(formData.value.fecha)
+               .format('YYYY-MM-DDTHH:mm:ss');
             formData.value.tipoDocumento = deType.value // trae desde paramaetro
 
             formData.value.codigoSeguridadAleatorio = getRandomNumber();
@@ -398,7 +412,7 @@ const submitForm = async () => {
                numero: getInvoiceNumber(formData.value.numero)
             }
 
-            if (APP_ENV == "prod") {
+            if (DE_SUBMIT_FORM == "lote") {
                submitLote(payload)
             } else {
                submitDe(payload)

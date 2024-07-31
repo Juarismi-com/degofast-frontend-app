@@ -4,16 +4,13 @@ export default defineNuxtConfig({
    devtools: { enabled: false },
    modules: ["@pinia/nuxt"],
    css: ["~/assets/css/main.css"],
-   /**
-    * @todo mejorar como se
-    */
    runtimeConfig: {
       public: {
          API_URL: process.env.API_URL || "http://localhost:8000",
          DEGOFAST_RUCPY_API:
             process.env.DEGOFAST_RUCPY_API || "http://localhost:8000",
-         // "http://localhost:8001",
          APP_ENV: process.env.APP_ENV || "dev",
+         DE_SUBMIT_FORM: process.env.DE_SUBMIT_FORM || "de"
       },
    },
    postcss: {
