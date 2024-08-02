@@ -354,8 +354,6 @@
 
 <script setup>
 import { ref, onMounted, defineProps } from "vue";
-import { getDesById } from "../../../utils/index";
-import { useRoute } from "vue-router";
 import {
    formatNumber,
    formatDateTime,
@@ -373,7 +371,6 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const route = useRoute();
 const data = ref({});
 
 const props = defineProps({
@@ -381,10 +378,6 @@ const props = defineProps({
       type: Object,
       required: true,
    },
-   // isOpen: {
-   //    type: Boolean,
-   //    required: true,
-   // },
 });
 
 const fetchDetalle = async () => {
