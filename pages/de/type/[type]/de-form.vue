@@ -3,10 +3,7 @@
       <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
          {{ title }}
       </h2>
-      <ToastSuccess
-         v-if="showToast"
-         message="Enviado correctamente"
-      />
+      <ToastSuccess v-if="showToast" message="Enviado correctamente" />
       <div>
          <form @submit.prevent="submitForm">
             <div class="text-xl pb-4">
@@ -288,6 +285,34 @@
 
          </form>
 
+         <!-- Modal -->
+         <div v-if="openModal" id="default-modal" tabindex="-1"
+            class="fixed inset-0 z-50 flex items-center justify-center w-full  bg-gray-800 bg-opacity-50">
+            <div class="relative p-4 w-full max-w-4xl max-h-screen overflow-y-auto">
+
+               <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                  <!-- Modal header -->
+                  <div class="flex items-center justify-center p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white text-center">
+                        Vista previa del documento
+                     </h3>
+                  </div>
+                  <!-- Modal body -->
+                  <div class="p-4 md:p-5 space-y-4">
+                     <DePreview :detalle="formData" />
+                  </div>
+                  <!-- Modal footer -->
+                  <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                     <button type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        @click="confirmSubmitForm">Desea crear el de?</button>
+                     <button type="button"
+                        class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        @click="closeModal">Cancelar</button>
+                  </div>
+               </div>
+            </div>
+         </div>
 
          <!--Alert 
             :show="showAlert"
@@ -311,6 +336,7 @@ import { formatNumber, getInvoiceNumber, getRandomNumber } from '../../../../hel
 import { getClientByRuc } from "~/utils";
 import ToastDanger from "~/components/Toast/ToastDanger.vue";
 import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
+import DePreview from '@/components/Theme/Modal/DePreview.vue';
 
 const authToken = useStorage("authToken");
 
@@ -337,6 +363,7 @@ const formData = ref({ ...deFormData });
 const item = ref({ ...deItemData });
 const cdc = ref("");
 
+const openModal = ref(false);
 const showToast = ref(false);
 
 
@@ -351,7 +378,7 @@ const buscarCliente = async (ruc) => {
          alert("No se encontró el cliente")
       }
    } catch (error) {
-      console.error("Error al buscar el cliente:", error);      
+      console.error("Error al buscar el cliente:", error);
       alert(error?.message);
    }
 }
@@ -382,34 +409,40 @@ const eliminarItem = (index) => {
    formData.value.items.splice(index, 1);
 };
 
+
 const submitForm = async () => {
+   if (validateForm()) {
+      openModal.value = true;
+   }
+};
+
+const confirmSubmitForm = async () => {
+
    try {
 
-      if (validateForm()) {
-         if (confirm("Desea crear el de?")) {
-            let fecha = moment(formData.value.fecha).format('YYYY-MM-DDTHH:mm:ss');
-            formData.value.tipoDocumento = deType.value // trae desde paramaetro
+      let fecha = moment(formData.value.fecha).format('YYYY-MM-DDTHH:mm:ss');
+      formData.value.tipoDocumento = deType.value // trae desde paramaetro
 
-            formData.value.codigoSeguridadAleatorio = getRandomNumber();
+      formData.value.codigoSeguridadAleatorio = getRandomNumber();
 
-            let payload = {
-               ...formData.value,
-               fecha,
-               numero: getInvoiceNumber(formData.value.numero)
-            }
-
-            if (APP_ENV == "prod") {
-               submitLote(payload)
-            } else {
-               submitDe(payload)
-            }
-         }
+      let payload = {
+         ...formData.value,
+         fecha,
+         numero: getInvoiceNumber(formData.value.numero)
       }
+
+      if (APP_ENV == "prod") {
+         submitLote(payload)
+      } else {
+         submitDe(payload)
+      }
+
    } catch (error) {
       console.error("Error submitting form:", error);
       alert(error?.message);
    }
-};
+
+}
 
 const submitLote = async (payload) => {
    const response = await saveLotes([payload])
@@ -438,7 +471,7 @@ const submitDe = async (payload) => {
       }, 3000);
 
       resetForm();
-     
+
    } catch (error) {
       const data = error?.response?.data?.error;
       alert(data['ns2:dMsgRes']);
@@ -454,7 +487,7 @@ const selectEstablecimiento = (e) => {
 onMounted(async () => {
    const contributorRes = await getContributor(contributor.value?._id)
 
-   let numero = contributorRes.establecimientos[0].puntoExpedicion[0]?.nroActual || 0;
+   let numero = contributorRes.establecimientos?.[0]?.puntoExpedicion?.[0]?.nroActual || 0;
    formData.value.numero = ++numero;
 });
 
@@ -495,18 +528,22 @@ const validateForm = () => {
 }
 
 const resetForm = () => {
-  formData.value = {
-    ...formData.value,       
-    numero: '',    
-    descripcion: '',
-    cliente: {
-      ruc: '',
-      razonSocial: '',
-      telefono: '',
-      email: '',
-    },
-    items: [],
-  };
+   formData.value = {
+      ...formData.value,
+      numero: '',
+      descripcion: '',
+      cliente: {
+         ruc: '',
+         razonSocial: '',
+         telefono: '',
+         email: '',
+      },
+      items: [],
+   };
 };
+
+const closeModal = () => {
+   openModal.value = false;
+}
 
 </script>
