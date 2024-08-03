@@ -57,7 +57,7 @@
                   <td class="px-4 py-3 text-sm">{{ item._id }}</td>
                   <td class="px-4 py-3 text-xs">
                      <span
-                        class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
+                        :class="['px-2 py-1 font-semibold leading-tight text-green-700 rounded-full dark:bg-green-700 dark:text-green-100', item?.estado === 'A'? 'bg-green-100': 'bg-red-100']"
                      >
                         {{ item.estado }}
                      </span>
@@ -77,18 +77,20 @@
                         Ver detalles
                      </button>
                   </td>
-                  <td class="px-4 py-3">
+                  <td class="px-4 py-3" >
                      <!-- Botón "Ver kude" -->
                      <button
+                        v-if="item.estado == 'A'"
                         @click="verKude(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Ver kude
                      </button>
                   </td>
-                  <td class="px-4 py-3">
+                  <td class="px-4 py-3" >
                      <!-- Botón "Generar evento" -->
                      <button
+                        v-if="item.estado == 'A'"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Generar evento
@@ -97,6 +99,7 @@
                   <td class="px-4 py-3">
                      <!-- Botón "Consultar sifen" -->
                      <button
+                        v-if="item.estado == 'A'"
                         @click="consultarSifen(item.cdc)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
@@ -210,6 +213,7 @@ const props = defineProps({
 
 const router = useRouter();
 const loading = ref(true);
+
 
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");

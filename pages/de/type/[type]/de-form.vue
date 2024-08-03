@@ -311,7 +311,7 @@ import { useAuthStore } from "../../../../stores";
 import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../../config"
 import { deFormData, deItemData } from '~/config/de';
 import { formatNumber, getInvoiceNumber, getRandomNumber } from '../../../../helpers/number.helper';
-import { getClientByRuc } from "~/utils";
+import { getClientByRuc, editDE } from "~/utils";
 //import ToastDanger from "~/components/Toast/ToastDanger.vue";
 import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
 
@@ -354,9 +354,9 @@ const buscarCliente = async (ruc) => {
       const response = await getClientByRuc(rucSinDv);
 
       if (response && response.rows.length > 0) {
-         const {ruc_sin_dv, dv, nombre } = response.rows[0];
+         const { ruc_sin_dv, dv, nombre } = response.rows[0];
          formData.value.cliente.ruc = `${ruc_sin_dv}-${dv}`;
-         formData.value.cliente.razonSocial = response.rows[0].nombre;
+         formData.value.cliente.razonSocial = nombre;
       } else {
          alert("No se encontró el cliente")
       }
@@ -367,6 +367,10 @@ const buscarCliente = async (ruc) => {
       alert(error?.message);
       loading.value = false;
    }
+}
+
+const previewDe = () => {
+
 }
 
 const agregarItem = () => {
@@ -426,14 +430,23 @@ const submitForm = async () => {
 };
 
 const submitLote = async (payload) => {
+   loading.value = true;
    const response = await saveLotes([payload])
-   const loteResponseId = response.loteResponseId;
+   const loteResponseId =  response.loteResponseId;
 
    setTimeout(async () => {
       const data = await getLoteByLoteResponseId(loteResponseId);
-      alert(data.lote[0].details?.mensaje)
+      const de = data.lote[0]
+      
+      // Update document
+      const newState = de.details?.mensaje.substring(0,1).toUpperCase();
+      await editDE(de?.de?._id, {estado: newState});
 
-      if (confirm("Desea Generar un nuevo DE?\n Sino sera redirigido al Detalle")) {
+      // @todo add toast
+      alert(de.details?.mensaje)
+      loading.value = false;
+
+      if (confirm(`Desea Generar un nuevo DE?\n`)) {
          formData.value = { ...deFormData }
       }
    }, 10000)

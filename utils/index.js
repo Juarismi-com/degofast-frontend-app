@@ -5,6 +5,7 @@ const { API_URL, DEGOFAST_RUCPY_API } = useConfig();
 
 export const getClientByRuc = async (ruc) => {
    try {
+      console.log(DEGOFAST_RUCPY_API);
       const response = await axios.get(
          `${DEGOFAST_RUCPY_API}/contributor/search?q=${ruc}`,
       );
@@ -18,6 +19,17 @@ export const getClientByRuc = async (ruc) => {
 export const saveDE = async (data) => {
    try {
       const response = await axios.post(`${API_URL}/de`, data);
+      return response.data;
+   } catch (error) {
+      console.error("Error submitting form:", error);
+      throw error;
+   }
+};
+
+export const editDE = async (id, data) => {
+   try {
+      const response = await axios.put(`${API_URL}/de/${id}`, data);
+      console.log(response);
       return response.data;
    } catch (error) {
       console.error("Error submitting form:", error);

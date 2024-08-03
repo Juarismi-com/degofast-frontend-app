@@ -357,7 +357,6 @@ import { getDesById } from "../../../utils/index";
 import { useRoute } from "vue-router";
 import {
    formatNumber,
-   formatDateTime,
    formatPriceNumber,
    getInvoiceNumber,
    getEstablecimientoNumber,
@@ -367,8 +366,7 @@ import { useAuthStore } from "~/stores";
 import moment from "moment";
 
 definePageMeta({
-   layout: "empty",
-   middleware: ["auth"],
+   layout: "empty"
 });
 
 const authStore = useAuthStore();
