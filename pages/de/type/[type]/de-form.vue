@@ -437,6 +437,8 @@ const confirmSubmitForm = async () => {
          submitDe(payload)
       }
 
+      openModal.value = false;
+
    } catch (error) {
       console.error("Error submitting form:", error);
       alert(error?.message);
