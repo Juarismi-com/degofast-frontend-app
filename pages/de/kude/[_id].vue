@@ -210,13 +210,19 @@
                         scope="col"
                         class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
+                        Total Unitario
+                     </th>
+                     <th
+                        scope="col"
+                        class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
+                     >
                         Descuento
                      </th>
                      <th
                         scope="col"
                         class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
-                        Monto IVA
+                        IVA Unitario
                      </th>
                   </tr>
                </thead>
@@ -255,6 +261,17 @@
                      >
                         <div class="text-sm text-gray-900">
                            {{
+                              formatPriceNumber(
+                                 item.precioUnitario * item.cantidad,
+                              )
+                           }}
+                        </div>
+                     </td>
+                     <td
+                        class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
+                     >
+                        <div class="text-sm text-gray-900">
+                           {{
                               formatNumber(
                                  item.descuento ? item.descuento : "0",
                               )
@@ -273,7 +290,7 @@
                <tfoot class="bg-gray-300 text-gray-800">
                   <tr>
                      <td
-                        colspan="5"
+                        colspan="6"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 font-bold"
                      >
                         Subtotal:
@@ -288,7 +305,7 @@
                   </tr>
                   <tr>
                      <td
-                        colspan="5"
+                        colspan="6"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 font-bold"
                      >
                         Total de la operación:
@@ -309,7 +326,7 @@
                      </td>
 
                      <td
-                        colspan="2"
+                        colspan="3"
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <label class="font-bold">IVA (10%):</label>

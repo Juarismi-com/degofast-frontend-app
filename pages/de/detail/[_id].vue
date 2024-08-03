@@ -231,7 +231,19 @@
                               scope="col"
                               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                            >
-                              IVA
+                              Total unitario
+                           </th>
+                           <th
+                              scope="col"
+                              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                           >
+                              Descuento
+                           </th>
+                           <th
+                              scope="col"
+                              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                           >
+                              IVA Unitario
                            </th>
                         </tr>
                      </thead>
@@ -255,6 +267,24 @@
                            <td class="px-6 py-4 whitespace-nowrap">
                               <div class="text-sm text-gray-900 text-right">
                                  {{ formatNumber(item.precioUnitario) }}
+                              </div>
+                           </td>
+                           <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm text-gray-900 text-right">
+                                 {{
+                                    formatNumber(
+                                       item.precioUnitario * item.cantidad,
+                                    )
+                                 }}
+                              </div>
+                           </td>
+                           <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm text-gray-900 text-right">
+                                 {{
+                                    formatNumber(
+                                       item.descuento ? item.descuento : "0",
+                                    )
+                                 }}
                               </div>
                            </td>
                            <td class="px-6 py-4 whitespace-nowrap">
