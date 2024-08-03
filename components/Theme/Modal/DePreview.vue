@@ -1,6 +1,6 @@
 <template>
    <div class="container mx-auto pt-5">
-      <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-3 gap-2">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
          <!-- Cuadro 1 -->
 
          <div
@@ -63,7 +63,7 @@
                         >
                            Fecha y hora de emisión:
                            <label class="font-bold">{{
-                              moment(detalle.fecha).format(
+                              moment(props.detalle.fecha).format(
                                  "DD/MM/YYYY HH:mm:ss",
                               )
                            }}</label>
@@ -73,7 +73,7 @@
                         >
                            RUC/Documento de identidad N°:
                            <label class="font-bold">{{
-                              detalle.cliente.ruc
+                              props.detalle.cliente.ruc
                            }}</label>
                         </td>
                      </tr>
@@ -83,7 +83,7 @@
                         >
                            Condición de venta:
                            <label class="font-bold">{{
-                              detalle.condicionName
+                              props.detalle.condicionName
                            }}</label>
                         </td>
                         <td
@@ -91,7 +91,7 @@
                         >
                            Nombre o Razón Social:
                            <label class="font-bold">{{
-                              detalle.cliente.razonSocial
+                              props.detalle.cliente.razonSocial
                            }}</label>
                         </td>
                      </tr>
@@ -106,7 +106,7 @@
                         >
                            Dirección:
                            <label class="font-bold">{{
-                              detalle.cliente.direccion
+                              props.detalle.cliente.direccion
                            }}</label>
                         </td>
                      </tr>
@@ -115,14 +115,16 @@
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
                            Moneda:
-                           <label class="font-bold">{{ detalle.moneda }}</label>
+                           <label class="font-bold">{{
+                              props.detalle.moneda
+                           }}</label>
                         </td>
                         <td
                            class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
                            Tipo de cambio:
                            <label class="font-bold">
-                              {{ detalle.cambio ?? "-" }}</label
+                              {{ props.detalle.cambio ?? "-" }}</label
                            >
                         </td>
                      </tr>
@@ -137,7 +139,7 @@
                         >
                            Correo electrónico:
                            <label class="font-bold">{{
-                              detalle?.cliente?.email
+                              props.detalle?.cliente?.email
                            }}</label>
                         </td>
                      </tr>
@@ -222,12 +224,12 @@
                         scope="col"
                         class="px-6 py-1 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
                      >
-                        IVA Unitario
+                        Monto IVA
                      </th>
                   </tr>
                </thead>
                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="item in detalle.items" :key="item._id">
+                  <tr v-for="item in props.detalle?.items" :key="item._id">
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
@@ -253,7 +255,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ formatPriceNumber(item.precioUnitario) }}
+                           {{ formatPriceNumber(item?.precioUnitario) }}
                         </div>
                      </td>
                      <td
@@ -262,7 +264,7 @@
                         <div class="text-sm text-gray-900">
                            {{
                               formatPriceNumber(
-                                 item.precioUnitario * item.cantidad,
+                                 item?.precioUnitario * item?.cantidad,
                               )
                            }}
                         </div>
@@ -298,9 +300,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{
-                           formatPriceNumber(detalle.total - detalle.totalIva)
-                        }}
+                        {{ data.total - data.totalIva }}
                      </td>
                   </tr>
                   <tr>
@@ -313,7 +313,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatPriceNumber(detalle.total) }}
+                        {{ data.total }}
                      </td>
                   </tr>
                   <tr>
@@ -322,7 +322,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <label class="font-bold">IVA (5%):</label>
-                        {{ formatPriceNumber(detalle.iva5) }}
+                        {{ data.iva5 }}
                      </td>
 
                      <td
@@ -330,7 +330,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <label class="font-bold">IVA (10%):</label>
-                        {{ formatPriceNumber(detalle.iva10) }}
+                        {{ data.iva10 }}
                      </td>
                      <td
                         colspan="1"
@@ -342,38 +342,21 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatPriceNumber(detalle.totalIva) }}
+                        {{ data.totalIva }}
                      </td>
                   </tr>
                </tfoot>
             </table>
          </div>
-
-         <!-- Cuadro 3 -->
-         <div
-            class="md:col-span-3 border border-gray-300 p-4 shadow-md rounded"
-         >
-            <div
-               class="md:col-span-3 text-center border border-gray-300 p-4 shadow-md rounded"
-            >
-               <label class="text-lg font-bold">CDC: </label>
-               <label class="text-lg">{{ detalle.cdc }}</label>
-            </div>
-         </div>
-      </div>
-
-      <div v-else>
-         <p>Cargando detalles...</p>
       </div>
    </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { getDesById } from "../../../utils/index";
-import { useRoute } from "vue-router";
+import { ref, onMounted, defineProps } from "vue";
 import {
    formatNumber,
+   formatDateTime,
    formatPriceNumber,
    getInvoiceNumber,
    getEstablecimientoNumber,
@@ -383,27 +366,28 @@ import { useAuthStore } from "~/stores";
 import moment from "moment";
 
 definePageMeta({
-   layout: "empty"
+   layout: "empty",
+   middleware: ["auth"],
 });
 
 const authStore = useAuthStore();
-const route = useRoute();
-const detalle = ref(null);
+const data = ref({});
+
+const props = defineProps({
+   detalle: {
+      type: Object,
+      required: true,
+   },
+});
 
 const fetchDetalle = async () => {
    try {
-      const id = route.params._id;
-      if (!id) return;
-      const deRes = await getDesById(id);
-      detalle.value = mapperDeName(deRes);
+      data.value = mapperDeName(props.detalle);
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
 };
-/**
- * Genera un mapper para mostrar informacion del documento electronico
- * @param de
- */
+
 const mapperDeName = (de) => {
    let sum = 0;
    let iva10 = 0;
@@ -426,7 +410,7 @@ const mapperDeName = (de) => {
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
       tipoOperacionName:
          deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 2],
-      total: sum,
+      total: String(sum),
       iva10: iva10,
       iva5: iva5,
       totalIva: iva10 + iva5,
@@ -443,8 +427,6 @@ const calculateIVA = (item) => {
 };
 
 onMounted(() => {
-   if (route.params._id) {
-      fetchDetalle();
-   }
+   fetchDetalle();
 });
 </script>
