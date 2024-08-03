@@ -11,7 +11,11 @@
          <!--div v-if="registerFail" class="text-center">
             Ocurrio un problema en su registro
          </div-->
-         <form class="space-y-4 md:space-y-6" @submit="saveForm" method="post">
+         <form
+            class="space-y-4 md:space-y-6"
+            @submit.prevent="saveForm"
+            method="post"
+         >
             <button
                type="submit"
                class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
@@ -46,6 +50,18 @@
             </div>
 
             <div>
+               <label for="csc" :class="[commonLabelClass]">CSC</label>
+               <input
+                  type="text"
+                  name="csc"
+                  id="csc"
+                  :class="[commonInputClass]"
+                  required="true"
+                  v-model="form.csc"
+               />
+            </div>
+
+            <div>
                <label for="nombreFantasia" :class="[commonLabelClass]"
                   >Nombre de Fantasia*</label
                >
@@ -72,6 +88,18 @@
                   placeholder="Razon Social S.R.L"
                   required="true"
                   v-model="form.razonSocial"
+               />
+            </div>
+
+            <div>
+               <label for="email" :class="[commonLabelClass]">Email</label>
+               <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  :class="[commonInputClass]"
+                  required="true"
+                  v-model="form.email"
                />
             </div>
 
@@ -178,6 +206,7 @@
  * @todo separate a component in actividadEconomica, establecimientos, etc
  * @todo add table of actividades generadas
  */
+import moment from "moment";
 import { storeToRefs } from "pinia";
 import VueTailwindDatepicker from "vue-tailwind-datepicker";
 import { create } from "~/services/http.service";
@@ -223,11 +252,48 @@ const setContributorDefault = () => {
  * Guarda el formulario
  */
 const saveForm = (e) => {
-   e.preventDefault();
-   if (!form.value.ruc) create("contributor-emitter", form.value);
+   if (validateForm()) {
+      let fechaFirmaDigital = moment(form.value.fechaFirmaDigital).format(
+         "YYYY-MM-DDTHH:mm:ss",
+      );
+
+      let timbradoFecha = moment(form.value.timbradoFecha).format(
+         "YYYY-MM-DDTHH:mm:ss",
+      );
+
+      let payload = {
+         ...form.value,
+         fechaFirmaDigital,
+         timbradoFecha,
+      };
+
+      create("contributor-emitter", payload);
+   }
 };
 
-onMounted(() => {
-   console.log("mounted");
-});
+const validateForm = () => {
+   const errors = [];
+   const { ruc, csc, fechaFirmaDigital, nombreFantasia, razonSocial, email } =
+      form.value;
+
+   if (!ruc) errors.push("Ruc es requerido");
+   if (!csc) errors.push("Csc es requerido");
+   if (!fechaFirmaDigital) errors.push("Fecha de firma digital es requerido");
+   if (!nombreFantasia) errors.push("Nombre de fantasía es requerido");
+   if (!razonSocial) errors.push("Razon Social es requerido");
+   if (!email) errors.push("Email es requerido");
+
+   if (errors.length > 0) {
+      const message = errors.join("\n");
+      alert(message);
+
+      return false;
+   }
+
+   return true;
+};
+
+// onMounted(() => {
+//    console.log("mounted");
+// });
 </script>

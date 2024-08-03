@@ -399,9 +399,6 @@ const buscarCliente = async (ruc) => {
    }
 }
 
-const previewDe = () => {
-
-}
 
 const agregarItem = () => {
 
