@@ -21,19 +21,31 @@ export const formatPriceNumber = (price, geo = "es-PY") => {
  * @param numero
  */
 export const getInvoiceNumber = (numero) => {
-   let val = numero.toString();
-   const ceroLength = 7 - val.length;
-
-   for (let i = 0; i < ceroLength; i++) {
-      val = "0" + val;
-   }
-
-   return val;
+   return addPrefixCero(numero, 7)
 };
 
 export const getEstablecimientoNumber = (numero) => {
+   return addPrefixCero(numero, 3)
+};
+
+/**
+ * Agrega cantidad de cero al numero como prefijo hasta que tenga
+ * maxLength string
+ * 
+ * @example 
+ *    numero: 10
+ *    maxlength: 5
+ *      2 = el length que se calcula del numero
+ *      5 = el length total que debe tener el string
+ *      00010 = el valor que debe retornar la funcion con 000 prefijos
+ * 
+ * @param {*} numero 
+ * @param {*} maxLength 
+ * @returns 
+ */
+export const addPrefixCero = (numero, maxLength) => {
    let val = numero.toString();
-   const ceroLength = 3 - val.length;
+   const ceroLength = maxLength - val.length;
 
    for (let i = 0; i < ceroLength; i++) {
       val = "0" + val;
@@ -43,9 +55,22 @@ export const getEstablecimientoNumber = (numero) => {
 };
 
 /**
- * @todo move this in a helper
+ * Elimina los prefijos cero
+ * 
+ * @example 
+ *    value: "00010" return 10
+ * @param {*} value 
+ * @returns 
  */
-export const getRandomNumber = () => {
+export const removePrefixCero = (value) => {
+   return parseInt(value.toString());
+}
+
+/**
+ * Genera un numero randon de 9 digitos/caracteres
+ * @returns 
+ */
+export const getRandomNumberForDe = () => {
    const min = 100000000;
    const max = 999999999;
 

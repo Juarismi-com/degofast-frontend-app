@@ -310,7 +310,7 @@
 import { ref, onMounted } from "vue";
 import moment from "moment";
 import { deValues } from "~/config/de";
-import { getDesById } from "../../../utils/index";
+import { getDesById } from "../../../services";
 import { useRoute } from "vue-router";
 import {
    formatNumber,

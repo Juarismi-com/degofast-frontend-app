@@ -370,7 +370,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getDesById } from "../../../utils/index";
+import { getDesById } from "../../../services";
 import { useRoute } from "vue-router";
 import {
    formatNumber,

@@ -338,8 +338,8 @@ import moment from 'moment';
 import { useAuthStore } from "../../../../stores";
 import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../../config"
 import { deFormData, deItemData } from '~/config/de';
-import { formatNumber, getInvoiceNumber, getRandomNumber } from '../../../../helpers/number.helper';
-import { getClientByRuc, editDE } from "~/utils";
+import { formatNumber, getInvoiceNumber, getRandomNumberForDe } from '../../../../helpers/number.helper';
+import { getClientByRuc, editDE } from "~/services";
 //import ToastDanger from "~/components/Toast/ToastDanger.vue";
 import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
 import DePreview from '@/components/Theme/Modal/DePreview.vue';
@@ -443,7 +443,7 @@ const confirmSubmitForm = async () => {
                .format('YYYY-MM-DDTHH:mm:ss');
             formData.value.tipoDocumento = deType.value // trae desde paramaetro
 
-            formData.value.codigoSeguridadAleatorio = getRandomNumber();
+            formData.value.codigoSeguridadAleatorio = getRandomNumberForDe();
 
             let payload = {
                ...formData.value,
