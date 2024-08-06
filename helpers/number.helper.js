@@ -16,15 +16,17 @@ export const formatPriceNumber = (price, geo = "es-PY") => {
    return priceFormat;
 };
 
-/**
- * @todo validate number of invoice, i.e 000001
- * @param numero
- */
-export const getInvoiceNumber = (numero) => {
+
+export const getPuntoExpedicionNumberCode = (numero) => {
+   return addPrefixCero(numero, 3)
+};
+
+
+export const getDeNumberCode = (numero) => {
    return addPrefixCero(numero, 7)
 };
 
-export const getEstablecimientoNumber = (numero) => {
+export const getEstablecimientoNumberCode = (numero) => {
    return addPrefixCero(numero, 3)
 };
 

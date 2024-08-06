@@ -56,7 +56,17 @@
                      </div>
                   </td>
                   <td class="px-4 py-3 text-sm">
-                     {{ `${item.establecimiento}-${item.punto}-${item.numero}` }}
+                     {{ 
+                        getEstablecimientoNumberCode(item.establecimiento)
+                     }}
+                        -
+                     {{ 
+                        getPuntoExpedicionNumberCode(item.punto)
+                     }}
+                        -
+                     {{ 
+                        getDeNumberCode(item.numero) 
+                     }}
                   </td>
                   <td class="px-4 py-3 text-sm">{{ item._id }}</td>
                   <td class="px-4 py-3 text-xs">
@@ -205,7 +215,12 @@
 import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
-import { formatPriceNumber } from "@/helpers/number.helper";
+import { 
+   formatPriceNumber,
+   getEstablecimientoNumberCode, 
+   getPuntoExpedicionNumberCode,
+   getDeNumberCode
+} from "@/helpers/number.helper";
 import Loader from "@/components/Loader/Loader.vue";
 
 const props = defineProps({
@@ -215,9 +230,9 @@ const props = defineProps({
    },
 });
 
+
 const router = useRouter();
 const loading = ref(true);
-
 
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
@@ -241,4 +256,6 @@ onMounted(() => {
 watch(items, (newItems) => {
    loading.value = newItems.length === 0;
 });
+
+
 </script>

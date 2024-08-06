@@ -315,8 +315,8 @@ import { useRoute } from "vue-router";
 import {
    formatNumber,
    formatPriceNumber,
-   getInvoiceNumber,
-   getEstablecimientoNumber,
+   getDeNumberCode,
+   getEstablecimientoNumberCode,
 } from "@/helpers/number.helper";
 
 definePageMeta({
@@ -356,8 +356,8 @@ const mapperDeName = (de) => {
 
    return {
       ...de,
-      establecimiento: getEstablecimientoNumber(de.establecimiento),
-      numero: getInvoiceNumber(de.numero),
+      establecimiento: getEstablecimientoNumberCode(de.establecimiento),
+      numero: getDeNumberCode(de.numero),
       condicionTipo: deValues.condicion.tipo[de.condicion.tipo || 1],
       tipoEmision: deValues.tipoEmision[de.tipoEmision || 1],
       tipoTransaccion: deValues.tipoTransaccion[de.tipoTransaccion || 1],

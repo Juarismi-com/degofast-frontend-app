@@ -338,7 +338,7 @@ import moment from 'moment';
 import { useAuthStore } from "../../../../stores";
 import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../../config"
 import { deFormData, deItemData } from '~/config/de';
-import { formatNumber, getInvoiceNumber, getRandomNumberForDe } from '../../../../helpers/number.helper';
+import { formatNumber, getDeNumberCode, getRandomNumberForDe } from '../../../../helpers/number.helper';
 import { getClientByRuc, editDE } from "~/services";
 //import ToastDanger from "~/components/Toast/ToastDanger.vue";
 import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
@@ -448,7 +448,7 @@ const confirmSubmitForm = async () => {
             let payload = {
                ...formData.value,
                fecha,
-               numero: getInvoiceNumber(formData.value.numero)
+               numero: getDeNumberCode(formData.value.numero)
             }
 
             if (DE_SUBMIT_FORM == "lote") {

@@ -358,8 +358,8 @@ import {
    formatNumber,
    formatDateTime,
    formatPriceNumber,
-   getInvoiceNumber,
-   getEstablecimientoNumber,
+   getDeNumberCode,
+   getEstablecimientoNumberCode,
 } from "@/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
@@ -405,8 +405,8 @@ const mapperDeName = (de) => {
 
    return {
       ...de,
-      establecimiento: getEstablecimientoNumber(de.establecimiento),
-      numero: getInvoiceNumber(de.numero),
+      establecimiento: getEstablecimientoNumberCode(de.establecimiento),
+      numero: getDeNumberCode(de.numero),
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
       tipoOperacionName:
          deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 2],
