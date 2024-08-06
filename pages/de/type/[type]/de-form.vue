@@ -389,7 +389,7 @@ const buscarCliente = async (ruc) => {
       loading.value = false;
    } catch (error) {
       console.error("Error al buscar el cliente:", error);
-      alert(error?.message);
+      alert(error?.response?.data?.error);
       loading.value = false;
    }
 }
@@ -488,12 +488,14 @@ const submitLote = async (payload) => {
    }, 10000)
 }
 
+/**
+ * Guarda el documento electronico de forma sincrona
+ * @param payload 
+ */
 const submitDe = async (payload) => {
    try {
-      // Guarda el lote
       const response = await saveDE(payload)
-      cdc.value = response['sifenResponse']['ns2:Id']
-
+      cdc.value = response?.de?.cdc
       showToast.value = true;
 
       setTimeout(() => {
@@ -501,10 +503,10 @@ const submitDe = async (payload) => {
       }, 3000);
 
       resetForm();
-
    } catch (error) {
+      console.log(error);
       const data = error?.response?.data?.error;
-      alert(data['ns2:dMsgRes']);
+      alert(data?.details['ns2:dMsgRes']);
    }
 }
 
@@ -515,7 +517,6 @@ const submitDe = async (payload) => {
 const selectEstablecimiento = (e) => {
    formData.value.establecimiento = e.target.value.toString();
    setPuntoEstablecimientoList();
-
 }
 
 const setPuntoEstablecimientoList =  async() => {
