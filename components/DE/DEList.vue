@@ -15,9 +15,6 @@
                   <th class="px-4 py-3">Fecha</th>
                   <th class="px-4 py-3 text-center">Total</th>
                   <th class="px-4 py-3"> Acciones</th>
-                  <th class="px-4 py-3"></th>
-                  <th class="px-4 py-3"></th>
-                  <th class="px-4 py-3"></th>
                </tr>
             </thead>
             <tbody
@@ -108,16 +105,6 @@
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Generar evento
-                     </button>
-                  </td>
-                  <td class="px-4 py-3">
-                     <!-- Botón "Consultar sifen" -->
-                     <button
-                        v-if="item.estado == 'A'"
-                        @click="consultarSifen(item.cdc)"
-                        class="text-blue-600 hover:underline focus:outline-none"
-                     >
-                        Consultar sifen
                      </button>
                   </td>
                </tr>
