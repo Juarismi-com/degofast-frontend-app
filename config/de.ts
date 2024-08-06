@@ -173,10 +173,8 @@ export const deFormData =  {
    tipoDocumento: "1",
    establecimiento: "001",
    codigoSeguridadAleatorio: "",
-   puntoExpedicionList: [],
-   punto: "001",
+   puntoExpedicion: "",
    // contributor.value.establecimientos[0]?.puntoExpedicion[0]?.nroActual
-   numero: "",
    descripcion: "",
    observacion: "",
    // (new Date()).toISOString().toString().substring(0, 19)

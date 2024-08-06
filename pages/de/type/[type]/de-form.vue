@@ -10,7 +10,7 @@
 
       <Loader v-if="loading" />
 
-      <div v-if="!loading" s>
+      <div v-if="!loading">
          <form @submit.prevent="submitForm">
             <div class="text-xl pb-4">
                <h3>Documento Electrónico {{ cdc }}</h3>
@@ -19,9 +19,13 @@
             <div class="grid grid-cols-3 gap-4 pb-4">
                <div>
                   <label for="establecimiento">Establecimiento:</label>
-                  <select id="establecimiento" v-model="formData.establecimiento" :class="INPUT_CLASS.basic"
+                  <select id="establecimiento" 
+                     v-model="formData.establecimiento" 
+                     :class="INPUT_CLASS.basic"
                      @change="selectEstablecimiento($event)">
-                     <option v-for="(establecimiento, index) in contributor.establecimientos" :key="index"
+                     <option 
+                        v-for="(establecimiento, index) in contributor.  establecimientos" 
+                        :key="index"
                         :value="establecimiento.codigo">
                         {{
                            establecimiento.denominacion + " - " + establecimiento.codigo
@@ -30,20 +34,19 @@
                   </select>
                </div>
 
-               <div v-if="formData.puntoExpedicionList?.length > 0">
+               <div>
                   <label for="punto_expedicion">Punto de Expedicion:</label>
-                  <select id="punto_expedicion" v-model="formData.punto" :class="INPUT_CLASS.basic">
-                     <option v-for="(item, index) in formData.puntoExpedicionList" :key="index" :value="item.codigo">
+                  <select id="punto_expedicion" 
+                     v-model="formData.puntoExpedicion" 
+                     :class="INPUT_CLASS.basic">
+                     <option v-for="(item, index) in puntoExpedicionList"     
+                        :key="index" 
+                        :value="item._id">
                         {{
                            item.codigo
                         }}
                      </option>
                   </select>
-               </div>
-
-               <div>
-                  <label for="numero">Número de Factura:</label>
-                  <input type="text" v-model="formData.numero" id="numero" :class="INPUT_CLASS.basic" />
                </div>
 
                <div>
@@ -157,16 +160,6 @@
                <hr>
             </div>
 
-            <!--div>
-               <label for="punto">Punto:</label>
-               <input
-                  type="text"
-                  v-model="formData.punto"
-                  id="punto"
-                  readonly
-                  :class="INPUT_CLASS.basic"
-               />
-            </div-->
             <!-- Detalle -->
             <div class="py-4">
                <div class="grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-8">
@@ -339,10 +332,11 @@ import { useAuthStore } from "../../../../stores";
 import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../../config"
 import { deFormData, deItemData } from '~/config/de';
 import { formatNumber, getDeNumberCode, getRandomNumberForDe } from '../../../../helpers/number.helper';
-import { getClientByRuc, editDE } from "~/services";
+import { getClientByRuc, editDE, saveDE, saveLotes } from "~/services";
 //import ToastDanger from "~/components/Toast/ToastDanger.vue";
 import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
 import DePreview from '@/components/Theme/Modal/DePreview.vue';
+import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service";
 
 const authToken = useStorage("authToken");
 
@@ -368,6 +362,7 @@ const { contributor } = storeToRefs(authStore);
 const formData = ref({ ...deFormData });
 const item = ref({ ...deItemData });
 const cdc = ref("");
+const puntoExpedicionList = ref([]);
 
 const openModal = ref(false);
 const showToast = ref(false);
@@ -433,22 +428,21 @@ const submitForm = async () => {
    }
 };
 
+/**
+ * Confirmacion de envio de documento electronico
+ */
 const confirmSubmitForm = async () => {
-
    try {
-
       if (validateForm()) {
          if (confirm("Desea crear el de?")) {
             let fecha = moment(formData.value.fecha)
                .format('YYYY-MM-DDTHH:mm:ss');
             formData.value.tipoDocumento = deType.value // trae desde paramaetro
-
             formData.value.codigoSeguridadAleatorio = getRandomNumberForDe();
 
             let payload = {
                ...formData.value,
                fecha,
-               numero: getDeNumberCode(formData.value.numero)
             }
 
             if (DE_SUBMIT_FORM == "lote") {
@@ -467,6 +461,10 @@ const confirmSubmitForm = async () => {
 
 }
 
+/**
+ * Envia un lote
+ * @param payload 
+ */
 const submitLote = async (payload) => {
    loading.value = true;
    const response = await saveLotes([payload])
@@ -492,8 +490,8 @@ const submitLote = async (payload) => {
 
 const submitDe = async (payload) => {
    try {
-      const response = await saveDE(payload, authToken.value);
-      formData.value.numero = formData.value.numero++;
+      // Guarda el lote
+      const response = await saveDE(payload)
       cdc.value = response['sifenResponse']['ns2:Id']
 
       showToast.value = true;
@@ -510,34 +508,54 @@ const submitDe = async (payload) => {
    }
 }
 
+/**
+ * Selecciona un establecimiento y setea su punto de expedicion
+ * @param e 
+ */
 const selectEstablecimiento = (e) => {
-   let codigo = e.target.value.toString();
-   const punto = parseInt(codigo);
-   formData.value.puntoExpedicionList = contributor.value.establecimientos[punto - 1]?.puntoExpedicion;
+   formData.value.establecimiento = e.target.value.toString();
+   setPuntoEstablecimientoList();
+
 }
 
-onMounted(async () => {
-   const contributorRes = await getContributor(contributor.value?._id)
+const setPuntoEstablecimientoList =  async() => {
+   const establecimientoCodigo = formData.value.establecimiento;
+   const establecimiento = contributor.value.establecimientos
+      .find(establecimiento => {
+         return establecimiento.codigo == establecimientoCodigo
+      })
+   
+   puntoExpedicionList.value = await getPuntoExpedicionByFilters({
+      contributor: contributor?.value._id,
+      establecimiento: establecimiento?._id,
+      tipoDocumento: deType.value
+   })
 
-   let numero = contributorRes.establecimientos?.[0]?.puntoExpedicion?.[0]?.nroActual || 0;
-   formData.value.numero = ++numero;
+
+   formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
+}
+
+
+onMounted(() => {
+   //const contributorRes = await getContributor(contributor.value?._id)
+   setPuntoEstablecimientoList();
 });
 
 
+/**
+ * Valida que ciertos atributos se envien del
+ */
 const validateForm = () => {
    const errors = [];
-   const { fecha, numero, cliente, punto, items } = formData.value
+   const { fecha, cliente, items, puntoExpedicion } = formData.value
 
    if (!fecha)
       errors.push("Fecha es requerido");
 
-   if (!numero)
-      errors.push("Numero es requerido")
-
    if (!establecimiento)
       errors.push("Establecimiento es requerido")
 
-   if (!punto)
+   if (!puntoExpedicion)
       errors.push("Punto de Expedicion es requerido")
 
    if (!cliente.ruc)
@@ -562,7 +580,6 @@ const validateForm = () => {
 const resetForm = () => {
    formData.value = {
       ...formData.value,
-      numero: '',
       descripcion: '',
       cliente: {
          ruc: '',

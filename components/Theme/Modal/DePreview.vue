@@ -19,9 +19,7 @@
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
                         >
                            FACTURA ELECTRÓNICA: <br />
-                           {{ detalle.establecimiento }}-{{ detalle.punto }}-{{
-                              detalle.numero
-                           }}
+                           {{ detalle.establecimiento }}-00X-00Y
                            <br />
                         </td>
                         <td
