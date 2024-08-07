@@ -581,8 +581,6 @@ const searchCodigoServicio = () => {
       return servicio.codigo == codigoServicio.value
    })
 
-   console.log(servicio);
-
    item.value = {
       ...item.value,
       codigo: servicio.codigo,
@@ -591,7 +589,6 @@ const searchCodigoServicio = () => {
       cantidad: 1,
       cambio: formData.value.cambio || 0
    }
-   
 }
 
 onMounted(() => {
