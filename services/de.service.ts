@@ -22,7 +22,7 @@ export const saveDE = async (data: any) => {
 
 /**
  * Actualiza el estado de un documento electronico
- * @param id 
+ * @param id
  * @param data 
  * @returns 
  */

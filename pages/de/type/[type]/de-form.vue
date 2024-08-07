@@ -449,6 +449,8 @@ const confirmSubmitForm = async () => {
                submitLote(payload)
             } else {
                submitDe(payload)
+
+               loading.value = false
             }
          }
       }
