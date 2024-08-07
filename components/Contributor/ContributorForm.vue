@@ -573,11 +573,179 @@
          </div>
       </form>
       <form @submit.prevent="savePuntoExpedicion" method="post">
-         <div
-            v-if="activeTab === 2"
-            class="col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6 m-5"
-         >
-            Pestaña 3
+         <div v-if="activeTab === 2">
+            <div class="col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6 m-5">
+               <div>
+                  <label
+                     for="formPuntoExpedicionNroActual"
+                     :class="[commonLabelClass]"
+                     >Nro. Actual</label
+                  >
+                  <input
+                     type="number"
+                     name="formPuntoExpedicionNroActual"
+                     id="formPuntoExpedicionNroActual"
+                     :class="[commonInputClass]"
+                     placeholder="Nro. Actual"
+                     v-model="formPuntoExpedicion.nroActual"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="formPuntoExpedicionNroInicial"
+                     :class="[commonLabelClass]"
+                     >Nro. Inicial</label
+                  >
+                  <input
+                     type="text"
+                     name="formPuntoExpedicionNroInicial"
+                     id="formPuntoExpedicionNroInicial"
+                     :class="[commonInputClass]"
+                     placeholder="Nro. Inicial"
+                     v-model="formPuntoExpedicion.nroInicial"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="formPuntoExpedicionCodigo"
+                     :class="[commonLabelClass]"
+                     >Código</label
+                  >
+                  <input
+                     type="text"
+                     name="formPuntoExpedicionCodigo"
+                     id="formPuntoExpedicionCodigo"
+                     :class="[commonInputClass]"
+                     placeholder="Codigo"
+                     v-model="formPuntoExpedicion.codigo"
+                  />
+               </div>
+               <div>
+                  <label
+                     for="formPuntoExpedicionTipoDocumento"
+                     :class="[commonLabelClass]"
+                     >Tipo de Documento</label
+                  >
+                  <select
+                     name="formPuntoExpedicionTipoDocumento"
+                     :class="[commonInputClass]"
+                     id="formPuntoExpedicionTipoDocumento"
+                     v-model="formPuntoExpedicion.tipoDocumento"
+                  >
+                     <option value="1">1</option>
+                     <option value="4">4</option>
+                     <option value="5">5</option>
+                     <option value="6">6</option>
+                     <option value="7">7</option>
+                  </select>
+               </div>
+               <div>
+                  <label
+                     for="formPuntoExpedicionEstablecimiento"
+                     :class="[commonLabelClass]"
+                     >Establecimiento</label
+                  >
+                  <select
+                     name="formPuntoExpedicionEstablecimiento"
+                     :class="[commonInputClass]"
+                     id="formPuntoExpedicionEstablecimiento"
+                     v-model="formPuntoExpedicion.establecimiento"
+                  >
+                     <option value="651b2718e0beb44d1df7c767">
+                        651b2718e0beb44d1df7c767
+                     </option>
+                  </select>
+               </div>
+               <div class="m-7">
+                  <button
+                     type="button"
+                     class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center"
+                     @click="agregarPuntoExpedicionItem"
+                  >
+                     Agregar
+                  </button>
+               </div>
+            </div>
+
+            <div class="w-3/4 m-5">
+               <table class="w-full divide-y divide-gray-200 overflow-x-auto">
+                  <thead class="bg-gray-50">
+                     <tr>
+                        <th
+                           scope="col"
+                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                           Nro Actual
+                        </th>
+                        <th
+                           scope="col"
+                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                           Nro. Inicial
+                        </th>
+                        <th
+                           scope="col"
+                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                           Código
+                        </th>
+                        <th
+                           scope="col"
+                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                           Tipo de Documento
+                        </th>
+                        <th
+                           scope="col"
+                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                           Establecimiento
+                        </th>
+                     </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                     <tr
+                        v-for="item in puntoExpedicionData.items"
+                        :key="item.codigo"
+                     >
+                        <td class="px-6 py-4 whitespace-nowrap">
+                           <div class="text-sm text-gray-900">
+                              {{ item.nroActual }}
+                           </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                           <div class="text-sm text-gray-900">
+                              {{ item.nroInicial }}
+                           </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                           <div class="text-sm text-gray-900">
+                              {{ item.codigo }}
+                           </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                           <div class="text-sm text-gray-900">
+                              {{ item.tipoDocumento }}
+                           </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                           <div class="text-sm text-gray-900">
+                              {{ item.establecimiento }}
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+
+            <div class="m-5">
+               <button
+                  type="submit"
+                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+               >
+                  Guardar
+               </button>
+            </div>
          </div>
       </form>
       <form @submit.prevent="saveCertified" method="post">
@@ -622,6 +790,8 @@
       </form>
       <form @submit.prevent="saveActividadEconomica" method="post">
          <div v-if="activeTab === 4">
+            <!-- <ActividadEconomicaTab :form="form.value" /> -->
+
             <div class="col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6 m-5">
                <div>
                   <label
@@ -634,7 +804,7 @@
                      name="formActividadEconomicaCodigo"
                      id="formActividadEconomicaCodigo"
                      :class="[commonInputClass]"
-                     placeholder="Nro de timbrado actual"
+                     placeholder="Codigo"
                      v-model="formActividadEconomica.codigo"
                   />
                </div>
@@ -732,8 +902,10 @@
 import moment from "moment";
 import { storeToRefs } from "pinia";
 import VueTailwindDatepicker from "vue-tailwind-datepicker";
-import { create, update } from "~/services/http.service";
+import { get, create, update } from "~/services/http.service";
 import { useAuthStore } from "~/stores";
+
+import ActividadEconomicaTab from "./tabs/ActividadEconomicaTab.vue";
 
 const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
@@ -787,9 +959,9 @@ const saveContributorData = async (e) => {
       };
 
       try {
-         if (contributor) {
+         if (authStore.contributor) {
             const res = await update(
-               `contributor-emitter/${authStore.contributor._id}`,
+               `contributor-emitter/${authStore.contributor.id}`,
                payload,
             );
             console.log("Datos actualizados:", res);
@@ -842,7 +1014,7 @@ const saveActividadEconomica = async (e) => {
       };
 
       try {
-         if (contributor) {
+         if (authStore.contributor) {
             const res = await update(
                `contributor-emitter/${authStore.contributor._id}`,
                payload,
@@ -921,7 +1093,7 @@ const saveEstablecimiento = async (e) => {
       };
 
       try {
-         if (contributor) {
+         if (authStore.contributor) {
             const res = await update(
                `contributor-emitter/${authStore.contributor._id}`,
                payload,
@@ -936,35 +1108,49 @@ const saveEstablecimiento = async (e) => {
    }
 };
 
-const formCertified = ref({
-   password: "",
+const formPuntoExpedicion = ref({
+   nroActual: 1,
+   nroInicial: 1,
+   contributor: null,
+   codigo: "",
+   establecimiento: null,
+   tipoDocumento: 1,
 });
 
-const file = ref(null);
+const puntoExpedicionData = ref({ items: [] });
 
-const handleFileUpload = (event) => {
-   file.value = event.target.files[0];
+const agregarPuntoExpedicionItem = () => {
+   if (
+      formPuntoExpedicion.value.nroActual &&
+      formPuntoExpedicion.value.nroInicial &&
+      formPuntoExpedicion.value.codigo &&
+      formPuntoExpedicion.value.tipoDocumento
+   ) {
+      puntoExpedicionData.value.items.push({ ...formPuntoExpedicion.value });
+      formPuntoExpedicion.value = {
+         nroActual: 1,
+         nroInicial: 1,
+         contributor: null,
+         codigo: "001",
+         establecimiento: null,
+         tipoDocumento: 1,
+      };
+   } else {
+      alert("Por favor, complete todos los campos del nuevo ítem.");
+   }
 };
 
-const saveCertified = async (e) => {
+const savePuntoExpedicion = async (e) => {
    if (validateForm()) {
-      let fechaFirmaDigital = moment(form.value.fechaFirmaDigital).format(
-         "YYYY-MM-DDTHH:mm:ss",
-      );
-
-      let timbradoFecha = moment(form.value.timbradoFecha).format(
-         "YYYY-MM-DDTHH:mm:ss",
-      );
-
       let payload = {
-         ...form.value,
-         fechaFirmaDigital,
-         timbradoFecha,
+         ...formPuntoExpedicion.value,
+         establecimiento: "651b2718e0beb44d1df7c767",
+         contributor: "665aa4061e28d047b786bfc6",
       };
 
       try {
-         if (contributor) {
-            const res = await create(`certified/local/`, payload);
+         if (authStore.contributor) {
+            const res = await create("punto-expedicion", payload);
             console.log("Datos actualizados:", res);
          } else {
             console.log("Se debe cargar los datos del contribuyente", res);
@@ -972,6 +1158,45 @@ const saveCertified = async (e) => {
       } catch (error) {
          console.error("Error al actualizar los datos:", error.message);
       }
+   }
+};
+
+const formCertified = ref({
+   cert: null,
+   password: "",
+});
+
+const handleFileUpload = (event) => {
+   formCertified.value.cert = event.target.files[0];
+};
+
+/* @todo validar funcionalidad */
+const saveCertified = async (e) => {
+   try {
+      if (authStore.contributor) {
+         const formData = new FormData();
+
+         if (formCertified.value.cert) {
+            formData.append("cert", formCertified.value.cert);
+         } else {
+            console.error("No se ha seleccionado un archivo.");
+            return;
+         }
+
+         formData.append("password", formCertified.value.password);
+
+         const res = await create("certifieds/local", formData);
+         console.log("Datos actualizados:", res);
+
+         formCertified.value = {
+            cert: null,
+            password: "",
+         };
+      } else {
+         console.log("Se debe cargar los datos del contribuyente", res);
+      }
+   } catch (error) {
+      console.error("Error al actualizar los datos:", error.message);
    }
 };
 
@@ -997,12 +1222,36 @@ const validateForm = () => {
    return true;
 };
 
-onMounted(() => {
-   if (contributor) {
-      actividadEconomicaData.value.items =
-         contributor.value.actividadesEconomicas || [];
-      establecimientoData.value.items =
-         contributor.value.establecimientos || [];
+const getPuntoExpedicion = async () => {
+   const puntosExpedicion = await get("punto-expedicion");
+
+   if (puntosExpedicion.length > 0) {
+      puntoExpedicionData.value.items = puntosExpedicion;
+   } else {
+      puntoExpedicionData.value.items = [];
    }
+};
+
+onMounted(() => {
+   if (authStore.contributor) {
+      const { actividadesEconomicas, establecimientos } = authStore.contributor;
+
+      if (actividadesEconomicas.length > 0) {
+         actividadEconomicaData.value.items = actividadesEconomicas;
+      } else {
+         actividadEconomicaData.value.items = [];
+      }
+
+      if (establecimientos.length > 0) {
+         establecimientoData.value.items = establecimientos;
+      } else {
+         establecimientoData.value.items = [];
+      }
+   } else {
+      actividadEconomicaData.value.items = [];
+      establecimientoData.value.items = [];
+   }
+
+   getPuntoExpedicion();
 });
 </script>
