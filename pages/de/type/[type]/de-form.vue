@@ -103,7 +103,12 @@
                   <label for="moneda">Moneda:</label>
                   <select v-model="formData.moneda" id="moneda" :class="INPUT_CLASS.basic">
                      <option value="PYG">PYG</option>
+                     <option value="USD">USD</option>
                   </select>
+               </div>
+               <div v-if="formData.moneda == 'USD'">
+                  <label for="cambio">Cambio ({{ formData.moneda }}):</label>
+                  <input v-model="formData.cambio" id="cambio" :class="INPUT_CLASS.basic"></input>
                </div>
                <div>
                   <label for="presencia">¿Factura presente?</label>
@@ -161,6 +166,23 @@
             </div>
 
             <!-- Detalle -->
+             <div class="pb-4">
+               <div class="grid grid-cols-3 gap-4 pb-1">
+                  <div>
+                     <label for="codigoServicio" class="mr-2">Codigo Servicio:</label>
+                     <input type="text" id="codigoServicio" 
+                        v-model="codigoServicio"
+                        :class="INPUT_CLASS.basic"
+                        class="mr-2" />
+                  </div>
+                  <div>
+                     <button type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        @click="searchCodigoServicio">Buscar</button>
+
+                  </div>
+               </div>
+            </div>
             <div class="py-4">
                <div class="grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-8">
                   <div>
@@ -337,6 +359,7 @@ import { getClientByRuc, editDE, saveDE, saveLotes } from "~/services";
 import ToastSuccess from "~/components/Toast/ToastSuccess.vue";
 import DePreview from '@/components/Theme/Modal/DePreview.vue';
 import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service";
+import { getServicesByContributor } from "~/services/services.service";
 
 const authToken = useStorage("authToken");
 
@@ -344,6 +367,7 @@ const authToken = useStorage("authToken");
 // @todo move in a helper
 const route = useRoute();
 const deType = ref(route.params.type);
+const codigoServicio = ref("");
 const routeList = ref(TIPO_DOCUMENT_LIST);
 const routeSelected = ref(
    routeList.value.find((item) => item.tipoDocumento == route.params.type),
@@ -363,6 +387,7 @@ const formData = ref({ ...deFormData });
 const item = ref({ ...deItemData });
 const cdc = ref("");
 const puntoExpedicionList = ref([]);
+const serviceList = ref([]);
 
 const openModal = ref(false);
 const showToast = ref(false);
@@ -495,6 +520,7 @@ const submitLote = async (payload) => {
  * @param payload 
  */
 const submitDe = async (payload) => {
+   loading.value = true
    try {
       const response = await saveDE(payload)
       cdc.value = response?.de?.cdc
@@ -505,10 +531,12 @@ const submitDe = async (payload) => {
       }, 3000);
 
       resetForm();
+      loading.value = false;
    } catch (error) {
       console.log(error);
       const data = error?.response?.data?.error;
       alert(data?.details['ns2:dMsgRes']);
+      loading.value = false;
    }
 }
 
@@ -521,6 +549,10 @@ const selectEstablecimiento = (e) => {
    setPuntoEstablecimientoList();
 }
 
+/**
+ * Carga el listado de establecimientos y setea el primero encontrado 
+ * por defecto
+ */
 const setPuntoEstablecimientoList =  async() => {
    const establecimientoCodigo = formData.value.establecimiento;
    const establecimiento = contributor.value.establecimientos
@@ -534,14 +566,37 @@ const setPuntoEstablecimientoList =  async() => {
       tipoDocumento: deType.value
    })
 
-
    formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
 }
 
 
+const setServicesList = async () => {
+   serviceList.value = await getServicesByContributor(contributor.value._id)
+   console.log(serviceList.value)
+}
+
+
+const searchCodigoServicio = () => {
+   const servicio = serviceList.value.find(servicio => {
+      return servicio.codigo == codigoServicio.value
+   })
+
+   console.log(servicio);
+
+   item.value = {
+      ...item.value,
+      codigo: servicio.codigo,
+      descripcion: servicio.nombre,
+      precioUnitario: servicio?.precioUnitario || '',
+      cantidad: 1,
+      cambio: formData.value.cambio || 0
+   }
+   
+}
+
 onMounted(() => {
-   //const contributorRes = await getContributor(contributor.value?._id)
    setPuntoEstablecimientoList();
+   setServicesList();
 });
 
 
