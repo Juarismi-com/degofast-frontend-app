@@ -183,6 +183,8 @@ export const deFormData =  {
    tipoTransaccion: 2,
    tipoImpuesto: 1,
    moneda: "PYG",
+   cambio: 0,
+   condicionTipoCambio: 1,
    factura: {
       presencia: 1,
    },
