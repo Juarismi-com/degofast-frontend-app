@@ -14,7 +14,7 @@
                   <th class="px-4 py-3">Estado</th>
                   <th class="px-4 py-3">Fecha</th>
                   <th class="px-4 py-3 text-center">Total</th>
-                  <th class="px-4 py-3"> Acciones</th>
+                  <th class="px-4 py-3">Acciones</th>
                </tr>
             </thead>
             <tbody
@@ -53,22 +53,19 @@
                      </div>
                   </td>
                   <td class="px-4 py-3 text-sm">
-                     {{ 
-                        getEstablecimientoNumberCode(item.establecimiento)
-                     }}
-                        -
-                     {{ 
-                        getPuntoExpedicionNumberCode(item.punto)
-                     }}
-                        -
-                     {{ 
-                        getDeNumberCode(item.numero) 
-                     }}
+                     {{ getEstablecimientoNumberCode(item.establecimiento) }}
+                     -
+                     {{ getPuntoExpedicionNumberCode(item.punto) }}
+                     -
+                     {{ getDeNumberCode(item.numero) }}
                   </td>
                   <td class="px-4 py-3 text-sm">{{ item._id }}</td>
                   <td class="px-4 py-3 text-xs">
                      <span
-                        :class="['px-2 py-1 font-semibold leading-tight text-green-700 rounded-full dark:bg-green-700 dark:text-green-100', item?.estado === 'A'? 'bg-green-100': 'bg-red-100']"
+                        :class="[
+                           'px-2 py-1 font-semibold leading-tight text-green-700 rounded-full dark:bg-green-700 dark:text-green-100',
+                           item?.estado === 'A' ? 'bg-green-100' : 'bg-red-100',
+                        ]"
                      >
                         {{ item.estado }}
                      </span>
@@ -88,7 +85,7 @@
                         Ver detalles
                      </button>
                   </td>
-                  <td class="px-4 py-3" >
+                  <td class="px-4 py-3">
                      <!-- Botón "Ver kude" -->
                      <button
                         v-if="item.estado == 'A'"
@@ -98,7 +95,7 @@
                         Ver kude
                      </button>
                   </td>
-                  <td class="px-4 py-3" >
+                  <td class="px-4 py-3">
                      <!-- Botón "Generar evento" -->
                      <button
                         v-if="item.estado == 'A'"
@@ -202,11 +199,11 @@
 import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
-import { 
+import {
    formatPriceNumber,
-   getEstablecimientoNumberCode, 
+   getEstablecimientoNumberCode,
    getPuntoExpedicionNumberCode,
-   getDeNumberCode
+   getDeNumberCode,
 } from "@/helpers/number.helper";
 import Loader from "@/components/Loader/Loader.vue";
 
@@ -216,7 +213,6 @@ const props = defineProps({
       default: [],
    },
 });
-
 
 const router = useRouter();
 const loading = ref(true);
@@ -237,12 +233,13 @@ const consultarSifen = (cdc) => {
 const { items } = toRefs(props);
 
 onMounted(() => {
-   loading.value = items.value.length === 0;
+   loading.value = true;
 });
 
 watch(items, (newItems) => {
-   loading.value = newItems.length === 0;
+   loading.value = false;
+   if (newItems.length === 0) {
+      alert("No hay elementos que mostrar.");
+   }
 });
-
-
 </script>
