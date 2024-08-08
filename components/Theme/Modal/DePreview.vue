@@ -298,7 +298,9 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ data.total - data.totalIva }}
+                        {{
+                           formatPriceNumber(detalle.total - detalle.totalIva)
+                        }}
                      </td>
                   </tr>
                   <tr>
@@ -311,7 +313,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ data.total }}
+                        {{ formatPriceNumber(detalle.total) }}
                      </td>
                   </tr>
                   <tr>
@@ -320,7 +322,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <label class="font-bold">IVA (5%):</label>
-                        {{ data.iva5 }}
+                        {{ formatPriceNumber(detalle.iva5) }}
                      </td>
 
                      <td
@@ -328,7 +330,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <label class="font-bold">IVA (10%):</label>
-                        {{ data.iva10 }}
+                        {{ formatPriceNumber(detalle.iva10) }}
                      </td>
                      <td
                         colspan="1"
@@ -340,7 +342,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ data.totalIva }}
+                        {{ formatPriceNumber(detalle.totalIva) }}
                      </td>
                   </tr>
                </tfoot>
@@ -369,7 +371,7 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const data = ref({});
+const detalle = ref({});
 
 const props = defineProps({
    detalle: {
@@ -380,7 +382,7 @@ const props = defineProps({
 
 const fetchDetalle = async () => {
    try {
-      data.value = mapperDeName(props.detalle);
+      detalle.value = mapperDeName(props.detalle);
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
@@ -404,11 +406,10 @@ const mapperDeName = (de) => {
    return {
       ...de,
       establecimiento: getEstablecimientoNumberCode(de.establecimiento),
-      numero: getDeNumberCode(de.numero),
       condicionName: deValues.condicion.tipo[de.condicion.tipo || 1],
       tipoOperacionName:
          deValues.cliente.tipoOperacion[de.cliente.tipoOperacion || 2],
-      total: String(sum),
+      total: sum,
       iva10: iva10,
       iva5: iva5,
       totalIva: iva10 + iva5,
