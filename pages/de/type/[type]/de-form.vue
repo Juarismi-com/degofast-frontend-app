@@ -467,7 +467,7 @@ const confirmSubmitForm = async () => {
 
             let payload = {
                ...formData.value,
-               fecha,
+               fecha
             }
 
             if (DE_SUBMIT_FORM == "lote") {
