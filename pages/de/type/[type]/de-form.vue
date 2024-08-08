@@ -467,9 +467,7 @@ const confirmSubmitForm = async () => {
 
             let payload = {
                ...formData.value,
-               fecha,
-               establecimiento: "001",
-               puntoExpedicion: "001"
+               fecha
             }
 
             if (DE_SUBMIT_FORM == "lote") {
@@ -611,11 +609,11 @@ const validateForm = () => {
    if (!fecha)
       errors.push("Fecha es requerido");
 
-   // if (!establecimiento)
-   //    errors.push("Establecimiento es requerido")
+   if (!establecimiento)
+      errors.push("Establecimiento es requerido")
 
-   // if (!puntoExpedicion)
-   //    errors.push("Punto de Expedicion es requerido")
+   if (!puntoExpedicion)
+      errors.push("Punto de Expedicion es requerido")
 
    if (!cliente.ruc)
       errors.push("Ruc de Cliente es requerido")
