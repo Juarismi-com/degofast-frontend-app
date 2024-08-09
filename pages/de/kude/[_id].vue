@@ -18,6 +18,7 @@
                         <td
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
                         >
+                           <h1>{{ detalle.contributor.razonSocial }}</h1>
                            FACTURA ELECTRÓNICA: <br />
                            {{ detalle.establecimiento }}-{{ detalle.punto }}-{{
                               detalle.numero
@@ -30,7 +31,7 @@
                            Timbrado N°:
                            <label class="font-bold"
                               >{{
-                                 authStore.contributor.timbradoNumero
+                                 detalle.contributor.timbradoNumero
                               }} </label
                            ><br />
 
@@ -38,7 +39,7 @@
                            <label class="font-bold">
                               {{
                                  moment(
-                                    authStore.contributor.timbradoFecha,
+                                    detalle.contributor.timbradoFecha,
                                  ).format("DD/MM/YYYY")
                               }}</label
                            >
@@ -390,10 +391,8 @@ const authStore = useAuthStore();
 const route = useRoute();
 const detalle = ref(null);
 
-const fetchDetalle = async () => {
+const getDeById = async (id) => {
    try {
-      const id = route.params._id;
-      if (!id) return;
       const deRes = await getDesById(id);
       detalle.value = mapperDeName(deRes);
    } catch (error) {
@@ -443,8 +442,9 @@ const calculateIVA = (item) => {
 };
 
 onMounted(() => {
-   if (route.params._id) {
-      fetchDetalle();
+   const deId = route.params._id;
+   if (deId) {
+      getDeById(deId);
    }
 });
 </script>
