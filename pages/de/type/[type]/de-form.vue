@@ -625,6 +625,7 @@ const setPuntoEstablecimientoList = async () => {
 
 
 const setServicesList = async () => {
+   console.log(contributor.value._id);
    serviceList.value = await getServicesByContributor(contributor.value._id)
    console.log(serviceList.value)
 }

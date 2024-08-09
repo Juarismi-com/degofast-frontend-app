@@ -76,8 +76,8 @@
                   <td class="px-4 py-3 text-sm text-right">
                      {{ formatPriceNumber(item.total) }}
                   </td>
+                  <!-- Opciones -->
                   <td class="px-4 py-3">
-                     <!-- Botón "Ver detalles" -->
                      <button
                         @click="verDetalles(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
@@ -86,9 +86,7 @@
                      </button>
                   </td>
                   <td class="px-4 py-3">
-                     <!-- Botón "Ver kude" -->
                      <button
-                        v-if="item.estado == 'A'"
                         @click="verKude(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
@@ -96,7 +94,6 @@
                      </button>
                   </td>
                   <td class="px-4 py-3">
-                     <!-- Botón "Generar evento" -->
                      <button
                         v-if="item.estado == 'A'"
                         class="text-blue-600 hover:underline focus:outline-none"
