@@ -641,7 +641,19 @@
                      id="formPuntoExpedicionEstablecimiento"
                      v-model="formPuntoExpedicion.establecimiento"
                   >
-                     <option value=""></option>
+                     <option
+                        v-for="(
+                           establecimiento, index
+                        ) in contributor.establecimientos"
+                        :key="index"
+                        :value="establecimiento.codigo"
+                     >
+                        {{
+                           establecimiento.denominacion +
+                           " - " +
+                           establecimiento.codigo
+                        }}
+                     </option>
                   </select>
                </div>
                <div class="m-7">
@@ -774,6 +786,7 @@
                   Guardar
                </button>
             </div>
+            <h2>{{ messageCertData }}</h2>
          </div>
       </form>
       <form @submit.prevent="saveActividadEconomica" method="post">
@@ -889,18 +902,14 @@
  */
 import moment from "moment";
 import { storeToRefs } from "pinia";
-import VueTailwindDatepicker from "vue-tailwind-datepicker";
 import { get, create, update } from "~/services/http.service";
 import { useAuthStore } from "~/stores";
-
-import ActividadEconomicaTab from "./tabs/ActividadEconomicaTab.vue";
-
 const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
 
 const form = ref({
    ...contributor.value,
-   timbradoFecha: moment(contributor.value.timbradoFecha).format(
+   timbradoFecha: moment(contributor?.value.timbradoFecha).format(
       "YYYY-MM-DDTHH:mm:ss",
    ),
 });
@@ -1023,7 +1032,7 @@ const saveActividadEconomica = async (e) => {
 };
 
 const formEstablecimiento = ref({
-   codigo: "",
+   codigo: "001",
    direccion: "",
    numeroCasa: 0,
    complementoDireccion1: "",
@@ -1048,7 +1057,7 @@ const agregarEstablecimientoItem = () => {
    ) {
       establecimientoData.value.items.push({ ...formEstablecimiento.value });
       formEstablecimiento.value = {
-         codigo: "",
+         codigo: "001",
          direccion: "",
          numeroCasa: 1,
          complementoDireccion1: "",
@@ -1223,6 +1232,8 @@ const getPuntoExpedicion = async () => {
    }
 };
 
+let messageCertData = ref("No se ha cargado ningún certificado");
+
 onMounted(() => {
    if (authStore.contributor) {
       const { actividadesEconomicas, establecimientos } = authStore.contributor;
@@ -1237,6 +1248,10 @@ onMounted(() => {
          establecimientoData.value.items = establecimientos;
       } else {
          establecimientoData.value.items = [];
+      }
+
+      if (authStore.contributor?.certData?.length > 0) {
+         messageCertData = "Ya se ha cargado un certificado";
       }
    } else {
       actividadEconomicaData.value.items = [];
