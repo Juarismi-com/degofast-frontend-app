@@ -912,7 +912,9 @@ import ActividadEconomicaTab from "./tabs/ActividadEconomicaTab.vue";
 const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
 
-const form = ref({ ...contributor.value });
+const form = ref({
+   ...contributor.value,
+});
 const activeTab = ref(0);
 
 // const registerFail = ref(false);
