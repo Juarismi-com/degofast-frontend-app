@@ -114,10 +114,11 @@
                <label for="fechaFirmaDigital" :class="[commonLabelClass]"
                   >Fecha Generación de Firma Digital *</label
                >
-               <vue-tailwind-datepicker
+               <input
+                  type="datetime-local"
                   v-model="form.fechaFirmaDigital"
+                  id="fecha"
                   :class="[commonInputClass]"
-                  as-single
                />
             </div>
 
@@ -140,10 +141,11 @@
                <label for="timbradoFecha" :class="[commonLabelClass]"
                   >Fecha de Timbrado*</label
                >
-               <vue-tailwind-datepicker
+               <input
+                  type="datetime-local"
                   v-model="form.timbradoFecha"
+                  id="fecha"
                   :class="[commonInputClass]"
-                  as-single
                />
             </div>
 
@@ -632,11 +634,11 @@
                      id="formPuntoExpedicionTipoDocumento"
                      v-model="formPuntoExpedicion.tipoDocumento"
                   >
-                     <option value="1">1</option>
-                     <option value="4">4</option>
-                     <option value="5">5</option>
-                     <option value="6">6</option>
-                     <option value="7">7</option>
+                     <option value="1">Factura Electrónica</option>
+                     <option value="4">Autofactura electrónica</option>
+                     <option value="5">Nota de crédito electrónica</option>
+                     <option value="6">Nota de débito electrónica</option>
+                     <option value="7">Nota de remisión electrónica</option>
                   </select>
                </div>
                <div>
@@ -1030,9 +1032,9 @@ const saveActividadEconomica = async (e) => {
 };
 
 const formEstablecimiento = ref({
-   codigo: "1",
-   direccion: "1",
-   numeroCasa: 1,
+   codigo: "",
+   direccion: "",
+   numeroCasa: 0,
    complementoDireccion1: "",
    complementoDireccion2: "",
    departamento: "",
@@ -1109,8 +1111,8 @@ const saveEstablecimiento = async (e) => {
 };
 
 const formPuntoExpedicion = ref({
-   nroActual: 1,
-   nroInicial: 1,
+   nroActual: 0,
+   nroInicial: 0,
    contributor: null,
    codigo: "",
    establecimiento: null,
@@ -1131,7 +1133,7 @@ const agregarPuntoExpedicionItem = () => {
          nroActual: 1,
          nroInicial: 1,
          contributor: null,
-         codigo: "001",
+         codigo: "",
          establecimiento: null,
          tipoDocumento: 1,
       };
@@ -1144,8 +1146,6 @@ const savePuntoExpedicion = async (e) => {
    if (validateForm()) {
       let payload = {
          ...formPuntoExpedicion.value,
-         establecimiento: "651b2718e0beb44d1df7c767",
-         contributor: "665aa4061e28d047b786bfc6",
       };
 
       try {
