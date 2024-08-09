@@ -271,7 +271,7 @@
                               <tr v-for="(item, index) in formData.items" :key="index"
                                  class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white">
                                  <td class="px-4 py-2 whitespace-nowrap text-right">
-                                    {{ formatNumber(item.codigo) }}
+                                    {{ item.codigo }}
                                  </td>
                                  <td class="px-4 py-2 whitespace-nowrap">
                                     {{ item.descripcion }}
