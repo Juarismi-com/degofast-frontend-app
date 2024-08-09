@@ -111,18 +111,6 @@
             class="col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6 m-5"
          >
             <div>
-               <label for="fechaFirmaDigital" :class="[commonLabelClass]"
-                  >Fecha Generación de Firma Digital *</label
-               >
-               <input
-                  type="datetime-local"
-                  v-model="form.fechaFirmaDigital"
-                  id="fecha"
-                  :class="[commonInputClass]"
-               />
-            </div>
-
-            <div>
                <label for="timbradoNumero" :class="[commonLabelClass]"
                   >Numero de Timbrado*</label
                >
@@ -232,7 +220,7 @@
                   v-model="form.email"
                />
             </div>
-            <div>
+            <div class="m-7">
                <button
                   type="submit"
                   class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
@@ -653,9 +641,7 @@
                      id="formPuntoExpedicionEstablecimiento"
                      v-model="formPuntoExpedicion.establecimiento"
                   >
-                     <option value="651b2718e0beb44d1df7c767">
-                        651b2718e0beb44d1df7c767
-                     </option>
+                     <option value=""></option>
                   </select>
                </div>
                <div class="m-7">
@@ -914,6 +900,9 @@ const { contributor } = storeToRefs(authStore);
 
 const form = ref({
    ...contributor.value,
+   timbradoFecha: moment(contributor.value.timbradoFecha).format(
+      "YYYY-MM-DDTHH:mm:ss",
+   ),
 });
 const activeTab = ref(0);
 
