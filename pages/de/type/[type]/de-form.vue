@@ -530,6 +530,7 @@ const submitDe = async (payload) => {
          showToast.value = false;
       }, 3000);
 
+      alert("Enviado correctamente");
       resetForm();
       loading.value = false;
    } catch (error) {
