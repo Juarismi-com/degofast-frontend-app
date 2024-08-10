@@ -786,7 +786,9 @@
                   Guardar
                </button>
             </div>
-            <h2>{{ messageCertData }}</h2>
+            <h1 :style="{ color: certDataColor }" class="font-bold">
+               {{ messageCertData }}
+            </h1>
          </div>
       </form>
       <form @submit.prevent="saveActividadEconomica" method="post">
@@ -909,9 +911,9 @@ const { contributor } = storeToRefs(authStore);
 
 const form = ref({
    ...contributor.value,
-   timbradoFecha: moment(contributor?.value.timbradoFecha).format(
-      "YYYY-MM-DDTHH:mm:ss",
-   ),
+   timbradoFecha: contributor.value
+      ? moment(contributor.value.timbradoFecha).format("YYYY-MM-DDTHH:mm:ss")
+      : null,
 });
 const activeTab = ref(0);
 
@@ -1170,6 +1172,9 @@ const handleFileUpload = (event) => {
    formCertified.value.cert = event.target.files[0];
 };
 
+const messageCertData = ref("No se ha cargado ningún certificado");
+const certDataColor = ref("red");
+
 /* @todo validar funcionalidad */
 const saveCertified = async (e) => {
    try {
@@ -1232,7 +1237,16 @@ const getPuntoExpedicion = async () => {
    }
 };
 
-let messageCertData = ref("No se ha cargado ningún certificado");
+const getDepartments = async () => {
+   try {
+      const departaments = await get("departments");
+      console.log(departaments);
+      return departaments;
+   } catch (error) {
+      console.log(error);
+      const data = error?.response?.data?.error;
+   }
+};
 
 onMounted(() => {
    if (authStore.contributor) {
@@ -1251,13 +1265,15 @@ onMounted(() => {
       }
 
       if (authStore.contributor?.certData?.length > 0) {
-         messageCertData = "Ya se ha cargado un certificado";
+         messageCertData.value = "Ya se ha cargado un certificado";
+         certDataColor.value = "green";
       }
    } else {
       actividadEconomicaData.value.items = [];
       establecimientoData.value.items = [];
    }
 
+   //getDepartments();
    getPuntoExpedicion();
 });
 </script>
