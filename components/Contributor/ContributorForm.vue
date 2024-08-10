@@ -111,17 +111,6 @@
             class="col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6 m-5"
          >
             <div>
-               <label for="fechaFirmaDigital" :class="[commonLabelClass]"
-                  >Fecha Generación de Firma Digital *</label
-               >
-               <vue-tailwind-datepicker
-                  v-model="form.fechaFirmaDigital"
-                  :class="[commonInputClass]"
-                  as-single
-               />
-            </div>
-
-            <div>
                <label for="timbradoNumero" :class="[commonLabelClass]"
                   >Numero de Timbrado*</label
                >
@@ -140,10 +129,11 @@
                <label for="timbradoFecha" :class="[commonLabelClass]"
                   >Fecha de Timbrado*</label
                >
-               <vue-tailwind-datepicker
+               <input
+                  type="datetime-local"
                   v-model="form.timbradoFecha"
+                  id="fecha"
                   :class="[commonInputClass]"
-                  as-single
                />
             </div>
 
@@ -230,7 +220,7 @@
                   v-model="form.email"
                />
             </div>
-            <div>
+            <div class="m-7">
                <button
                   type="submit"
                   class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
@@ -632,11 +622,11 @@
                      id="formPuntoExpedicionTipoDocumento"
                      v-model="formPuntoExpedicion.tipoDocumento"
                   >
-                     <option value="1">1</option>
-                     <option value="4">4</option>
-                     <option value="5">5</option>
-                     <option value="6">6</option>
-                     <option value="7">7</option>
+                     <option value="1">Factura Electrónica</option>
+                     <option value="4">Autofactura electrónica</option>
+                     <option value="5">Nota de crédito electrónica</option>
+                     <option value="6">Nota de débito electrónica</option>
+                     <option value="7">Nota de remisión electrónica</option>
                   </select>
                </div>
                <div>
@@ -651,8 +641,18 @@
                      id="formPuntoExpedicionEstablecimiento"
                      v-model="formPuntoExpedicion.establecimiento"
                   >
-                     <option value="651b2718e0beb44d1df7c767">
-                        651b2718e0beb44d1df7c767
+                     <option
+                        v-for="(
+                           establecimiento, index
+                        ) in contributor.establecimientos"
+                        :key="index"
+                        :value="establecimiento.codigo"
+                     >
+                        {{
+                           establecimiento.denominacion +
+                           " - " +
+                           establecimiento.codigo
+                        }}
                      </option>
                   </select>
                </div>
@@ -786,6 +786,9 @@
                   Guardar
                </button>
             </div>
+            <h1 :style="{ color: certDataColor }" class="font-bold">
+               {{ messageCertData }}
+            </h1>
          </div>
       </form>
       <form @submit.prevent="saveActividadEconomica" method="post">
@@ -901,16 +904,17 @@
  */
 import moment from "moment";
 import { storeToRefs } from "pinia";
-import VueTailwindDatepicker from "vue-tailwind-datepicker";
 import { get, create, update } from "~/services/http.service";
 import { useAuthStore } from "~/stores";
-
-import ActividadEconomicaTab from "./tabs/ActividadEconomicaTab.vue";
-
 const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
 
-const form = ref({ ...contributor.value });
+const form = ref({
+   ...contributor.value,
+   timbradoFecha: contributor.value
+      ? moment(contributor.value.timbradoFecha).format("YYYY-MM-DDTHH:mm:ss")
+      : null,
+});
 const activeTab = ref(0);
 
 // const registerFail = ref(false);
@@ -1030,9 +1034,9 @@ const saveActividadEconomica = async (e) => {
 };
 
 const formEstablecimiento = ref({
-   codigo: "1",
-   direccion: "1",
-   numeroCasa: 1,
+   codigo: "001",
+   direccion: "",
+   numeroCasa: 0,
    complementoDireccion1: "",
    complementoDireccion2: "",
    departamento: "",
@@ -1055,7 +1059,7 @@ const agregarEstablecimientoItem = () => {
    ) {
       establecimientoData.value.items.push({ ...formEstablecimiento.value });
       formEstablecimiento.value = {
-         codigo: "",
+         codigo: "001",
          direccion: "",
          numeroCasa: 1,
          complementoDireccion1: "",
@@ -1109,8 +1113,8 @@ const saveEstablecimiento = async (e) => {
 };
 
 const formPuntoExpedicion = ref({
-   nroActual: 1,
-   nroInicial: 1,
+   nroActual: 0,
+   nroInicial: 0,
    contributor: null,
    codigo: "",
    establecimiento: null,
@@ -1131,7 +1135,7 @@ const agregarPuntoExpedicionItem = () => {
          nroActual: 1,
          nroInicial: 1,
          contributor: null,
-         codigo: "001",
+         codigo: "",
          establecimiento: null,
          tipoDocumento: 1,
       };
@@ -1144,8 +1148,6 @@ const savePuntoExpedicion = async (e) => {
    if (validateForm()) {
       let payload = {
          ...formPuntoExpedicion.value,
-         establecimiento: "651b2718e0beb44d1df7c767",
-         contributor: "665aa4061e28d047b786bfc6",
       };
 
       try {
@@ -1169,6 +1171,9 @@ const formCertified = ref({
 const handleFileUpload = (event) => {
    formCertified.value.cert = event.target.files[0];
 };
+
+const messageCertData = ref("No se ha cargado ningún certificado");
+const certDataColor = ref("red");
 
 /* @todo validar funcionalidad */
 const saveCertified = async (e) => {
@@ -1232,6 +1237,17 @@ const getPuntoExpedicion = async () => {
    }
 };
 
+const getDepartments = async () => {
+   try {
+      const departaments = await get("departments");
+      console.log(departaments);
+      return departaments;
+   } catch (error) {
+      console.log(error);
+      const data = error?.response?.data?.error;
+   }
+};
+
 onMounted(() => {
    if (authStore.contributor) {
       const { actividadesEconomicas, establecimientos } = authStore.contributor;
@@ -1247,11 +1263,17 @@ onMounted(() => {
       } else {
          establecimientoData.value.items = [];
       }
+
+      if (authStore.contributor?.certData?.length > 0) {
+         messageCertData.value = "Ya se ha cargado un certificado";
+         certDataColor.value = "green";
+      }
    } else {
       actividadEconomicaData.value.items = [];
       establecimientoData.value.items = [];
    }
 
+   //getDepartments();
    getPuntoExpedicion();
 });
 </script>

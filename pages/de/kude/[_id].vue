@@ -232,7 +232,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ formatNumber(item.codigo) }}
+                           {{ item.codigo }}
                         </div>
                      </td>
                      <td
@@ -383,7 +383,7 @@ import { useAuthStore } from "~/stores";
 import moment from "moment";
 
 definePageMeta({
-   layout: "empty"
+   layout: "empty",
 });
 
 const authStore = useAuthStore();
