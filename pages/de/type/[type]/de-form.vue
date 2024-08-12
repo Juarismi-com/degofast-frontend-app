@@ -126,10 +126,10 @@
                <div v-if="formData.condicion.credito.tipo == '1' && formData.condicion.tipo == '2'">
                   <label for="condicionCreditoPlazo">Plazo:</label>
                   <input v-model="formData.condicion.credito.plazo" id="condicionCreditoPlazo" type="text"
-                     :class="INPUT_CLASS.basic" />
+                     :class="INPUT_CLASS.basic" placeholder="Ejemplo: 30 días, 12 meses, etc"/>
                </div>
 
-               <div v-if="formData.condicion.credito.tipo == '2'">
+               <div v-if="formData.condicion.credito.tipo == '2' && formData.condicion.tipo == '2'" >
                   <label for="condicionCreditoCuotas">Cuotas:</label>
                   <input v-model="formData.condicion.credito.coutas" id="condicionCreditoCuotas" type="number"
                      :class="INPUT_CLASS.basic" />
