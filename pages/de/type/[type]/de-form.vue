@@ -3,10 +3,7 @@
       <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
          {{ title }}
       </h2>
-      <ToastSuccess
-         v-if="showToast"
-         message="Enviado correctamente"
-      />
+      <ToastSuccess v-if="showToast" message="Enviado correctamente" />
 
       <Loader v-if="loading" />
 
@@ -19,13 +16,9 @@
             <div class="grid grid-cols-3 gap-4 pb-4">
                <div>
                   <label for="establecimiento">Establecimiento:</label>
-                  <select id="establecimiento" 
-                     v-model="formData.establecimiento" 
-                     :class="INPUT_CLASS.basic"
+                  <select id="establecimiento" v-model="formData.establecimiento" :class="INPUT_CLASS.basic"
                      @change="selectEstablecimiento($event)">
-                     <option 
-                        v-for="(establecimiento, index) in contributor.  establecimientos" 
-                        :key="index"
+                     <option v-for="(establecimiento, index) in contributor.establecimientos" :key="index"
                         :value="establecimiento.codigo">
                         {{
                            establecimiento.denominacion + " - " + establecimiento.codigo
@@ -36,12 +29,8 @@
 
                <div>
                   <label for="punto_expedicion">Punto de Expedicion:</label>
-                  <select id="punto_expedicion" 
-                     v-model="formData.puntoExpedicion" 
-                     :class="INPUT_CLASS.basic">
-                     <option v-for="(item, index) in puntoExpedicionList"     
-                        :key="index" 
-                        :value="item._id">
+                  <select id="punto_expedicion" v-model="formData.puntoExpedicion" :class="INPUT_CLASS.basic">
+                     <option v-for="(item, index) in puntoExpedicionList" :key="index" :value="item._id">
                         {{
                            item.codigo
                         }}
@@ -141,6 +130,13 @@
                         @click="buscarCliente(formData.cliente.ruc)">Buscar</button>
 
                   </div>
+                  <div class="mt-5">
+                     <input type="checkbox" v-model="formData.cliente.contribuyente" id="contribuyenteCliente"
+                        :class="[commonInputClass]" />
+                     <label for="contribuyenteCliente" :class="[commonLabelClass]">
+                        ¿Es contribuyente?
+                     </label>
+                  </div>
                </div>
             </div>
             <div class="grid grid-cols-3 gap-4 pb-4">
@@ -158,7 +154,44 @@
                   <label for="emailCliente">Email:</label>
                   <input type="text" v-model="formData.cliente.email" id="emailCliente" :class="INPUT_CLASS.basic" />
                </div>
+               <div>
+                  <label for="tipoOperacionCliente">Tipo de operación:</label>
+                  <select v-model="formData.cliente.tipoOperacion" id="tipoOperacionCliente" :class="INPUT_CLASS.basic">
+                     <option value="1">B2B</option>
+                     <option value="2">B2C</option>
+                     <option value="3">B2G</option>
+                     <option value="4">B2F</option>
+                  </select>
+               </div>
+               <div>
+                  <label for="tipoContribuyenteCliente">Tipo de contribuyente:</label>
+                  <select v-model="formData.cliente.tipoContribuyente" id="tipoContribuyenteCliente"
+                     :class="INPUT_CLASS.basic" :disabled="!formData.cliente.contribuyente">
+                     <option value="1">Persona Física</option>
+                     <option value="2">Persona Jurídica</option>
+                  </select>
+               </div>
+               <div>
+                  <label for="tipoDocumentoCliente">Tipo de documento:</label>
+                  <select v-model="formData.cliente.documentoTipo" id="tipoDocumentoCliente" :class="INPUT_CLASS.basic">
+                     <option value="1">Cédula paraguaya</option>
+                     <option value="2">Pasaporte</option>
+                     <option value="3">Cédula extranjera</option>
+                     <option value="4">Carnet de residencia</option>
+                     <option value="5">Innominado</option>
+                     <option value="6">Tarjeta Diplomática</option>
+                     <option value="9">Informar</option>
+                  </select>
+               </div>
+               <div>
+                  <label for="clienteNúmeroDocumento" class="mr-2">Número de documento:</label>
+                  <input type="text" v-model="formData.cliente.documentoNumero" id="clienteNumeroDocumento"
+                     :class="INPUT_CLASS.basic" class="mr-2"
+                     :disabled="formData.cliente.contribuyente || formData.cliente.tipoOperacion === '4'"
+                  />
+               </div>
             </div>
+
 
             <div class="text-xl pb-4">
                <h3>Producto / Servicio</h3>
@@ -166,13 +199,11 @@
             </div>
 
             <!-- Detalle -->
-             <div class="pb-4">
+            <div class="pb-4">
                <div class="grid grid-cols-3 gap-4 pb-1">
                   <div>
                      <label for="codigoServicio" class="mr-2">Codigo Servicio:</label>
-                     <input type="text" id="codigoServicio" 
-                        v-model="codigoServicio"
-                        :class="INPUT_CLASS.basic"
+                     <input type="text" id="codigoServicio" v-model="codigoServicio" :class="INPUT_CLASS.basic"
                         class="mr-2" />
                   </div>
                   <div>
@@ -493,15 +524,15 @@ const confirmSubmitForm = async () => {
 const submitLote = async (payload) => {
    loading.value = true;
    const response = await saveLotes([payload])
-   const loteResponseId =  response.loteResponseId;
+   const loteResponseId = response.loteResponseId;
 
    setTimeout(async () => {
       const data = await getLoteByLoteResponseId(loteResponseId);
       const de = data.lote[0]
-      
+
       // Update document
-      const newState = de.details?.mensaje.substring(0,1).toUpperCase();
-      await editDE(de?.de?._id, {estado: newState});
+      const newState = de.details?.mensaje.substring(0, 1).toUpperCase();
+      await editDE(de?.de?._id, { estado: newState });
 
       // @todo add toast
       alert(de.details?.mensaje)
@@ -551,13 +582,13 @@ const selectEstablecimiento = (e) => {
  * Carga el listado de establecimientos y setea el primero encontrado 
  * por defecto
  */
-const setPuntoEstablecimientoList =  async() => {
+const setPuntoEstablecimientoList = async () => {
    const establecimientoCodigo = formData.value.establecimiento;
    const establecimiento = contributor.value.establecimientos
       .find(establecimiento => {
          return establecimiento.codigo == establecimientoCodigo
       })
-   
+
    puntoExpedicionList.value = await getPuntoExpedicionByFilters({
       contributor: contributor?.value._id,
       establecimiento: establecimiento?._id,
@@ -647,5 +678,6 @@ const resetForm = () => {
 const closeModal = () => {
    openModal.value = false;
 }
+
 
 </script>
