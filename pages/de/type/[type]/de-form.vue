@@ -81,13 +81,7 @@
                      <option value="5">IVA - Renta</option>
                   </select>
                </div>
-               <div>
-                  <label for="condicionVenta">Condición de Venta:</label>
-                  <select v-model="formData.condicion.tipo" id="tipoEmision" :class="INPUT_CLASS.basic">
-                     <option value="1">Contado</option>
-                     <option value="2">Crédito</option>
-                  </select>
-               </div>
+
                <div>
                   <label for="moneda">Moneda:</label>
                   <select v-model="formData.moneda" id="moneda" :class="INPUT_CLASS.basic">
@@ -111,6 +105,36 @@
                   <label for="descripcion">Descripción (Opcional):</label>
                   <input v-model="formData.descripcion" id="descripcion" :class="INPUT_CLASS.basic"></input>
                </div>
+
+               <div>
+                  <label for="condicionVenta">Condición de Venta:</label>
+                  <select v-model="formData.condicion.tipo" id="condicionVenta" :class="INPUT_CLASS.basic">
+                     <option value="1">Contado</option>
+                     <option value="2">Crédito</option>
+                  </select>
+               </div>
+
+               <div v-if="formData.condicion.credito && formData.condicion.tipo == '2'">
+                  <label for="condicionCreditoTipo">Tipo de crédito:</label>
+                  <select v-model="formData.condicion.credito.tipo" id="condicionCreditoTipo"
+                     :class="INPUT_CLASS.basic">
+                     <option value="1">Plazo</option>
+                     <option value="2">Cuotas</option>
+                  </select>
+               </div>
+
+               <div v-if="formData.condicion.credito.tipo == '1' && formData.condicion.tipo == '2'">
+                  <label for="condicionCreditoPlazo">Plazo:</label>
+                  <input v-model="formData.condicion.credito.plazo" id="condicionCreditoPlazo" type="text"
+                     :class="INPUT_CLASS.basic" />
+               </div>
+
+               <div v-if="formData.condicion.credito.tipo == '2'">
+                  <label for="condicionCreditoCuotas">Cuotas:</label>
+                  <input v-model="formData.condicion.credito.coutas" id="condicionCreditoCuotas" type="number"
+                     :class="INPUT_CLASS.basic" />
+               </div>
+
             </div>
 
             <div class="text-xl pb-4">
@@ -187,8 +211,7 @@
                   <label for="clienteNúmeroDocumento" class="mr-2">Número de documento:</label>
                   <input type="text" v-model="formData.cliente.documentoNumero" id="clienteNumeroDocumento"
                      :class="INPUT_CLASS.basic" class="mr-2"
-                     :disabled="formData.cliente.contribuyente || formData.cliente.tipoOperacion === '4'"
-                  />
+                     :disabled="formData.cliente.contribuyente || formData.cliente.tipoOperacion === '4'" />
                </div>
             </div>
 
