@@ -194,6 +194,11 @@ export const deFormData = {
             monto: 0,
          },
       ],
+      credito: {
+         tipo: 2,
+         plazo: "",
+         coutas: 0,
+      },
    },
    cliente: {
       contribuyente: false,
