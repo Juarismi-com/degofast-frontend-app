@@ -348,9 +348,9 @@ const mapperDeName = (de) => {
       sum += item?.precioUnitario * item?.cantidad;
 
       if (item?.iva === 10) {
-         iva10 = item?.precioUnitario * item?.cantidad * 0.1;
+         iva10 = (item?.precioUnitario * item?.cantidad) / 11;
       } else if (item?.iva === 5) {
-         iva5 = item?.precioUnitario * item?.cantidad * 0.05;
+         iva5 = (item?.precioUnitario * item?.cantidad) / 21;
       }
    }
 
@@ -382,9 +382,9 @@ const mapperDeName = (de) => {
 
 const calculateIVA = (item) => {
    if (item?.iva === 5) {
-      return formatPriceNumber(item.precioUnitario * item.cantidad * 0.05);
+      return formatPriceNumber((item.precioUnitario * item.cantidad) / 21);
    } else if (item?.iva === 10) {
-      return formatPriceNumber(item.precioUnitario * item.cantidad * 0.1);
+      return formatPriceNumber((item.precioUnitario * item.cantidad) / 11);
    }
    return 0;
 };
