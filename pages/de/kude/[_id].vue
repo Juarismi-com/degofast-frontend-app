@@ -30,9 +30,7 @@
                         >
                            Timbrado N°:
                            <label class="font-bold"
-                              >{{
-                                 detalle.contributor.timbradoNumero
-                              }} </label
+                              >{{ detalle.contributor.timbradoNumero }} </label
                            ><br />
 
                            Fecha de timbrado:
@@ -299,9 +297,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{
-                           formatPriceNumber(detalle.total - detalle.totalIva)
-                        }}
+                        {{ formatPriceNumber(detalle.total) }}
                      </td>
                   </tr>
                   <tr>

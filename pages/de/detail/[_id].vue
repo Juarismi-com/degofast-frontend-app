@@ -186,9 +186,7 @@
                      <label class="font-bold">Subtotal: </label>
                   </div>
                   <div>
-                     <span>{{
-                        formatPriceNumber(detalle.total - detalle.totalIva)
-                     }}</span>
+                     <span>{{ formatPriceNumber(detalle.total) }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Total: </label>
