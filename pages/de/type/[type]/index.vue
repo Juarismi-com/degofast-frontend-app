@@ -35,6 +35,7 @@ definePageMeta({
    middleware: ["auth"],
 });
 
+const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
@@ -45,7 +46,7 @@ const routeSelected = ref(
 );
 const title = ref(routeSelected.value.title);
 const des = ref([]);
-const currentPage = ref(1);
+const currentPage = ref(Number(route.query.page) || 1);
 const totalPages = ref(1);
 
 const setDes = async () => {
@@ -82,8 +83,23 @@ const mapperDeName = (de) => {
 
 const handlePageChange = (page) => {
    currentPage.value = page;
+
+   router.push({
+      query: { page: currentPage.value },
+   });
    setDes();
 };
+
+watch(
+   () => route.query.page,
+   (newPage) => {
+      const newPageNumber = Number(newPage) || 1;
+      if (newPageNumber !== currentPage.value) {
+         currentPage.value = newPageNumber;
+         setDes();
+      }
+   },
+);
 
 onMounted(() => {
    setDes();
