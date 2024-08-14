@@ -21,6 +21,7 @@
          uploadFiles="uploadFiles"
          :items="des"
          @page-change="handlePageChange"
+         :totalPages="totalPages"
       />
    </div>
 </template>
@@ -45,16 +46,18 @@ const routeSelected = ref(
 const title = ref(routeSelected.value.title);
 const des = ref([]);
 const currentPage = ref(1);
+const totalPages = ref(1);
 
 const setDes = async () => {
    try {
-      const deRes = (
-         await get(
-            `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}&page=${currentPage.value}`,
-         )
-      )?.data;
+      const deRes = await get(
+         `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}&page=${currentPage.value}`,
+      );
 
-      des.value = deRes.map(mapperDeName);
+      const data = deRes?.data;
+      totalPages.value = deRes?.totalPages;
+
+      des.value = data.map(mapperDeName);
    } catch (error) {
       console.error("Error en la solicitud:", error);
    }

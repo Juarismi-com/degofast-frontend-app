@@ -105,7 +105,10 @@
             </tbody>
          </table>
       </div>
-      <PaginationNextPrev @page-change="handlePageChange" />
+      <PaginationNextPrev
+         @page-change="handlePageChange"
+         :totalPages="props.totalPages"
+      />
    </div>
 </template>
 
@@ -127,6 +130,9 @@ const props = defineProps({
    items: {
       type: Array,
       default: [],
+   },
+   totalPages: {
+      type: Number,
    },
 });
 
