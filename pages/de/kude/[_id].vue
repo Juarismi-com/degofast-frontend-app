@@ -408,9 +408,9 @@ const mapperDeName = (de) => {
       sum += item?.precioUnitario * item?.cantidad;
 
       if (item?.iva === 10) {
-         iva10 = (item?.precioUnitario * item?.cantidad) / 11;
+         iva10 = item?.precioUnitario * item?.cantidad / 11;
       } else if (item?.iva === 5) {
-         iva5 = (item?.precioUnitario * item?.cantidad) / 21;
+         iva5 = item?.precioUnitario * item?.cantidad / 21;
       }
    }
 
