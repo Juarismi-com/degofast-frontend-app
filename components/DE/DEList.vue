@@ -105,7 +105,7 @@
             </tbody>
          </table>
       </div>
-      <PaginationNextPrev />
+      <PaginationNextPrev @page-change="handlePageChange" />
    </div>
 </template>
 
@@ -158,4 +158,10 @@ watch(items, (newItems) => {
       alert("No hay elementos que mostrar.");
    }
 });
+
+const emit = defineEmits(["page-change"]);
+
+const handlePageChange = (page) => {
+   emit("page-change", page);
+};
 </script>

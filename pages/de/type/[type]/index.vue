@@ -17,7 +17,11 @@
          </a>
       </div>
 
-      <DEList uploadFiles="uploadFiles" :items="des" />
+      <DEList
+         uploadFiles="uploadFiles"
+         :items="des"
+         @page-change="handlePageChange"
+      />
    </div>
 </template>
 
@@ -40,12 +44,13 @@ const routeSelected = ref(
 );
 const title = ref(routeSelected.value.title);
 const des = ref([]);
+const currentPage = ref(1);
 
 const setDes = async () => {
    try {
       const deRes = (
          await get(
-            `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}`,
+            `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}&page=${currentPage.value}`,
          )
       )?.data;
 
@@ -70,6 +75,11 @@ const mapperDeName = (de) => {
       estado: de.estado.substring(1, de.estado),
       total: sum,
    };
+};
+
+const handlePageChange = (page) => {
+   currentPage.value = page;
+   setDes();
 };
 
 onMounted(() => {
