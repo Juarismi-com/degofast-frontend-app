@@ -17,7 +17,12 @@
          </a>
       </div>
 
-      <DEList uploadFiles="uploadFiles" :items="des" />
+      <DEList
+         uploadFiles="uploadFiles"
+         :items="des"
+         @page-change="handlePageChange"
+         :totalPages="totalPages"
+      />
    </div>
 </template>
 
@@ -30,6 +35,7 @@ definePageMeta({
    middleware: ["auth"],
 });
 
+const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
@@ -40,16 +46,19 @@ const routeSelected = ref(
 );
 const title = ref(routeSelected.value.title);
 const des = ref([]);
+const currentPage = ref(Number(route.query.page) || 1);
+const totalPages = ref(1);
 
 const setDes = async () => {
    try {
-      const deRes = (
-         await get(
-            `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}`,
-         )
-      )?.data;
+      const deRes = await get(
+         `de?tipoDocumento=${deType.value}&usuario.email=${authStore.user.email}&page=${currentPage.value}`,
+      );
 
-      des.value = deRes.map(mapperDeName);
+      const data = deRes?.data;
+      totalPages.value = deRes?.totalPages;
+
+      des.value = data.map(mapperDeName);
    } catch (error) {
       console.error("Error en la solicitud:", error);
    }
@@ -71,6 +80,26 @@ const mapperDeName = (de) => {
       total: sum,
    };
 };
+
+const handlePageChange = (page) => {
+   currentPage.value = page;
+
+   router.push({
+      query: { page: currentPage.value },
+   });
+   setDes();
+};
+
+watch(
+   () => route.query.page,
+   (newPage) => {
+      const newPageNumber = Number(newPage) || 1;
+      if (newPageNumber !== currentPage.value) {
+         currentPage.value = newPageNumber;
+         setDes();
+      }
+   },
+);
 
 onMounted(() => {
    setDes();

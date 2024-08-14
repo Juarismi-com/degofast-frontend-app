@@ -105,7 +105,10 @@
             </tbody>
          </table>
       </div>
-      <PaginationNextPrev />
+      <PaginationNextPrev
+         @page-change="handlePageChange"
+         :totalPages="props.totalPages"
+      />
    </div>
 </template>
 
@@ -127,6 +130,9 @@ const props = defineProps({
    items: {
       type: Array,
       default: [],
+   },
+   totalPages: {
+      type: Number,
    },
 });
 
@@ -158,4 +164,10 @@ watch(items, (newItems) => {
       alert("No hay elementos que mostrar.");
    }
 });
+
+const emit = defineEmits(["page-change"]);
+
+const handlePageChange = (page) => {
+   emit("page-change", page);
+};
 </script>
