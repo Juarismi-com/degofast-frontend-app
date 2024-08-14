@@ -12,7 +12,7 @@
                      <button
                         class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                         aria-label="Previous"
-                        @click="prevPage"
+                        @click="prevPage()"
                      >
                         < Anterior
                      </button>
@@ -22,6 +22,7 @@
                      <button
                         class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                         aria-label="Next"
+                        @click="nextPage()"
                      >
                         Siguiente >
                      </button>
@@ -38,11 +39,13 @@
 const currentPage = ref(1);
 
 const nextPage = () => {
+   console.log("next")
    // Op 1: emision de un evento
    // Op 2: refirect con el currentPage + 1  
 }
 
 const prevPage = () => {
+   console.log("prev")
    // Op 1: emision de un evento
    // Op 2: refirect con el currentPage - 1  
 }
