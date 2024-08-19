@@ -960,7 +960,7 @@ const saveContributorData = async (e) => {
       try {
          if (authStore.contributor) {
             const res = await update(
-               `contributor-emitter/${authStore.contributor.id}`,
+               `contributor-emitter/${authStore.contributor._id}`,
                payload,
             );
             console.log("Datos actualizados:", res);
