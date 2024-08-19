@@ -948,17 +948,12 @@ const setContributorDefault = () => {
  */
 const saveContributorData = async (e) => {
    if (validateForm()) {
-      let fechaFirmaDigital = moment(form.value.fechaFirmaDigital).format(
-         "YYYY-MM-DDTHH:mm:ss",
-      );
-
       let timbradoFecha = moment(form.value.timbradoFecha).format(
          "YYYY-MM-DDTHH:mm:ss",
       );
 
       let payload = {
          ...form.value,
-         fechaFirmaDigital,
          timbradoFecha,
       };
 
@@ -1002,9 +997,6 @@ const agregarActividadEconomicaItem = () => {
 
 const saveActividadEconomica = async (e) => {
    if (validateForm()) {
-      let fechaFirmaDigital = moment(form.value.fechaFirmaDigital).format(
-         "YYYY-MM-DDTHH:mm:ss",
-      );
 
       let timbradoFecha = moment(form.value.timbradoFecha).format(
          "YYYY-MM-DDTHH:mm:ss",
@@ -1012,7 +1004,6 @@ const saveActividadEconomica = async (e) => {
 
       let payload = {
          ...form.value,
-         fechaFirmaDigital,
          timbradoFecha,
          actividadesEconomicas: actividadEconomicaData.value.items,
       };
@@ -1081,9 +1072,6 @@ const agregarEstablecimientoItem = () => {
 
 const saveEstablecimiento = async (e) => {
    if (validateForm()) {
-      let fechaFirmaDigital = moment(form.value.fechaFirmaDigital).format(
-         "YYYY-MM-DDTHH:mm:ss",
-      );
 
       let timbradoFecha = moment(form.value.timbradoFecha).format(
          "YYYY-MM-DDTHH:mm:ss",
@@ -1091,7 +1079,6 @@ const saveEstablecimiento = async (e) => {
 
       let payload = {
          ...form.value,
-         fechaFirmaDigital,
          timbradoFecha,
          establecimientos: establecimientoData.value.items,
       };
@@ -1207,12 +1194,11 @@ const saveCertified = async (e) => {
 
 const validateForm = () => {
    const errors = [];
-   const { ruc, csc, fechaFirmaDigital, nombreFantasia, razonSocial, email } =
+   const { ruc, csc, nombreFantasia, razonSocial, email } =
       form.value;
 
    if (!ruc) errors.push("Ruc es requerido");
    if (!csc) errors.push("Csc es requerido");
-   if (!fechaFirmaDigital) errors.push("Fecha de firma digital es requerido");
    if (!nombreFantasia) errors.push("Nombre de fantasía es requerido");
    if (!razonSocial) errors.push("Razon Social es requerido");
    if (!email) errors.push("Email es requerido");
