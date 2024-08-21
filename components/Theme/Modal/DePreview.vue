@@ -313,7 +313,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatPriceNumber(detalle.total) }}
+                        <!--{{ formatPriceNumber(detalle.total) }}-->
                      </td>
                   </tr>
                   <tr>

@@ -11,7 +11,7 @@ const { API_URL }  = useConfig()
  */
 export const saveDE = async (data: any) => {
    try {
-      const response = await create("de", data)
+      const response = await create("de/async", data)
       return response;
    } catch (error) {
       console.error("Error submitting form:", error);

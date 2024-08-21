@@ -7,13 +7,16 @@ export const formatNumber = (price, geo = "es-PY") => {
 };
 
 export const formatPriceNumber = (price, geo = "es-PY") => {
-   const priceFormat = new Intl.NumberFormat("es-PY", {
-      style: "currency",
-      currency: "PYG",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-   }).format(parseFloat(price.toString()));
-   return priceFormat;
+   if (!isNaN(price)){
+      const priceFormat = new Intl.NumberFormat("es-PY", {
+         style: "currency",
+         currency: "PYG",
+         minimumFractionDigits: 0,
+         maximumFractionDigits: 0,
+      }).format(parseFloat(price.toString()));
+      return priceFormat;
+   }
+   return price
 };
 
 
