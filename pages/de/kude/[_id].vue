@@ -288,7 +288,7 @@
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                     <!--{{ formatPriceNumber(detalle.total) }} ==>
+                     <!--{{ formatPriceNumber(detalle.total) }} -->
                   </td>
                </tr>
                <tr>

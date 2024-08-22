@@ -3,7 +3,7 @@
    "editor.formatOnSave": true,
 
    // Para que no defecte la indentación del archivo
-   "editor.detectIndentation": true,
+   "editor.detectIndentation": false,
    "editor.tabSize": 3,
 
    // Inserta espacios cuando se agregan tabs
@@ -24,6 +24,12 @@
    "editor.defaultFormatter": "esbenp.prettier-vscode",
    "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
+   },
+   "[shellscript]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+   },
+   "[dockerfile]": {
+      "editor.defaultFormatter": "ms-azuretools.vscode-docker"
    },
    "[dotenv]": {
       "editor.defaultFormatter": "foxundermoon.shell-format"
