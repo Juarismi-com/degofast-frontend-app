@@ -121,7 +121,7 @@ import {
    getEstablecimientoNumberCode,
    getPuntoExpedicionNumberCode,
    getDeNumberCode,
-} from "@/helpers/number.helper";
+} from "~/helpers/number.helper";
 import Loader from "@/components/Loader/Loader.vue";
 
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";

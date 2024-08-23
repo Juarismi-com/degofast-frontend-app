@@ -94,10 +94,7 @@
 </template>
 
 <script setup>
-import moment from "moment";
 import { storeToRefs } from "pinia";
-import VueTailwindDatepicker from "vue-tailwind-datepicker";
-import { get, create, update } from "~/services/http.service";
 import { useAuthStore } from "~/stores";
 
 const authStore = useAuthStore();

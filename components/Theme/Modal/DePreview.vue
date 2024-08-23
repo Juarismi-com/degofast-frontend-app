@@ -360,7 +360,7 @@ import {
    formatPriceNumber,
    getDeNumberCode,
    getEstablecimientoNumberCode,
-} from "@/helpers/number.helper";
+} from "~/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
 import moment from "moment";

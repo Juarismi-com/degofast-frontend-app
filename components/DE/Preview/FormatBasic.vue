@@ -19,7 +19,7 @@
                            class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
                         >
                            FACTURA ELECTRÓNICA: <br />
-                           {{ detalle.establecimiento }}-00X-00Y
+                           {{ detalle.establecimiento }} - {{ detalle }} - 00Y
                            <br />
                         </td>
                         <td
@@ -360,7 +360,7 @@ import {
    formatPriceNumber,
    getDeNumberCode,
    getEstablecimientoNumberCode,
-} from "@/helpers/number.helper";
+} from "~/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
 import moment from "moment";

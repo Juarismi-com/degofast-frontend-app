@@ -17,14 +17,12 @@
          </div>
       </div>
 
-      <!--ToastSuccess v-if="showToast" message="Enviado correctamente" /-->
       <div>
          <DEStepperFull
             :current-step="currentStep"
             :steps="steps"
             :next-step-fn="setCurrentStep"
          >
-            <!-- Steppers -->
             <div>
                <div v-if="currentStep == 0">
                   <div
@@ -45,27 +43,6 @@
                      :form-data="formData"
                      :contributor="contributor"
                   />
-                  <a
-                     href="#"
-                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                     Read more
-                     <svg
-                        class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 14 10"
-                     >
-                        <path
-                           stroke="currentColor"
-                           stroke-linecap="round"
-                           stroke-linejoin="round"
-                           stroke-width="2"
-                           d="M1 5h12m0 0L9 1m4 4L9 9"
-                        />
-                     </svg>
-                  </a>
                </div>
 
                <div
@@ -75,6 +52,17 @@
                   <DEFormFullItemDetalleComponent
                      :form-data="formData"
                      :contributor="contributor"
+                  />
+               </div>
+
+               <div
+                  v-if="currentStep == 3"
+                  class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
+               >
+                  <DEMessageEnvioComponent
+                     title="Procesamiento de Documento Electronico"
+                     :submit-de-success="submitDeSuccess"
+                     :confirm-submit="confirmSubmit"
                   />
                </div>
             </div>
@@ -101,10 +89,26 @@ import moment from "moment";
 import { useAuthStore } from "../../../../stores";
 import { TIPO_DOCUMENT_LIST } from "../../../../config";
 import { deFormData } from "~/config/de";
+import { formatDateHours } from "~/helpers/date.helper";
+import { saveDE } from "~/services";
 
 // metadata
 definePageMeta({
    middleware: ["auth"],
+});
+
+// Datos de la url/ruta
+const route = useRoute();
+const tipoDocumento = ref(route.params.type);
+const routeList = ref(TIPO_DOCUMENT_LIST);
+const routeSelected = ref(
+   routeList.value.find((item) => item.tipoDocumento == route.params.type),
+);
+const title = ref(routeSelected.value.title);
+
+// meta tags
+useHead({
+   title,
 });
 
 // current form view
@@ -119,17 +123,12 @@ const steps = [
    {
       title: "Servicios/Productos",
    },
+   {
+      title: "Recepción de Documento",
+      available: false,
+   },
 ];
 const setCurrentStep = (value) => (currentStep.value = value);
-
-// Datos de la url/ruta
-const route = useRoute();
-const tipoDocumento = ref(route.params.type);
-const routeList = ref(TIPO_DOCUMENT_LIST);
-const routeSelected = ref(
-   routeList.value.find((item) => item.tipoDocumento == route.params.type),
-);
-const title = ref(routeSelected.value.title);
 
 // Modal de previsualizacion de documento electronico
 const isPreviewModal = ref(false);
@@ -147,59 +146,35 @@ const formData = ref({
    tipoDocumento: tipoDocumento.value,
 });
 
-const openModal = ref(false);
-//const loading = ref(false);
-
-/**
- * Confirmacion de envio de documento electronico
- */
-const confirmSubmitForm = async () => {
-   try {
-      if (validateForm()) {
-         if (confirm("Desea crear el de?")) {
-            let fecha = moment(formData.value.fecha).format(
-               "YYYY-MM-DDTHH:mm:ss",
-            );
-
-            let payload = {
-               ...formData.value,
-               fecha,
-            };
-         }
-      }
-
-      openModal.value = false;
-   } catch (error) {
-      console.error("Error submitting form:", error);
-      alert(error?.message);
-   }
-};
+// Relacionado al envio satisfactorio al api
+const confirmSubmit = ref(false);
+const submitDeSuccess = ref(false);
 
 /**
  * Guarda el documento electronico de forma sincrona
  * @param payload
  */
-const submitDe = async (payload) => {
-   /*loading.value = true;
+const submitDe = async () => {
    try {
-      const response = await saveDE(payload);
-      cdc.value = response?.de?.cdc;
-      showToast.value = true;
+      if (validateForm()) {
+         setIsPreviewModal();
+         confirmSubmit.value = true;
 
-      setTimeout(() => {
-         showToast.value = false;
-      }, 3000);
+         const payload = {
+            ...formData.value,
+            fecha: formatDateHours(formData.value.fecha),
+         };
+         const response = await saveDE(payload);
 
-      alert("Enviado correctamente");
-      resetForm();
-      loading.value = false;
+         if (response.de) {
+            submitDeSuccess.value = true;
+
+            resetForm();
+         }
+      }
    } catch (error) {
       console.log(error);
-      const data = error?.response?.data?.error;
-      alert(data?.details["ns2:dMsgRes"]);
-      loading.value = false;
-   }*/
-   console.log(formData.value);
+   }
 };
 
 /**
@@ -207,7 +182,8 @@ const submitDe = async (payload) => {
  */
 const validateForm = () => {
    const errors = [];
-   const { fecha, cliente, items, puntoExpedicion } = formData.value;
+   const { fecha, cliente, items, puntoExpedicion, establecimiento } =
+      formData.value;
 
    if (!fecha) errors.push("Fecha es requerido");
 
@@ -231,18 +207,10 @@ const validateForm = () => {
    return true;
 };
 
-/*
 const resetForm = () => {
    formData.value = {
-      ...formData.value,
-      descripcion: "",
-      cliente: {
-         ruc: "",
-         razonSocial: "",
-         telefono: "",
-         email: "",
-      },
-      items: [],
+      ...deFormData,
+      tipoDocumento: tipoDocumento.value,
    };
-}; */
+};
 </script>

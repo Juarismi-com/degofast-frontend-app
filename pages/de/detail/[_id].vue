@@ -315,7 +315,7 @@ import {
    formatPriceNumber,
    getDeNumberCode,
    getEstablecimientoNumberCode,
-} from "@/helpers/number.helper";
+} from "~/helpers/number.helper";
 
 definePageMeta({
    middleware: ["auth"],

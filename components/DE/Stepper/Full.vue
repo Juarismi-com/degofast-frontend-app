@@ -65,5 +65,13 @@ const props = defineProps({
       type: Function,
       default: () => {},
    },
+
+   /**
+    * @todo activar que se pueda dar
+    */
+   availableButonStep: {
+      type: Boolean,
+      default: false,
+   },
 });
 </script>

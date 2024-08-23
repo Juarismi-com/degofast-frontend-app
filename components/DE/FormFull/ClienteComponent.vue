@@ -2,42 +2,64 @@
    <div>
       <div class="text-xl pb-4">
          <h3>Cliente</h3>
-         <hr />
       </div>
       <div class="pb-4">
-         <div class="grid grid-cols-4 gap-4 pb-1">
-            <div>
-               <label for="ciCliente" class="mr-2">RUC:</label>
+         <!-- Es contribuyente -->
+         <div class="flex">
+            <div class="flex items-center h-5">
                <input
-                  type="text"
-                  v-model="formData.cliente.ruc"
-                  id="ciCliente"
-                  :class="INPUT_CLASS.sm"
-                  class="mr-2"
-               />
-            </div>
-            <div>
-               <button
-                  type="button"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  @click="buscarCliente(formData.cliente.ruc)"
-               >
-                  Buscar
-               </button>
-            </div>
-            <div class="mt-5">
-               <input
-                  type="checkbox"
-                  v-model="formData.cliente.contribuyente"
                   id="contribuyenteCliente"
-                  :class="[commonInputClass]"
+                  aria-describedby="helper-checkbox-text"
+                  v-model="formData.cliente.contribuyente"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                />
-               <label for="contribuyenteCliente" :class="[commonLabelClass]">
-                  ¿Es contribuyente?
-               </label>
+            </div>
+            <div class="ms-2 text-sm">
+               <label
+                  for="contribuyenteCliente"
+                  class="font-medium text-gray-900 dark:text-gray-300"
+               >
+                  ¿Es contribuyente?</label
+               >
+               <p class="text-xs font-normal text-gray-500 dark:text-gray-300">
+                  Si el cliente no es contribuyente debera completar otros
+                  campos
+               </p>
+            </div>
+         </div>
+
+         <!-- Buscador de RUC en caso que sea contribuyente -->
+         <div>
+            <hr class="my-4" />
+            <div
+               v-if="formData.cliente.contribuyente"
+               class="grid grid-cols-4 gap-4"
+            >
+               <div>
+                  <label for="ciCliente">RUC:</label>
+                  <input
+                     type="text"
+                     v-model="formData.cliente.ruc"
+                     id="ciCliente"
+                     :class="INPUT_CLASS.sm"
+                     class="mr-2"
+                  />
+               </div>
+               <div>
+                  <button
+                     type="button"
+                     class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 mt-6"
+                     @click="buscarCliente(formData.cliente.ruc)"
+                  >
+                     Buscar
+                  </button>
+               </div>
             </div>
          </div>
       </div>
+
       <div class="grid grid-cols-4 gap-4 pb-4">
          <div>
             <label for="nombreCliente">Nombre del Cliente:</label>

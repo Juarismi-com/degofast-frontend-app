@@ -171,10 +171,8 @@ export const deFormData = {
    establecimiento: "001",
    codigoSeguridadAleatorio: "",
    puntoExpedicion: "",
-   // contributor.value.establecimientos[0]?.puntoExpedicion[0]?.nroActual
    descripcion: "",
    observacion: "",
-   // (new Date()).toISOString().toString().substring(0, 19)
    fecha: moment().format("YYYY-MM-DDTHH:mm"),
    tipoEmision: 1,
    tipoTransaccion: 2,
@@ -195,7 +193,7 @@ export const deFormData = {
          },
       ],
       credito: {
-         tipo: 2,
+         tipo: 1,
          plazo: "",
          coutas: 0,
       },
@@ -205,7 +203,7 @@ export const deFormData = {
       razonSocial: "",
       ruc: "",
       tipoContribuyente: 1,
-      tipoOperacion: 1,
+      tipoOperacion: 2,
       documentoTipo: 1,
       documentoNumero: "",
       email: "",

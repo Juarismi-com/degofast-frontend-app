@@ -1,4 +1,4 @@
-export const formatNumber = (price, geo = "es-PY") => {
+export const formatNumber = (price: number | string, geo = "es-PY") => {
    const priceFormat = new Intl.NumberFormat("es-PY", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
@@ -6,49 +6,45 @@ export const formatNumber = (price, geo = "es-PY") => {
    return priceFormat;
 };
 
-export const formatPriceNumber = (price, geo = "es-PY") => {
-   if (!isNaN(price)){
-      const priceFormat = new Intl.NumberFormat("es-PY", {
-         style: "currency",
-         currency: "PYG",
-         minimumFractionDigits: 0,
-         maximumFractionDigits: 0,
-      }).format(parseFloat(price.toString()));
-      return priceFormat;
-   }
-   return price
+export const formatPriceNumber = (price: string | number, geo = "es-PY") => {
+   return price;
+   const priceFormat = new Intl.NumberFormat(geo, {
+      style: "currency",
+      currency: "PYG",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+   }).format(parseFloat(price.toString()));
+   return priceFormat;
 };
 
-
-export const getPuntoExpedicionNumberCode = (numero) => {
-   return addPrefixCero(numero, 3)
+export const getPuntoExpedicionNumberCode = (numero: number | string) => {
+   return addPrefixCero(numero, 3);
 };
 
-
-export const getDeNumberCode = (numero) => {
-   return addPrefixCero(numero, 7)
+export const getDeNumberCode = (numero: number | string) => {
+   return addPrefixCero(numero, 7);
 };
 
-export const getEstablecimientoNumberCode = (numero) => {
-   return addPrefixCero(numero, 3)
+export const getEstablecimientoNumberCode = (numero: number | string) => {
+   return addPrefixCero(numero, 3);
 };
 
 /**
  * Agrega cantidad de cero al numero como prefijo hasta que tenga
  * maxLength string
- * 
- * @example 
+ *
+ * @example
  *    numero: 10
  *    maxlength: 5
  *      2 = el length que se calcula del numero
  *      5 = el length total que debe tener el string
  *      00010 = el valor que debe retornar la funcion con 000 prefijos
- * 
- * @param {*} numero 
- * @param {*} maxLength 
- * @returns 
+ *
+ * @param {*} numero
+ * @param {*} maxLength
+ * @returns
  */
-export const addPrefixCero = (numero, maxLength) => {
+export const addPrefixCero = (numero: number | string, maxLength: number) => {
    let val = numero.toString();
    const ceroLength = maxLength - val.length;
 
@@ -61,19 +57,19 @@ export const addPrefixCero = (numero, maxLength) => {
 
 /**
  * Elimina los prefijos cero
- * 
- * @example 
+ *
+ * @example
  *    value: "00010" return 10
- * @param {*} value 
- * @returns 
+ * @param {*} value
+ * @returns
  */
-export const removePrefixCero = (value) => {
+export const removePrefixCero = (value: string) => {
    return parseInt(value.toString());
-}
+};
 
 /**
  * Genera un numero randon de 9 digitos/caracteres
- * @returns 
+ * @returns
  */
 export const getRandomNumberForDe = () => {
    const min = 100000000;
@@ -83,7 +79,7 @@ export const getRandomNumberForDe = () => {
    return randomNumber;
 };
 
-export function formatDateTime(dateTimeString) {
+export function formatDateTime(dateTimeString: string) {
    if (!dateTimeString) {
       return "";
    }

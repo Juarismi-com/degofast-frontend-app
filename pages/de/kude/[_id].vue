@@ -1,5 +1,5 @@
 <template>
-   <div class="max-w-4xl my-3 p-5" v-if="detalle" >
+   <div class="max-w-4xl my-3 p-5" v-if="detalle">
       <!-- Membrete -->
       <div class="rounded border border-gray-300 p-4 shadow-md my-3">
          <div>
@@ -9,27 +9,27 @@
                KuDE de Factura Electrónica
             </h3>
          </div>
-         
+
          <div class="grid grid-cols-6 gap-4">
             <div class="col-span-4">
                <h1>{{ detalle.contributor.razonSocial }}</h1>
                FACTURA ELECTRÓNICA: <br />
-                  {{ detalle.establecimiento }} -
-                  {{ detalle.punto }} -
-                  {{ detalle.numero }}
+               {{ detalle.establecimiento }} - {{ detalle.punto }} -
+               {{ detalle.numero }}
                <br />
             </div>
             <div class="col-span-2">
                Timbrado N°:
                <label class="font-bold">
-                  {{ detalle.contributor.timbradoNumero }}
-               </label><br />
+                  {{ detalle.contributor.timbradoNumero }} </label
+               ><br />
 
                Fecha de timbrado:
                <label class="font-bold">
                   {{
-                     moment(detalle.contributor.timbradoFecha)
-                     .format("DD/MM/YYYY")
+                     moment(detalle.contributor.timbradoFecha).format(
+                        "DD/MM/YYYY",
+                     )
                   }}
                </label>
             </div>
@@ -38,20 +38,16 @@
 
       <!-- Cabecera de documento electronico -->
       <div
-            class="rounded border border-gray-300 p-2 my-3 shadow-md md:col-span-3"
-         >
+         class="rounded border border-gray-300 p-2 my-3 shadow-md md:col-span-3"
+      >
          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div class="col-span-1 grid grid-cols-1 md:col-span-3">
                <table class="w-full border-collapse">
                   <tr>
-                     <td
-                        class="w-1/2 px-2 py-1 text-left text-sm font-medium"
-                     >
+                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Fecha y hora de emisión:
                         <label class="font-bold">{{
-                           moment(detalle.fecha).format(
-                              "DD/MM/YYYY HH:mm:ss",
-                           )
+                           moment(detalle.fecha).format("DD/MM/YYYY HH:mm:ss")
                         }}</label>
                      </td>
                      <td
@@ -64,9 +60,7 @@
                      </td>
                   </tr>
                   <tr>
-                     <td
-                        class="w-1/2 px-2 py-1 text-left text-sm font-medium"
-                     >
+                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Condición de venta:
                         <label class="font-bold">{{
                            detalle.condicionName
@@ -82,9 +76,7 @@
                      </td>
                   </tr>
                   <tr>
-                     <td
-                        class="w-1/2 px-2 py-1 text-left text-sm font-medium"
-                     >
+                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Cuotas: -
                      </td>
                      <td
@@ -97,15 +89,11 @@
                      </td>
                   </tr>
                   <tr>
-                     <td
-                        class="w-1/2 px-2 py-1 text-left text-sm font-medium"
-                     >
+                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Moneda:
                         <label class="font-bold">{{ detalle.moneda }}</label>
                      </td>
-                     <td
-                        class="w-1/2 px-2 py-1 text-left text-sm font-medium"
-                     >
+                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Tipo de cambio:
                         <label class="font-bold">
                            {{ detalle.cambio ?? "-" }}</label
@@ -113,9 +101,7 @@
                      </td>
                   </tr>
                   <tr>
-                     <td
-                        class="w-1/2 px-2 py-1 text-left text-sm font-medium"
-                     >
+                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Tipo de cambio: -
                      </td>
                      <td
@@ -165,7 +151,9 @@
 
       <!-- Detalle y totales -->
       <div class="col-span-3 p-1 shadow-md rounded my-3">
-         <table class="table-fixed border border-gray-200 text-sm text-gray-900">
+         <table
+            class="table-fixed border border-gray-200 text-sm text-gray-900"
+         >
             <thead class="bg-gray-300 text-gray-800">
                <tr>
                   <th
@@ -213,16 +201,13 @@
                </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-               <tr v-for="item in detalle.items" :key="item._id" 
-                  class="">
+               <tr v-for="item in detalle.items" :key="item._id" class="">
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                        {{ item.codigo }}
+                     {{ item.codigo }}
                   </td>
-                  <td
-                     class="whitespace-nowrap border border-gray-200"
-                  >
+                  <td class="whitespace-nowrap border border-gray-200">
                      <div class="description-content">
                         <p class="text">
                            {{ item.descripcion }}
@@ -232,35 +217,29 @@
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                        {{ formatNumber(item.cantidad) }}
+                     {{ formatNumber(item.cantidad) }}
                   </td>
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                        {{ formatPriceNumber(item.precioUnitario) }}
+                     {{ formatPriceNumber(item.precioUnitario) }}
                   </td>
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                        {{
-                           formatPriceNumber(
-                              item.precioUnitario * item.cantidad,
-                           )
-                        }}
+                     {{
+                        formatPriceNumber(item.precioUnitario * item.cantidad)
+                     }}
                   </td>
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                        {{
-                           formatNumber(
-                              item.descuento ? item.descuento : "0",
-                           )
-                        }}
+                     {{ formatNumber(item.descuento ? item.descuento : "0") }}
                   </td>
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                        {{ calculateIVA(item) }}
+                     {{ calculateIVA(item) }}
                   </td>
                </tr>
             </tbody>
@@ -325,23 +304,17 @@
       </div>
 
       <!-- cdc y datos de qr-->
-       <div
-         class="md:col-span-3 border border-gray-300 p-4 shadow-md rounded"
-      >
-            <label class="text-lg font-bold">CDC: </label>
-            <label class="text-lg">{{ detalle.cdc }}</label>
+      <div class="md:col-span-3 border border-gray-300 p-4 shadow-md rounded">
+         <label class="text-lg font-bold">CDC: </label>
+         <label class="text-lg">{{ detalle.cdc }}</label>
       </div>
    </div>
 
-
    <div class="max-w-4xl pt-5">
       <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-3 gap-2">
-        
          <!-- Detalle -->
-         
 
          <!-- Cuadro 3 -->
-         
       </div>
 
       <div v-else>
@@ -359,7 +332,7 @@ import {
    formatPriceNumber,
    getDeNumberCode,
    getEstablecimientoNumberCode,
-} from "@/helpers/number.helper";
+} from "~/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
 import moment from "moment";
@@ -393,9 +366,9 @@ const mapperDeName = (de) => {
       sum += item?.precioUnitario * item?.cantidad;
 
       if (item?.iva === 10) {
-         iva10 = item?.precioUnitario * item?.cantidad / 11;
+         iva10 = (item?.precioUnitario * item?.cantidad) / 11;
       } else if (item?.iva === 5) {
-         iva5 = item?.precioUnitario * item?.cantidad / 21;
+         iva5 = (item?.precioUnitario * item?.cantidad) / 21;
       }
    }
 
@@ -430,17 +403,16 @@ onMounted(() => {
 });
 </script>
 
-
 <style>
-   .description-content {
-      width: 330px;
-      overflow: hidden; 
-      display: flex; 
-      flex-direction: column;
-      justify-content: flex-end; 
-   }
+.description-content {
+   width: 330px;
+   overflow: hidden;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-end;
+}
 
-   .text {
-      white-space: normal;
-   }
+.text {
+   white-space: normal;
+}
 </style>

@@ -2,7 +2,6 @@
    <div>
       <div class="text-xl pb-4">
          <h3>Producto / Servicio</h3>
-         <hr />
       </div>
 
       <!-- Detalle -->
