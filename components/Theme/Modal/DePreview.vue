@@ -356,9 +356,7 @@
 import { ref, onMounted, defineProps } from "vue";
 import {
    formatNumber,
-   formatDateTime,
    formatPriceNumber,
-   getDeNumberCode,
    getEstablecimientoNumberCode,
 } from "~/helpers/number.helper";
 import { deValues } from "~/config/de";

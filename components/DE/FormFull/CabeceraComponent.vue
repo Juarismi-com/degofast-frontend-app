@@ -98,12 +98,17 @@
                <label for="descripcion">Descripción (Opcional):</label>
                <input v-model="formData.descripcion" id="descripcion" :class="INPUT_CLASS.sm"></input>
             </div>
+         </div>
 
-            <div>
+         <div>
+            <hr class="my-4" />
+
+            <div class="grid grid-cols-4 gap-4">
+               <div>
                <label for="condicionVenta">Condición de Venta:</label>
                <select v-model="formData.condicion.tipo" id="condicionVenta" :class="INPUT_CLASS.sm">
-                  <option value="1">Contado</option>
-                  <option value="2">Crédito</option>
+                  <option :value="1">Contado</option>
+                  <option :value="2">Crédito</option>
                </select>
             </div>
 
@@ -132,7 +137,7 @@
                <input v-model="formData.condicion.credito.coutas" id="condicionCreditoCuotas" type="number"
                   :class="INPUT_CLASS.sm" />
             </div>
-
+            </div>
          </div>
    </div> 
 </template>

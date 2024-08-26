@@ -232,7 +232,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
                         <div class="text-sm text-gray-900">
-                           {{ formatNumber(item.codigo) }}
+                           {{ item.codigo }}
                         </div>
                      </td>
                      <td
@@ -322,7 +322,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <label class="font-bold">IVA (5%):</label>
-                        {{ formatPriceNumber(detalle.iva5) }}
+                        <!-- {{ formatPriceNumber(detalle.iva5) }} -->
                      </td>
 
                      <td
@@ -330,7 +330,7 @@
                         class="px-6 py-1 whitespace-nowrap border border-gray-200"
                      >
                         <label class="font-bold">IVA (10%):</label>
-                        {{ formatPriceNumber(detalle.iva10) }}
+                        <!--{{ formatPriceNumber(detalle.iva10) }} -->
                      </td>
                      <td
                         colspan="1"
@@ -342,7 +342,7 @@
                      <td
                         class="px-6 py-1 whitespace-nowrap border border-gray-200 text-right"
                      >
-                        {{ formatPriceNumber(detalle.totalIva) }}
+                        <!--{{ formatPriceNumber(detalle.totalIva) }}-->
                      </td>
                   </tr>
                </tfoot>
@@ -356,10 +356,10 @@
 import { ref, onMounted, defineProps } from "vue";
 import {
    formatNumber,
-   formatDateTime,
    formatPriceNumber,
    getDeNumberCode,
    getEstablecimientoNumberCode,
+   calculateIVA,
 } from "~/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
@@ -414,15 +414,6 @@ const mapperDeName = (de) => {
       iva5: iva5,
       totalIva: iva10 + iva5,
    };
-};
-
-const calculateIVA = (item) => {
-   if (item?.iva === 5) {
-      return formatPriceNumber(item.precioUnitario * item.cantidad * 0.05);
-   } else if (item?.iva === 10) {
-      return formatPriceNumber(item.precioUnitario * item.cantidad * 0.1);
-   }
-   return 0;
 };
 
 onMounted(() => {
