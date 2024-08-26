@@ -22,6 +22,7 @@
             :current-step="currentStep"
             :steps="steps"
             :next-step-fn="setCurrentStep"
+            :btn-control="true"
          >
             <div>
                <div v-if="currentStep == 0">
@@ -85,10 +86,9 @@
 <script setup>
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import moment from "moment";
 import { useAuthStore } from "../../../../stores";
 import { TIPO_DOCUMENT_LIST } from "../../../../config";
-import { deFormData } from "~/config/de";
+import { deFormData, validateDeCondition, validatorDeForm } from "~/config/de";
 import { formatDateHours } from "~/helpers/date.helper";
 import { saveDE } from "~/services";
 
@@ -128,7 +128,9 @@ const steps = [
       available: false,
    },
 ];
-const setCurrentStep = (value) => (currentStep.value = value);
+const setCurrentStep = (value) => {
+   currentStep.value = value;
+};
 
 // Modal de previsualizacion de documento electronico
 const isPreviewModal = ref(false);
@@ -156,10 +158,9 @@ const submitDeSuccess = ref(false);
  */
 const submitDe = async () => {
    try {
-      if (validateForm()) {
+      if (validatorDeForm(formData.value)) {
          setIsPreviewModal();
          confirmSubmit.value = true;
-
          const payload = {
             ...formData.value,
             fecha: formatDateHours(formData.value.fecha),
@@ -171,40 +172,13 @@ const submitDe = async () => {
 
             resetForm();
          }
+      } else {
+         setIsPreviewModal();
+         setCurrentStep(0);
       }
    } catch (error) {
       console.log(error);
    }
-};
-
-/**
- * Valida que ciertos atributos esten presentes en el formulario
- */
-const validateForm = () => {
-   const errors = [];
-   const { fecha, cliente, items, puntoExpedicion, establecimiento } =
-      formData.value;
-
-   if (!fecha) errors.push("Fecha es requerido");
-
-   if (!establecimiento) errors.push("Establecimiento es requerido");
-
-   if (!puntoExpedicion) errors.push("Punto de Expedicion es requerido");
-
-   if (!cliente.ruc) errors.push("Ruc de Cliente es requerido");
-
-   if (!cliente.razonSocial) errors.push("Nombre de Cliente es requerido");
-
-   if (items.length == 0) errors.push("Detalle es requerido");
-
-   if (errors.length > 0) {
-      const message = errors.join("\n");
-      alert(message);
-
-      return false;
-   }
-
-   return true;
 };
 
 const resetForm = () => {

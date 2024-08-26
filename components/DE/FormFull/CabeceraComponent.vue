@@ -134,7 +134,7 @@
 
             <div v-if="formData.condicion.credito.tipo == '2' && formData.condicion.tipo == '2'" >
                <label for="condicionCreditoCuotas">Cuotas:</label>
-               <input v-model="formData.condicion.credito.coutas" id="condicionCreditoCuotas" type="number"
+               <input v-model="formData.condicion.credito.cuotas" id="condicionCreditoCuotas" type="number"
                   :class="INPUT_CLASS.sm" />
             </div>
             </div>
