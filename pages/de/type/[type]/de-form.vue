@@ -88,7 +88,7 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "../../../../stores";
 import { TIPO_DOCUMENT_LIST } from "../../../../config";
-import { deFormData, validateDeCondition, validatorDeForm } from "~/config/de";
+import { deFormData, validatorDeForm } from "~/config/de";
 import { formatDateHours } from "~/helpers/date.helper";
 import { saveDE } from "~/services";
 
