@@ -9,7 +9,7 @@
                'flex items-center space-x-2.5 rtl:space-x-reverse',
                index === currentStep ? 'text-blue-500' : 'text-gray-400',
             ]"
-            @click="nextStepFn(index)"
+            @click="setStep(index)"
          >
             <span
                :class="[
@@ -29,7 +29,7 @@
       <slot></slot>
 
       <!-- Button steps -->
-      <div class="flex justify-between my-6">
+      <div class="flex justify-between my-6" v-if="btnControl">
          <button
             type="button"
             v-if="currentStep != 0"
@@ -65,6 +65,10 @@ const props = defineProps({
       type: Function,
       default: () => {},
    },
+   btnControl: {
+      type: Boolean,
+      default: false,
+   },
 
    /**
     * @todo activar que se pueda dar
@@ -74,4 +78,12 @@ const props = defineProps({
       default: false,
    },
 });
+
+const { nextStepFn, btnControl } = toRefs(props);
+
+const setStep = (index) => {
+   if (btnControl.value) {
+      nextStepFn.value(index);
+   }
+};
 </script>

@@ -88,6 +88,24 @@
                :class="INPUT_CLASS.sm"
             />
          </div>
+         <div v-if="formData.cliente.contribuyente">
+            <label for="tipoContribuyenteCliente">Tipo de contribuyente:</label>
+            <select
+               v-model="formData.cliente.tipoContribuyente"
+               id="tipoContribuyenteCliente"
+               :class="INPUT_CLASS.sm"
+            >
+               <option :value="1">Persona Física</option>
+               <option :value="2">Persona Jurídica</option>
+            </select>
+         </div>
+      </div>
+
+      <div><hr class="my-4" /></div>
+      <div
+         class="grid grid-cols-4 gap-4 pb-4"
+         v-if="!formData.cliente.contribuyente"
+      >
          <div>
             <label for="tipoOperacionCliente">Tipo de operación:</label>
             <select
@@ -101,18 +119,7 @@
                <option value="4">B2F</option>
             </select>
          </div>
-         <div>
-            <label for="tipoContribuyenteCliente">Tipo de contribuyente:</label>
-            <select
-               v-model="formData.cliente.tipoContribuyente"
-               id="tipoContribuyenteCliente"
-               :class="INPUT_CLASS.sm"
-               :disabled="!formData.cliente.contribuyente"
-            >
-               <option value="1">Persona Física</option>
-               <option value="2">Persona Jurídica</option>
-            </select>
-         </div>
+
          <div>
             <label for="tipoDocumentoCliente">Tipo de documento:</label>
             <select

@@ -195,7 +195,7 @@ export const deFormData = {
       credito: {
          tipo: 1,
          plazo: "",
-         coutas: 0,
+         cuotas: 0,
       },
    },
    cliente: {
@@ -232,4 +232,89 @@ export const deItemData = {
    numeroPedido: "",
    numeroSeguimiento: "",
    precioPorCantidad: "",
+};
+
+export const validateDeCondition = (de: any) => {
+   try {
+      const { fecha, puntoExpedicion, establecimiento } = de;
+
+      if (!fecha) throw "fecha es requerido";
+      if (!establecimiento) throw "establecimiento es requerido";
+      if (!puntoExpedicion) throw "puntoExpedicion no esta definido";
+
+      const { condicion } = de;
+      if (condicion?.tipo == 2) {
+         const { credito } = condicion;
+
+         if (credito?.tipo == 1 && isEmpty(credito.plazo))
+            throw "condicion.credito.tipo.plazo debe asignar algun valor";
+
+         if (credito?.tipo == 2) {
+            if (isEmpty(credito.cuotas) || credito.cuotas == 0)
+               throw "condicion.credito.cuotas debe estar asignado y mayor a cero";
+         }
+      }
+
+      return true;
+   } catch (error) {
+      throw error;
+   }
+};
+
+export const validateDeCliente = (de: any) => {
+   try {
+      const { cliente } = de;
+
+      if (!cliente.razonSocial) throw "cliente.nombre es requerido";
+
+      if (cliente.contribuyente) {
+         if (!cliente.ruc) throw "cliente.ruc es requerido";
+         if (!cliente.telefono) throw "cliente.telefono es requerido";
+         if (!cliente.email) throw "cliente.telefono es requerido";
+      } else {
+         if (!cliente.documentoNumero)
+            throw "cliente.documentoNumero es requerido";
+      }
+
+      return true;
+   } catch (error) {
+      throw error;
+   }
+};
+
+export const validateDeItems = (de: any) => {
+   try {
+      const { items } = de;
+      if (items.length == 0) throw "debe asignar items al documento";
+
+      return true;
+   } catch (error) {
+      throw error;
+   }
+};
+
+/**
+ * move this to helper or validator
+ * @param de
+ * @returns
+ */
+export const validatorDeForm = (de: any) => {
+   try {
+      validateDeCondition(de);
+      validateDeCliente(de);
+      validateDeItems(de);
+
+      return true;
+   } catch (error) {
+      alert(error);
+
+      return false;
+   }
+};
+
+export const isEmpty = (value: any) => {
+   if (value == undefined || value == null || value == "") {
+      return true;
+   }
+   return false;
 };
