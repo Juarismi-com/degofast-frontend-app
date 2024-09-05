@@ -28,6 +28,7 @@ export const useAuthStore = defineStore("auth", {
    actions: {
       loadToken() {
          axios.defaults.headers.common["auth_token"] = this.auth.authToken;
+         axios.defaults.timeout = 20000;
       },
       async setAuth(username, password) {
          try {
