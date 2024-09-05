@@ -274,6 +274,14 @@ export const validateDeCliente = (de: any) => {
       } else {
          if (!cliente.documentoNumero)
             throw "cliente.documentoNumero es requerido";
+
+         if (!cliente.documentoTipo) throw "cliente.documentoTipo es requerido";
+
+         if (
+            cliente.documentoTipo == 6 &&
+            cliente.documentoNumero.toString().toLowerCase().indexOf("of") > -1
+         )
+            throw "cliente.documentoTipo No debe contener of";
       }
 
       return true;
