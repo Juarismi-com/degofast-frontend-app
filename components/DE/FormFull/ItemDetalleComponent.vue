@@ -262,6 +262,13 @@ const agregarItem = () => {
 
       item.value.totalUnitario = formatNumber(total);
 
+      // Si el iva es exento debe actualiza el ivatipo
+      if (item.value.iva == 0) {
+         item.value.ivaTipo = "3";
+      } else {
+         item.value.ivaTipo = "1";
+      }
+
       formData.value.items.push({ ...item.value });
       item.value = {
          ...deItemData,
