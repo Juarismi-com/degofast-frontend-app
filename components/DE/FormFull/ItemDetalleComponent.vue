@@ -265,8 +265,10 @@ const agregarItem = () => {
       // Si el iva es exento debe actualiza el ivatipo
       if (item.value.iva == 0) {
          item.value.ivaTipo = "3";
+         item.value.ivaBase = 0;
       } else {
          item.value.ivaTipo = "1";
+         item.value.ivaBase = 100;
       }
 
       formData.value.items.push({ ...item.value });
