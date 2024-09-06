@@ -94,26 +94,17 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "~/stores";
-
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
+import { update } from "~/services/http.service";
+import { commonInputClass, commonLabelClass } from "~/config/styles";
 
 import { defineProps } from "vue";
 
 const props = defineProps({
-   form: {
+   contributor: {
       type: Object,
-      required: true,
+      default: () => ({}),
    },
 });
-
-const commonInputClass =
-   "bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500";
-
-const commonLabelClass =
-   "block mb-2 text-sm font-medium text-gray-900 dark:text-white";
 
 const formActividadEconomica = ref({
    codigo: "",
@@ -137,41 +128,53 @@ const agregarActividadEconomicaItem = () => {
 };
 
 const saveActividadEconomica = async (e) => {
-   console.log(props.form);
-
    // let fechaFirmaDigital = moment(props.form.fechaFirmaDigital).format(
    //    "YYYY-MM-DDTHH:mm:ss",
    // );
 
-   // let timbradoFecha = moment(props.form.timbradoFecha).format(
-   //    "YYYY-MM-DDTHH:mm:ss",
-   // );
+   // if (validateForm()) {
 
-   // let payload = {
-   //    ...props.form,
-   //    fechaFirmaDigital,
-   //    timbradoFecha,
-   //    actividadesEconomicas: actividadEconomicaData.value.items,
-   // };
+   let payload = {
+      actividadesEconomicas: actividadEconomicaData.value.items,
+   };
 
-   // try {
-   //    if (authStore.contributor) {
-   //       const res = await update(
-   //          `contributor-emitter/${authStore.contributor._id}`,
-   //          payload,
-   //       );
-   //       console.log("Datos actualizados:", res);
-   //    } else {
-   //       console.log("Se debe cargar los datos del contribuyente", res);
-   //    }
-   // } catch (error) {
-   //    throw error;
-   // }
+   try {
+      if (props.contributor) {
+         const res = await update(
+            `contributor-emitter/${props.contributor._id}`,
+            payload,
+         );
+         console.log("Datos actualizados:", res);
+      } else {
+         console.log("Se debe cargar los datos del contribuyente", res);
+      }
+   } catch (error) {
+      throw error;
+   }
+
+   //}
+};
+
+const validateForm = () => {
+   const errors = [];
+   const { codigo, descripcion } = formActividadEconomica.value;
+
+   if (!codigo) errors.push("Código es requerido");
+   if (!descripcion) errors.push("Descripción es requerido");
+
+   if (errors.length > 0) {
+      const message = errors.join("\n");
+      alert(message);
+
+      return false;
+   }
+
+   return true;
 };
 
 onMounted(() => {
-   if (authStore.contributor) {
-      const { actividadesEconomicas } = authStore.contributor;
+   if (props.contributor) {
+      const { actividadesEconomicas } = props.contributor;
 
       if (actividadesEconomicas.length > 0) {
          actividadEconomicaData.value.items = actividadesEconomicas;
@@ -182,4 +185,18 @@ onMounted(() => {
       actividadEconomicaData.value.items = [];
    }
 });
+
+/**
+ * Verificia si la actividad economica ya se agrego, sino lo agrega
+ */
+// const addActividadEconomica = () => {
+//    const actividadesEconomicas = form.value.actividadesEconomicas;
+//    const actividadEconomica = { ...formActividadEconomica.value };
+
+//    const isAdded = actividadesEconomicas.some((actividad) => {
+//       return actividad.codigo === actividadEconomica.codigo;
+//    });
+
+//    if (!isAdded) actividadesEconomicas.push(actividadEconomica);
+// };
 </script>
