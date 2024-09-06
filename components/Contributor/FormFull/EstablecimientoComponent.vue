@@ -211,13 +211,12 @@
                />
             </div>
 
-            <div class="m-7">
+            <div class="m-5">
                <button
-                  type="button"
-                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center"
-                  @click="agregarEstablecimientoItem"
+                  type="submit"
+                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
                >
-                  Agregar
+                  Guardar
                </button>
             </div>
          </div>
@@ -316,15 +315,6 @@
                </tbody>
             </table>
          </div>
-
-         <div class="m-5">
-            <button
-               type="submit"
-               class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
-            >
-               Guardar
-            </button>
-         </div>
       </form>
    </div>
 </template>
@@ -361,43 +351,42 @@ const formEstablecimiento = ref({
 
 const establecimientoData = ref({ items: [] });
 
-const agregarEstablecimientoItem = () => {
-   if (validateForm()) {
-      establecimientoData.value.items.push({ ...formEstablecimiento.value });
-      formEstablecimiento.value = {
-         codigo: "001",
-         direccion: "",
-         numeroCasa: 0,
-         complementoDireccion1: "",
-         complementoDireccion2: "",
-         departamento: "",
-         departamentoDescripcion: "",
-         distrito: "",
-         distritoDescripcion: "",
-         ciudad: "",
-         ciudadDescripcion: "",
-         telefono: "",
-         email: "",
-         denominacion: "",
-      };
-   } else {
-      alert("Por favor, complete todos los campos del nuevo ítem.");
-   }
-};
+// formEstablecimiento.value = {
+//    codigo: "001",
+//    direccion: "",
+//    numeroCasa: 0,
+//    complementoDireccion1: "",
+//    complementoDireccion2: "",
+//    departamento: "",
+//    departamentoDescripcion: "",
+//    distrito: "",
+//    distritoDescripcion: "",
+//    ciudad: "",
+//    ciudadDescripcion: "",
+//    telefono: "",
+//    email: "",
+//    denominacion: "",
+// };
 
 const saveEstablecimiento = async (e) => {
    // if (validateForm()) {
 
-   let payload = {
-      establecimientos: establecimientoData.value.items,
-   };
-
    try {
       if (props.contributor) {
+         const payload = {
+            establecimientos: [
+               ...establecimientoData.value.items,
+               { ...formEstablecimiento.value },
+            ],
+         };
+
          const res = await update(
             `contributor-emitter/${props.contributor._id}`,
             payload,
          );
+
+         establecimientoData.value.items = payload.establecimientos;
+
          console.log("Datos actualizados:", res);
       } else {
          console.log("Se debe cargar los datos del contribuyente", res);

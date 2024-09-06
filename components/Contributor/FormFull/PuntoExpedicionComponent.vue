@@ -83,7 +83,7 @@
                         establecimiento, index
                      ) in contributor.establecimientos"
                      :key="index"
-                     :value="establecimiento.codigo"
+                     :value="establecimiento._id"
                   >
                      {{
                         establecimiento.denominacion +
@@ -93,13 +93,12 @@
                   </option>
                </select>
             </div>
-            <div class="m-7">
+            <div class="m-5">
                <button
-                  type="button"
-                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center"
-                  @click="agregarPuntoExpedicionItem"
+                  type="submit"
+                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
                >
-                  Agregar
+                  Guardar
                </button>
             </div>
          </div>
@@ -174,15 +173,6 @@
                </tbody>
             </table>
          </div>
-
-         <div class="m-5">
-            <button
-               type="submit"
-               class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
-            >
-               Guardar
-            </button>
-         </div>
       </form>
    </div>
 </template>
@@ -205,46 +195,29 @@ const formPuntoExpedicion = ref({
    nroInicial: "",
    codigo: "",
    contributor: props.contributor._id,
-   establecimiento: "",
+   establecimiento: "1",
    tipoDocumento: 1,
 });
 
 const puntoExpedicionData = ref({ items: [] });
 
-const agregarPuntoExpedicionItem = () => {
-   if (validateForm()) {
-      puntoExpedicionData.value.items.push({ ...formPuntoExpedicion.value });
-      formPuntoExpedicion.value = {
-         nroActual: 1,
-         nroInicial: "",
-         contributor: props.contributor._id,
-         codigo: "",
-         establecimiento: "",
-         tipoDocumento: 1,
-      };
-   } else {
-      alert("Por favor, complete todos los campos del nuevo ítem.");
-   }
-};
-
 const savePuntoExpedicion = async (e) => {
    // if (validateForm()) {
 
-   for (const item of puntoExpedicionData.value.items) {
-      let payload = {
-         ...item,
-      };
+   try {
+      if (props.contributor) {
+         const payload = {
+            ...formPuntoExpedicion.value,
+         };
 
-      try {
-         if (props.contributor) {
-            const res = await create("punto-expedicion", payload);
-            console.log("Datos actualizados:", res);
-         } else {
-            console.log("Se debe cargar los datos del contribuyente", res);
-         }
-      } catch (error) {
-         console.error("Error al actualizar los datos:", error.message);
+         const res = await create("punto-expedicion", payload);
+         console.log("Datos actualizados:", res);
+         getPuntoExpedicion();
+      } else {
+         console.log("Se debe cargar los datos del contribuyente", res);
       }
+   } catch (error) {
+      console.error("Error al actualizar los datos:", error.message);
    }
 };
 

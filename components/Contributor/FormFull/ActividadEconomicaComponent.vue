@@ -32,13 +32,12 @@
                   v-model="formActividadEconomica.descripcion"
                />
             </div>
-            <div class="m-7">
+            <div class="m-5">
                <button
-                  type="button"
-                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center"
-                  @click="agregarActividadEconomicaItem"
+                  type="submit"
+                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
                >
-                  Agregar
+                  Guardar
                </button>
             </div>
          </div>
@@ -80,15 +79,6 @@
                </tbody>
             </table>
          </div>
-
-         <div class="m-5">
-            <button
-               type="submit"
-               class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
-            >
-               Guardar
-            </button>
-         </div>
       </form>
    </div>
 </template>
@@ -113,37 +103,25 @@ const formActividadEconomica = ref({
 
 const actividadEconomicaData = ref({ items: [] });
 
-const agregarActividadEconomicaItem = () => {
-   if (
-      formActividadEconomica.value.codigo &&
-      formActividadEconomica.value.descripcion
-   ) {
-      actividadEconomicaData.value.items.push({
-         ...formActividadEconomica.value,
-      });
-      formActividadEconomica.value = { codigo: "", descripcion: "" };
-   } else {
-      alert("Por favor, complete todos los campos del nuevo ítem.");
-   }
-};
-
 const saveActividadEconomica = async (e) => {
-   // let fechaFirmaDigital = moment(props.form.fechaFirmaDigital).format(
-   //    "YYYY-MM-DDTHH:mm:ss",
-   // );
-
    // if (validateForm()) {
-
-   let payload = {
-      actividadesEconomicas: actividadEconomicaData.value.items,
-   };
 
    try {
       if (props.contributor) {
+         const payload = {
+            actividadesEconomicas: [
+               ...actividadEconomicaData.value.items,
+               { ...formActividadEconomica.value },
+            ],
+         };
+
          const res = await update(
             `contributor-emitter/${props.contributor._id}`,
             payload,
          );
+
+         actividadEconomicaData.value.items = payload.actividadesEconomicas;
+
          console.log("Datos actualizados:", res);
       } else {
          console.log("Se debe cargar los datos del contribuyente", res);
