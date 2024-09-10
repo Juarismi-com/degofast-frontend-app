@@ -222,13 +222,23 @@
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                     {{ formatPriceNumber(item.precioUnitario) }}
+                     {{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(item.precioUnitario)
+                           : formatPriceNumberNoPYG(item.precioUnitario)
+                     }}
                   </td>
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
                      {{
-                        formatPriceNumber(item.precioUnitario * item.cantidad)
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(
+                                item.precioUnitario * item.cantidad,
+                             )
+                           : formatPriceNumberNoPYG(
+                                item.precioUnitario * item.cantidad,
+                             )
                      }}
                   </td>
                   <td
@@ -254,7 +264,11 @@
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                     {{ formatPriceNumber(detalle.total) }}
+                     {{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(detalle.total)
+                           : formatPriceNumberNoPYG(detalle.total)
+                     }}
                   </td>
                </tr>
                <tr>
@@ -267,7 +281,30 @@
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                     <!--{{ formatPriceNumber(detalle.total) }} -->
+                     <!-- {{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(detalle.total)
+                           : formatPriceNumberNoPYG(detalle.total)
+                     }} -->
+                  </td>
+               </tr>
+               <tr>
+                  <td
+                     colspan="6"
+                     class="whitespace-nowrap border border-gray-200 font-bold"
+                  >
+                     Total en guaraníes:
+                  </td>
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
+                     {{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(detalle.total)
+                           : formatPriceNumber(
+                                detalle.total * detalle.items[0].cambio,
+                             )
+                     }}
                   </td>
                </tr>
                <tr>
@@ -276,7 +313,12 @@
                      class="whitespace-nowrap border border-gray-200"
                   >
                      <label class="font-bold">IVA (5%):</label>
-                     {{ formatPriceNumber(detalle.iva5) }}
+
+                     {{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(detalle.iva5)
+                           : formatPriceNumberNoPYG(detalle.iva5)
+                     }}
                   </td>
 
                   <td
@@ -284,7 +326,12 @@
                      class="whitespace-nowrap border border-gray-200"
                   >
                      <label class="font-bold">IVA (10%):</label>
-                     {{ formatPriceNumber(detalle.iva10) }}
+
+                     {{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(detalle.iva10)
+                           : formatPriceNumberNoPYG(detalle.iva10)
+                     }}
                   </td>
                   <td
                      colspan="1"
@@ -296,7 +343,11 @@
                   <td
                      class="whitespace-nowrap border border-gray-200 text-right"
                   >
-                     {{ formatPriceNumber(detalle.totalIva) }}
+                     {{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(detalle.totalIva)
+                           : formatPriceNumberNoPYG(detalle.totalIva)
+                     }}
                   </td>
                </tr>
             </tfoot>
@@ -330,6 +381,7 @@ import { useRoute } from "vue-router";
 import {
    formatNumber,
    formatPriceNumber,
+   formatPriceNumberNoPYG,
    getDeNumberCode,
    getEstablecimientoNumberCode,
 } from "~/helpers/number.helper";
@@ -344,11 +396,13 @@ definePageMeta({
 const authStore = useAuthStore();
 const route = useRoute();
 const detalle = ref(null);
+const localCurrency = ref(null);
 
 const getDeById = async (id) => {
    try {
       const deRes = await getDesById(id);
       detalle.value = mapperDeName(deRes);
+      localCurrency.value = detalle.value.moneda;
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
@@ -386,11 +440,20 @@ const mapperDeName = (de) => {
    };
 };
 
+{
+   {
+   }
+}
+
 const calculateIVA = (item) => {
    if (item?.iva === 5) {
-      return formatPriceNumber((item.precioUnitario * item.cantidad) / 21);
+      return localCurrency.value === "PYG"
+         ? formatPriceNumber((item.precioUnitario * item.cantidad) / 21)
+         : formatPriceNumberNoPYG((item.precioUnitario * item.cantidad) / 21);
    } else if (item?.iva === 10) {
-      return formatPriceNumber((item.precioUnitario * item.cantidad) / 11);
+      return localCurrency.value === "PYG"
+         ? formatPriceNumber((item.precioUnitario * item.cantidad) / 11)
+         : formatPriceNumberNoPYG((item.precioUnitario * item.cantidad) / 11);
    }
    return 0;
 };

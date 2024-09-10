@@ -20,6 +20,20 @@ export const formatPriceNumber = (price: number, geo = "es-PY") => {
    return "--";
 };
 
+export const formatPriceNumberNoPYG = (price: number, geo = "en-PY") => {
+   if (price) {
+      const priceFormat = new Intl.NumberFormat(geo, {
+         style: "currency",
+         currency: "USD",
+         minimumFractionDigits: 0,
+         maximumFractionDigits: 0,
+      }).format(parseFloat(price.toString()));
+      return priceFormat;
+   }
+
+   return "--";
+};
+
 export const getPuntoExpedicionNumberCode = (numero: number | string) => {
    return addPrefixCero(numero, 3);
 };
