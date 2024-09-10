@@ -55,7 +55,8 @@
                      >
                         RUC/Documento de identidad N°:
                         <label class="font-bold">{{
-                           detalle.cliente.ruc
+                           detalle.cliente.ruc ||
+                           detalle.cliente.documentoNumero
                         }}</label>
                      </td>
                   </tr>
