@@ -1,9 +1,10 @@
 <template>
-   <div>Detail List</div>
+   <AuthResetPassForm />
 </template>
 
-<script setup lang="ts">
+<script setup>
 definePageMeta({
    middleware: ["auth"],
+   layout: "default",
 });
 </script>

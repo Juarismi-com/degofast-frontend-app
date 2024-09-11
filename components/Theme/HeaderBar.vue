@@ -171,7 +171,7 @@
                      alt=""
                      aria-hidden="true"
                   /-->
-                  <b>Bienvenid@ {{ userData?.nombre }}</b>
+                  <b>Bienvenid@ {{ user?.nombre }}</b>
                </button>
                <template v-if="isProfileMenuOpen">
                   <ul
@@ -263,7 +263,7 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores";
 
 const authStore = useAuthStore();
-const { userData } = storeToRefs(authStore);
+const { user } = storeToRefs(authStore);
 
 const isProfileMenuOpen = ref(false);
 
