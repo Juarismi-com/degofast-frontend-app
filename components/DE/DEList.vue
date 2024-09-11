@@ -101,7 +101,7 @@
                   <td class="px-4 py-3">
                      <button
                         v-if="item.estado == 'X'"
-                        @click="abrirModal(item.cdc)"
+                        @click="openModal(item.cdc)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Generar evento
@@ -161,7 +161,7 @@ const consultarSifen = (cdc) => {
    window.open(url, "_blank");
 };
 
-const abrirModal = (cdc) => {
+const openModal = (cdc) => {
    cdcActual.value = cdc;
    showModal.value = true;
 };

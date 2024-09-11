@@ -139,6 +139,6 @@ watch(
    (newCdc) => {
       formData.value.cdc = newCdc;
    },
-   { immediate: true }, // Esto hará que el watcher también ejecute en la primera renderización
+   { immediate: true },
 );
 </script>
