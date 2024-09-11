@@ -1,7 +1,8 @@
 <template>
    <div class="w-full overflow-hidden rounded-lg shadow-xs">
-      <Loader v-if="loading" />
+      <DECancel :show="true" />
 
+      <Loader v-if="loading" />
       <div v-else class="w-full overflow-x-auto">
          <table class="w-full whitespace-no-wrap">
             <thead>
@@ -125,6 +126,7 @@ import {
 import Loader from "@/components/Loader/Loader.vue";
 
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
+import DECancel from "./DECancel.vue";
 
 const props = defineProps({
    items: {
