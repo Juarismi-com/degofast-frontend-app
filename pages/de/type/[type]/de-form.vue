@@ -162,10 +162,17 @@ const submitDe = async () => {
       if (validatorDeForm(formData.value)) {
          setIsPreviewModal();
          confirmSubmit.value = true;
+
          const payload = {
             ...formData.value,
             fecha: formatDateHours(formData.value.fecha),
          };
+
+         if (payload.tipoDocumento == 1) {
+            delete payload.documentoAsociado;
+            delete payload.notaCreditoDebito;
+         }
+
          const response = await saveDE(payload);
 
          if (response.de) {
