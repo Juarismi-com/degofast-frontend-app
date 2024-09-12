@@ -85,7 +85,7 @@ import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
 import { HOME_PAGE_PATH } from "../../config";
 
-import ToastDanger from "../Toast/ToastDanger.vue";
+const authStore = useAuthStore();
 
 export default defineComponent({
    setup() {
@@ -97,7 +97,6 @@ export default defineComponent({
       const loginFail = false;
       const showToast = ref(false);
 
-      const authStore = useAuthStore();
       const { setAuth } = authStore;
       const { auth } = storeToRefs(authStore);
 
@@ -112,7 +111,13 @@ export default defineComponent({
          await this.setAuth(this.form.username, this.form.password);
 
          if (this.auth.authToken) {
-            this.$router.push(HOME_PAGE_PATH);
+            const { contributor } = storeToRefs(authStore);
+
+            if (contributor.value) {
+               this.$router.push(HOME_PAGE_PATH);
+            } else {
+               this.$router.push("/contributor");
+            }
          } else {
             this.loginFail = true;
             this.showToast = true;
