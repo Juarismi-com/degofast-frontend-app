@@ -100,7 +100,7 @@
             </div>
          </div>
 
-         <div>
+         <div v-if="formData?.tipoDocumento == 1">
             <hr class="my-4" />
 
             <div class="grid grid-cols-4 gap-4">
@@ -137,8 +137,10 @@
                <input v-model="formData.condicion.credito.cuotas" id="condicionCreditoCuotas" type="number"
                   :class="INPUT_CLASS.sm" />
             </div>
-            </div>
          </div>
+      </div>
+
+      <NotaCreditoDebito :form-data="formData" :contributor="contributor" />
    </div> 
 </template>
 
@@ -147,9 +149,9 @@
    import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service.ts";
    import { 
       INPUT_CLASS, 
-      TIPO_DOCUMENT_LIST, 
-      useConfig 
    } from "../../../config"
+
+   import NotaCreditoDebito from "../Tipo/NotaCreditoDebito.vue";
 
    const props = defineProps({
       formData: {

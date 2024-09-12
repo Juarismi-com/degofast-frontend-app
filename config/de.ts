@@ -211,6 +211,19 @@ export const deFormData = {
       pais: "PRY",
    },
    items: [],
+   notaCreditoDebito: {
+      motivo: 1,
+   },
+   documentoAsociado: {
+      formato: 1,
+      punto: 1,
+      numero: "",
+      establecimiento: 1,
+      cdc: "",
+      tipo: 1,
+      timbrado: "",
+      fecha: moment().format("YYYY-MM-DDTHH:mm"),
+   },
 };
 
 export const deItemData = {
@@ -301,6 +314,41 @@ export const validateDeItems = (de: any) => {
    }
 };
 
+export const validateNotaCreditoDebito = (de: any) => {
+   try {
+      if (de.tipoDocumento == 5) {
+         const { notaCreditoDebito, documentoAsociado } = de;
+         if (!notaCreditoDebito?.motivo)
+            throw "notaCreditoDebito.motivo es requerido";
+
+         if (!documentoAsociado.formato)
+            throw "documentoAsociado.formato es requerido";
+
+         if (!documentoAsociado.timbrado)
+            throw "documentoAsociado.timbrado es requerido";
+
+         if (!documentoAsociado.numero)
+            throw "documentoAsociado.numero es requerido";
+
+         if (!documentoAsociado.punto)
+            throw "documentoAsociado.punto es requerido";
+
+         if (!documentoAsociado.establecimiento)
+            throw "documentoAsociado.establecimiento es requerido";
+
+         if (!documentoAsociado.fecha)
+            throw "documentoAsociado.fecha es requerido";
+
+         if (!documentoAsociado.tipo)
+            throw "documentoAsociado.tipo es requerido";
+      }
+
+      return true;
+   } catch (error) {
+      throw error;
+   }
+};
+
 /**
  * move this to helper or validator
  * @param de
@@ -311,6 +359,7 @@ export const validatorDeForm = (de: any) => {
       validateDeCondition(de);
       validateDeCliente(de);
       validateDeItems(de);
+      validateNotaCreditoDebito(de);
 
       return true;
    } catch (error) {
