@@ -211,6 +211,19 @@ export const deFormData = {
       pais: "PRY",
    },
    items: [],
+   notaCreditoDebito: {
+      motivo: 1,
+   },
+   documentoAsociado: {
+      formato: 1,
+      punto: 1,
+      numero: "",
+      establecimiento: 1,
+      cdc: "",
+      tipo: 1,
+      timbrado: "",
+      fecha: moment().format("YYYY-MM-DDTHH:mm"),
+   },
 };
 
 export const deItemData = {
