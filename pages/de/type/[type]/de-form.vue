@@ -32,6 +32,7 @@
                      <DEFormFullCabeceraComponent
                         :form-data="formData"
                         :contributor="contributor"
+                        :documentType="tipoDocumento"
                      />
                   </div>
                </div>
