@@ -1,7 +1,12 @@
 <template>
    <div class="w-full overflow-hidden rounded-lg shadow-xs">
-      <Loader v-if="loading" />
+      <DECancel
+         :show="showModal"
+         :cdc="cdcActual"
+         @update:show="handleCloseModal"
+      />
 
+      <Loader v-if="loading" />
       <div v-else class="w-full overflow-x-auto">
          <table class="w-full whitespace-no-wrap">
             <thead>
@@ -95,7 +100,8 @@
                   </td>
                   <td class="px-4 py-3">
                      <button
-                        v-if="item.estado == 'A'"
+                        v-if="item.estado == 'X'"
+                        @click="openModal(item.cdc)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Generar evento
@@ -125,6 +131,7 @@ import {
 import Loader from "@/components/Loader/Loader.vue";
 
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
+import DECancel from "./DECancel.vue";
 
 const props = defineProps({
    items: {
@@ -138,6 +145,8 @@ const props = defineProps({
 
 const router = useRouter();
 const loading = ref(true);
+const showModal = ref(false);
+const cdcActual = ref(null);
 
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
@@ -150,6 +159,11 @@ const verDetalles = (id) => {
 const consultarSifen = (cdc) => {
    const url = `https://ekuatia.set.gov.py/consultas/150/${cdc}`;
    window.open(url, "_blank");
+};
+
+const openModal = (cdc) => {
+   cdcActual.value = cdc;
+   showModal.value = true;
 };
 
 const { items } = toRefs(props);
@@ -169,5 +183,9 @@ const emit = defineEmits(["page-change"]);
 
 const handlePageChange = (page) => {
    emit("page-change", page);
+};
+
+const handleCloseModal = (newVal) => {
+   showModal.value = newVal;
 };
 </script>
