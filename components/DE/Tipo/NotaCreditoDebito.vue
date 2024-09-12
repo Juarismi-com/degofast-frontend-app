@@ -46,7 +46,7 @@
          </div>
 
          <div>
-            <label for="formato">Top *:</label>
+            <label for="formato">Tipo:</label>
             <select
                v-model="formData.documentoAsociado.tipo"
                id="formato"
