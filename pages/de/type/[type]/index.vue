@@ -22,6 +22,7 @@
          :items="des"
          @page-change="handlePageChange"
          :totalPages="totalPages"
+         :documentType="deType"
       />
    </div>
 </template>
