@@ -266,7 +266,10 @@ const buscar = async () => {
    if (searchQuery.value.documentoNumero) {
       queryParams["cliente.documentoNumero"] =
          searchQuery.value.documentoNumero;
+   } else if (searchQuery.value.ruc) {
+      queryParams["cliente.ruc"] = searchQuery.value.ruc;
    }
+
    if (searchQuery.value.facturaNumero) {
       queryParams["numero"] = searchQuery.value.facturaNumero;
    }
@@ -282,7 +285,6 @@ const buscar = async () => {
 
       filteredItems.value = response.data;
       totalPagesLocal.value = response.totalPages;
-      console.log(totalPagesLocal.value);
    } catch (error) {
       console.error("Error al buscar el documento:", error);
    } finally {
