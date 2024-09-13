@@ -186,13 +186,21 @@
                      <label class="font-bold">Subtotal: </label>
                   </div>
                   <div>
-                     <span>{{ formatPriceNumber(detalle.total) }}</span>
+                     <span>{{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(detalle.total)
+                           : formatPriceNumberNoPYG(detalle.total)
+                     }}</span>
                   </div>
                   <div>
                      <label class="font-bold">Total: </label>
                   </div>
                   <div>
-                     <span>{{ formatPriceNumber(detalle.total) }}</span>
+                     <span>{{
+                        localCurrency === "PYG"
+                           ? formatPriceNumber(detalle.total)
+                           : formatPriceNumberNoPYG(detalle.total)
+                     }}</span>
                   </div>
                </div>
             </div>
@@ -313,6 +321,7 @@ import { useRoute } from "vue-router";
 import {
    formatNumber,
    formatPriceNumber,
+   formatPriceNumberNoPYG,
    getDeNumberCode,
    getEstablecimientoNumberCode,
 } from "~/helpers/number.helper";
@@ -323,6 +332,7 @@ definePageMeta({
 
 const activeTab = ref(0);
 const detalle = ref(null);
+const localCurrency = ref(null);
 
 const route = useRoute();
 
@@ -332,6 +342,7 @@ const fetchDetalle = async () => {
       if (!id) return;
       const deRes = await getDesById(id);
       detalle.value = mapperDeName(deRes);
+      localCurrency.value = detalle.value.moneda;
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
@@ -380,9 +391,13 @@ const mapperDeName = (de) => {
 
 const calculateIVA = (item) => {
    if (item?.iva === 5) {
-      return formatPriceNumber((item.precioUnitario * item.cantidad) / 21);
+      return localCurrency.value === "PYG"
+         ? formatPriceNumber((item.precioUnitario * item.cantidad) / 21)
+         : formatPriceNumberNoPYG((item.precioUnitario * item.cantidad) / 21);
    } else if (item?.iva === 10) {
-      return formatPriceNumber((item.precioUnitario * item.cantidad) / 11);
+      return localCurrency.value === "PYG"
+         ? formatPriceNumber((item.precioUnitario * item.cantidad) / 11)
+         : formatPriceNumberNoPYG((item.precioUnitario * item.cantidad) / 11);
    }
    return 0;
 };
