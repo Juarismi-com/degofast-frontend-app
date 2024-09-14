@@ -13,7 +13,7 @@
          <div class="grid grid-cols-6 gap-4">
             <div class="col-span-4">
                <h1>{{ detalle.contributor.razonSocial }}</h1>
-               FACTURA ELECTRÓNICA: <br />
+               {{ title }}: <br />
                {{ detalle.establecimiento }} - {{ detalle.punto }} -
                {{ detalle.numero }}
                <br />
@@ -396,6 +396,7 @@ definePageMeta({
 
 const authStore = useAuthStore();
 const route = useRoute();
+const title = ref("");
 const detalle = ref(null);
 const localCurrency = ref(null);
 
@@ -404,6 +405,11 @@ const getDeById = async (id) => {
       const deRes = await getDesById(id);
       detalle.value = mapperDeName(deRes);
       localCurrency.value = detalle.value.moneda;
+
+      title.value =
+         detalle.value.tipoDocumento == 5
+            ? "NOTA DE CRÉDITO"
+            : "FACTURA ELECTRÓNICA";
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
