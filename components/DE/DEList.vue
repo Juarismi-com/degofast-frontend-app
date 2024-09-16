@@ -277,7 +277,6 @@ const buscar = async () => {
    }
 
    const queryString = new URLSearchParams(queryParams).toString();
-   console.log(queryString);
 
    try {
       const response = await get(
