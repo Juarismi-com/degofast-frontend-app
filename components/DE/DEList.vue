@@ -121,11 +121,16 @@
                         {{ item.estado }}
                      </span>
                   </td>
+
                   <td class="px-4 py-3 text-sm">
                      {{ moment(item.fecha).format("DD/MM/YYYY") }}
                   </td>
                   <td class="px-4 py-3 text-sm text-right">
-                     {{ formatPriceNumber(item.total) }}
+                     {{
+                        item.moneda === "PYG"
+                           ? formatPriceNumber(item.total)
+                           : formatPriceNumberNoPYG(item.total)
+                     }}
                   </td>
                   <!-- Opciones -->
                   <td class="px-4 py-3">
@@ -171,6 +176,7 @@ import moment from "moment";
 import { useAuthStore } from "~/stores";
 import {
    formatPriceNumber,
+   formatPriceNumberNoPYG,
    getEstablecimientoNumberCode,
    getPuntoExpedicionNumberCode,
    getDeNumberCode,
