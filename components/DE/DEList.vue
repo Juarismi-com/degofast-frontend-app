@@ -168,6 +168,7 @@
 import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
+import { useAuthStore } from "~/stores";
 import {
    formatPriceNumber,
    getEstablecimientoNumberCode,
@@ -179,6 +180,8 @@ import Loader from "@/components/Loader/Loader.vue";
 
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
 import DECancel from "./DECancel.vue";
+
+const authStore = useAuthStore();
 
 const props = defineProps({
    items: {
@@ -254,9 +257,6 @@ const handlePageChange = (page) => {
 const handleCloseModal = (newVal) => {
    showModal.value = newVal;
 };
-
-import { useAuthStore } from "~/stores";
-const authStore = useAuthStore();
 
 const buscar = async () => {
    loading.value = true;
