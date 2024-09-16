@@ -6,7 +6,6 @@
          @update:show="handleCloseModal"
       />
 
-      <!-- Contenedor para inputs y botón en una misma línea vertical -->
       <div class="flex flex-col gap-4 mt-4 mb-4">
          <div class="flex gap-4">
             <div class="flex-1">
