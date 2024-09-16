@@ -264,10 +264,12 @@ const buscar = async () => {
    let queryParams = {};
 
    if (searchQuery.value.documentoNumero) {
-      queryParams["cliente.documentoNumero"] =
-         searchQuery.value.documentoNumero;
-   } else if (searchQuery.value.ruc) {
-      queryParams["cliente.ruc"] = searchQuery.value.ruc;
+      if (searchQuery.value.documentoNumero.includes("-")) {
+         queryParams["cliente.ruc"] = searchQuery.value.documentoNumero;
+      } else {
+         queryParams["cliente.documentoNumero"] =
+            searchQuery.value.documentoNumero;
+      }
    }
 
    if (searchQuery.value.facturaNumero) {
@@ -275,6 +277,7 @@ const buscar = async () => {
    }
 
    const queryString = new URLSearchParams(queryParams).toString();
+   console.log(queryString);
 
    try {
       const response = await get(
