@@ -6,6 +6,52 @@
          @update:show="handleCloseModal"
       />
 
+      <!-- Contenedor para inputs y botón en una misma línea vertical -->
+      <div class="flex flex-col gap-4 mt-4 mb-4">
+         <div class="flex gap-4">
+            <div class="flex-1">
+               <label
+                  for="documentoNumero"
+                  class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+               >
+                  Número de Documento
+               </label>
+               <input
+                  type="text"
+                  v-model="searchQuery.documentoNumero"
+                  id="documentoNumero"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                  placeholder="Ingrese número de documento"
+               />
+            </div>
+
+            <div class="flex-1">
+               <label
+                  for="facturaNumero"
+                  class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+               >
+                  Número de Factura
+               </label>
+               <input
+                  type="text"
+                  v-model="searchQuery.facturaNumero"
+                  id="facturaNumero"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
+                  placeholder="Ingrese número de factura"
+               />
+            </div>
+
+            <div class="flex-none self-end">
+               <button
+                  @click="buscar"
+                  class="px-4 py-2 bg-purple-600 text-white rounded-lg"
+               >
+                  Buscar
+               </button>
+            </div>
+         </div>
+      </div>
+
       <Loader v-if="loading" />
       <div v-else class="w-full overflow-x-auto">
          <table class="w-full whitespace-no-wrap">
@@ -27,7 +73,7 @@
             >
                <tr
                   class="text-gray-700 dark:text-gray-400"
-                  v-for="(item, index) in items"
+                  v-for="(item, index) in filteredItems"
                   :key="index"
                >
                   <td class="px-4 py-3">
@@ -75,11 +121,16 @@
                         {{ item.estado }}
                      </span>
                   </td>
+
                   <td class="px-4 py-3 text-sm">
                      {{ moment(item.fecha).format("DD/MM/YYYY") }}
                   </td>
                   <td class="px-4 py-3 text-sm text-right">
-                     {{ formatPriceNumber(item.total) }}
+                     {{
+                        item.moneda === "PYG"
+                           ? formatPriceNumber(item.total)
+                           : formatPriceNumberNoPYG(item.total)
+                     }}
                   </td>
                   <!-- Opciones -->
                   <td class="px-4 py-3">
@@ -113,7 +164,7 @@
       </div>
       <PaginationNextPrev
          @page-change="handlePageChange"
-         :totalPages="props.totalPages"
+         :totalPages="totalPagesLocal"
       />
    </div>
 </template>
@@ -122,16 +173,21 @@
 import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
+import { useAuthStore } from "~/stores";
 import {
    formatPriceNumber,
+   formatPriceNumberNoPYG,
    getEstablecimientoNumberCode,
    getPuntoExpedicionNumberCode,
    getDeNumberCode,
 } from "~/helpers/number.helper";
+import { get } from "~/services/http.service";
 import Loader from "@/components/Loader/Loader.vue";
 
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
 import DECancel from "./DECancel.vue";
+
+const authStore = useAuthStore();
 
 const props = defineProps({
    items: {
@@ -141,12 +197,21 @@ const props = defineProps({
    totalPages: {
       type: Number,
    },
+   documentType: {
+      type: Number,
+   },
 });
 
 const router = useRouter();
 const loading = ref(true);
 const showModal = ref(false);
 const cdcActual = ref(null);
+const searchQuery = ref({
+   documentoNumero: "",
+   facturaNumero: "",
+});
+const filteredItems = ref([]);
+const totalPagesLocal = ref(props.totalPages);
 
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
@@ -169,15 +234,25 @@ const openModal = (cdc) => {
 const { items } = toRefs(props);
 
 onMounted(() => {
+   filteredItems.value = [...items.value];
    loading.value = true;
 });
 
 watch(items, (newItems) => {
+   filteredItems.value = [...newItems];
    loading.value = false;
    if (newItems.length === 0) {
       alert("No hay elementos que mostrar.");
    }
 });
+
+watch(
+   () => props.totalPages,
+   (newTotalPages) => {
+      totalPagesLocal.value = newTotalPages;
+      console.log(totalPagesLocal.value);
+   },
+);
 
 const emit = defineEmits(["page-change"]);
 
@@ -187,5 +262,39 @@ const handlePageChange = (page) => {
 
 const handleCloseModal = (newVal) => {
    showModal.value = newVal;
+};
+
+const buscar = async () => {
+   loading.value = true;
+
+   let queryParams = {};
+
+   if (searchQuery.value.documentoNumero) {
+      queryParams["cliente.documentoNumero"] =
+         searchQuery.value.documentoNumero;
+   } else if (searchQuery.value.ruc) {
+      queryParams["cliente.ruc"] = searchQuery.value.ruc;
+   }
+
+   if (searchQuery.value.facturaNumero) {
+      queryParams["numero"] = searchQuery.value.facturaNumero;
+   }
+
+   const queryString = new URLSearchParams(queryParams).toString();
+
+   try {
+      const response = await get(
+         `de?page=1&tipoDocumento=${props.documentType}&usuario.email=${
+            authStore.user.email
+         }${queryString ? `&${queryString}` : ""}`,
+      );
+
+      filteredItems.value = response.data;
+      totalPagesLocal.value = response.totalPages;
+   } catch (error) {
+      console.error("Error al buscar el documento:", error);
+   } finally {
+      loading.value = false;
+   }
 };
 </script>
