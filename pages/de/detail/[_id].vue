@@ -187,7 +187,7 @@
                   </div>
                   <div>
                      <span>{{
-                        localCurrency === "PYG"
+                        isValidCurrency(localCurrency)
                            ? formatPriceNumber(detalle.total)
                            : formatPriceNumberNoPYG(detalle.total)
                      }}</span>
@@ -197,7 +197,7 @@
                   </div>
                   <div>
                      <span>{{
-                        localCurrency === "PYG"
+                        isValidCurrency(localCurrency)
                            ? formatPriceNumber(detalle.total)
                            : formatPriceNumberNoPYG(detalle.total)
                      }}</span>
@@ -324,6 +324,7 @@ import {
    formatPriceNumberNoPYG,
    getDeNumberCode,
    getEstablecimientoNumberCode,
+   isValidCurrency
 } from "~/helpers/number.helper";
 
 definePageMeta({
@@ -391,11 +392,11 @@ const mapperDeName = (de) => {
 
 const calculateIVA = (item) => {
    if (item?.iva === 5) {
-      return localCurrency.value === "PYG"
+      return isValidCurrency(localCurrency.value)
          ? formatPriceNumber((item.precioUnitario * item.cantidad) / 21)
          : formatPriceNumberNoPYG((item.precioUnitario * item.cantidad) / 21);
    } else if (item?.iva === 10) {
-      return localCurrency.value === "PYG"
+      return isValidCurrency(localCurrency.value)
          ? formatPriceNumber((item.precioUnitario * item.cantidad) / 11)
          : formatPriceNumberNoPYG((item.precioUnitario * item.cantidad) / 11);
    }
