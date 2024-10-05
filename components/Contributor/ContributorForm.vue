@@ -62,12 +62,12 @@
                />
             </div>
 
-            <div
+            <!-- <div
                v-if="currentStep == 5"
                class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
             >
                Pestaña 6
-            </div>
+            </div> -->
          </div>
       </DEStepperFull>
    </div>
@@ -105,10 +105,10 @@ const steps = [
    {
       title: "Actividades Económicas",
    },
-   {
-      title: "Usuarios con acceso",
-      available: false,
-   },
+   // {
+   //    title: "Usuarios con acceso",
+   //    available: false,
+   // },
 ];
 
 const setCurrentStep = (value) => {

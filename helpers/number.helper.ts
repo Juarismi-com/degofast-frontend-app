@@ -26,7 +26,7 @@ export const formatPriceNumberNoPYG = (price: number, geo = "en-PY") => {
          style: "currency",
          currency: "USD",
          minimumFractionDigits: 0,
-         maximumFractionDigits: 0,
+         maximumFractionDigits: 2,
       }).format(parseFloat(price.toString()));
       return priceFormat;
    }
@@ -120,4 +120,10 @@ export const calculateIVA = (item: any) => {
       return formatPriceNumber(result);
    }
    return result;
+};
+
+
+export const isValidCurrency = (currency:string) => {
+   const validCurrencies = ["PYG", "Gs.", "GS", "GS."];
+   return validCurrencies.includes(currency);
 };
