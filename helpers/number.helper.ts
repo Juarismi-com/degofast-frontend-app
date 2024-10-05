@@ -26,7 +26,7 @@ export const formatPriceNumberNoPYG = (price: number, geo = "en-PY") => {
          style: "currency",
          currency: "USD",
          minimumFractionDigits: 0,
-         maximumFractionDigits: 0,
+         maximumFractionDigits: 2,
       }).format(parseFloat(price.toString()));
       return priceFormat;
    }
