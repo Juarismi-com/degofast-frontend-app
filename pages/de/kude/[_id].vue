@@ -17,6 +17,10 @@
                <br />
             </div>
             <div class="col-span-2">
+               RUC:
+               <label class="font-bold">
+                  {{ detalle.contributor.ruc }} </label><br />
+
                Timbrado N°:
                <label class="font-bold">
                   {{ detalle.contributor.timbradoNumero }} </label><br />
@@ -239,7 +243,7 @@
                      {{
                         isValidCurrency(localCurrency)
                            ? formatPriceNumber(detalle.total)
-                           : formatPriceNumber(detalle.total * detalle.items[0].cambio)
+                           : null
                      }}
                   </td>
                </tr>
