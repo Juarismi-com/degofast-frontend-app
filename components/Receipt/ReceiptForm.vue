@@ -6,50 +6,85 @@
          </h1>
       </div>
 
-      <DEStepperFull :current-step="currentStep" :steps="steps" :next-step-fn="setCurrentStep" :btn-control="true">
+      <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
          <div>
-            <div v-if="currentStep == 0" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ReceiptFormFullEmitterComponent :form-data="formData" :contributor="contributor" />
-            </div>
-
-            <div v-if="currentStep == 1" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ReceiptFormFullReceiverComponent :form-data="formData" :contributor="contributor" />
-            </div>
-
-            <div v-if="currentStep == 2" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ReceiptFormFullDetailComponent :form-data="formData" :contributor="contributor" /> 
-            </div>
-
+            <label for="recibidoDe">Recibido de:</label>
+            <input type="text" v-model="formData.recibidoDe" id="recibidoDe" :class="INPUT_CLASS.sm" />
          </div>
-      </DEStepperFull>
+         <div>
+            <label for="fecha">Fecha:</label>
+            <input type="datetime-local" v-model="formData.fecha" id="fecha" :class="INPUT_CLASS.sm" />
+         </div>
+      </div>
+
+      <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
+         <div>
+            <label for="monto">Monto</label>
+            <input type="text" v-model="formData.monto" id="monto" :class="INPUT_CLASS.sm" />
+         </div>
+         <div>
+            <label for="montoLetras">Monto en letras:</label>
+            <input type="text" v-model="formData.montoLetras" id="montoLetras" :class="INPUT_CLASS.sm" />
+         </div>
+         <div>
+            <label for="concepto">Concepto:</label>
+            <input type="text" v-model="formData.concepto" id="concepto" :class="INPUT_CLASS.sm" />
+         </div>
+      </div>
+
+      <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
+         <div>
+            <label for="establecimiento">Establecimiento:</label>
+            <select id="establecimiento" v-model="formData.establecimiento" :class="INPUT_CLASS.sm"
+               @change="selectEstablecimiento($event)">
+               <option v-for="(establecimiento, index) in contributor.establecimientos" :key="index"
+                  :value="establecimiento.codigo">
+                  {{
+                     establecimiento.denominacion + " - " + establecimiento.codigo
+                  }}
+               </option>
+            </select>
+         </div>
+
+         <div>
+            <label for="punto_expedicion">Punto de Expedicion:</label>
+            <select id="punto_expedicion" v-model="formData.puntoExpedicion" :class="INPUT_CLASS.sm">
+               <option v-for="(item, index) in puntoExpedicionList" :key="index" :value="item._id">
+                  {{
+                     item.codigo
+                  }}
+               </option>
+            </select>
+         </div>
+
+      </div>
+
+      <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
+         <button type="button"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            @click="submitRecibo">
+            Enviar
+         </button>
+
+      </div>
+
    </div>
 </template>
 
 <script setup>
-
-
+import { INPUT_CLASS } from "~/config";
+import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service.ts";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores";
-import { deReceiptData } from "~/config/receipt";
+import { deReceiptData, validateRecibo } from "~/config/receipt";
+import { saveRecibo } from "~/services/recibo.service";
+import { formatDateHours } from "~/helpers/date.helper";
 
-// tabs
-const currentStep = ref(0);
+const puntoExpedicionList = ref([])
 
-const steps = [
-   {
-      title: "Datos del Emisor",
-   },
-   {
-      title: "Datos del Receptor",
-   },
-   {
-      title: "Detalle",
-   },
-];
-
-const setCurrentStep = (value) => {
-   currentStep.value = value;
-};
+// Relacionado al envio satisfactorio al api
+const confirmSubmit = ref(false);
+const submitDeSuccess = ref(false);
 
 // datos del contribuyente
 const authStore = useAuthStore();
@@ -61,8 +96,73 @@ const tipoDocumento = ref(route.params.type);
 
 // datos del formulario / documento electronico
 const formData = ref({
-   ...deReceiptData,
-   tipoDocumento: tipoDocumento.value,
+   ...deReceiptData,   
+   tipoDocumento: 50,
+   recibidoDe: authStore.contributor._id
 });
+
+
+const submitRecibo = async () => {
+   try {
+      
+      // if (validateRecibo(formData.value)) {     
+        
+         confirmSubmit.value = true;
+
+         const payload = {
+            ...formData.value,          
+            fecha: formatDateHours(formData.value.fecha),
+         };      
+     
+         const response = await saveRecibo(payload);
+
+         if (response.de) {
+            submitDeSuccess.value = true;
+            resetForm();
+         }
+     // } 
+   } catch (error) {
+      console.log(error);
+   }
+};
+
+
+/**
+ * Selecciona un establecimiento y setea su punto de expedicion
+ * @param e
+ */
+const selectEstablecimiento = (e) => {
+   formData.value.establecimiento = e.target.value.toString();
+   setPuntoEstablecimientoList();
+};
+
+/**
+ * Carga el listado de establecimientos y setea el primero encontrado
+ * por defecto
+ */
+const setPuntoEstablecimientoList = async () => {
+   const establecimientoCodigo = formData.value.establecimiento;
+
+   const establecimiento = contributor.value.establecimientos.find(
+      (establecimiento) => {
+         return establecimiento.codigo == establecimientoCodigo;
+      },
+   );
+
+   console.log(establecimiento);
+
+
+   puntoExpedicionList.value = await getPuntoExpedicionByFilters({
+      contributor: contributor.value?._id,
+      establecimiento: establecimiento?._id,
+      tipoDocumento: formData.value?.tipoDocumento,
+   });
+
+   formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
+};
+
+onMounted(() => {
+   setPuntoEstablecimientoList();  
+})
 
 </script>
