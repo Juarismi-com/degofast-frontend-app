@@ -101,7 +101,6 @@ const formData = ref({
    recibidoDe: authStore.contributor._id
 });
 
-
 const submitRecibo = async () => {
    try {
       
@@ -148,10 +147,7 @@ const setPuntoEstablecimientoList = async () => {
          return establecimiento.codigo == establecimientoCodigo;
       },
    );
-
-   console.log(establecimiento);
-
-
+ 
    puntoExpedicionList.value = await getPuntoExpedicionByFilters({
       contributor: contributor.value?._id,
       establecimiento: establecimiento?._id,
