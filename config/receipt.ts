@@ -15,8 +15,6 @@ export const deReceiptData = {
 export const validateRecibo = (recibo: any) => {
    try {
 
-      console.log(recibo.recibidoDe);
-
       if (!recibo.recibidoDe) throw "recibo.recibidoDe es requerido";
       if (!recibo.monto) throw "recibo.recibidoDe es requerido";
       if (!recibo.montoLetras) throw "recibo.montoLetras es requerido";
