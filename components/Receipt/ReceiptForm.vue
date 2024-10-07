@@ -97,8 +97,7 @@ const tipoDocumento = ref(route.params.type);
 // datos del formulario / documento electronico
 const formData = ref({
    ...deReceiptData,   
-   tipoDocumento: 50,
-   recibidoDe: authStore.contributor._id
+   tipoDocumento: 50   
 });
 
 const submitRecibo = async () => {
