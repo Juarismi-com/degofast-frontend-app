@@ -235,7 +235,7 @@
                      }} -->
                   </td>
                </tr>
-               <tr>
+               <!-- <tr>
                   <td colspan="6" class="whitespace-nowrap border border-gray-200 font-bold">
                      Total en guaraníes:
                   </td>
@@ -246,7 +246,7 @@
                            : null
                      }}
                   </td>
-               </tr>
+               </tr> -->
                <tr>
                   <td colspan="2" class="whitespace-nowrap border border-gray-200">
                      <label class="font-bold">IVA (5%):</label>
