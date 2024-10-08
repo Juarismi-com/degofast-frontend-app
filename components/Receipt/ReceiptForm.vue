@@ -55,8 +55,6 @@ import { deReceiptData, validateRecibo } from "~/config/receipt";
 import { saveRecibo } from "~/services/recibo.service";
 import { formatDateHours } from "~/helpers/date.helper";
 
-const puntoExpedicionList = ref([])
-
 // Relacionado al envio satisfactorio al api
 const confirmSubmit = ref(false);
 const submitDeSuccess = ref(false);
@@ -64,10 +62,6 @@ const submitDeSuccess = ref(false);
 // datos del contribuyente
 const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
-
-// Datos de la url/ruta
-const route = useRoute();
-const tipoDocumento = ref(route.params.type);
 
 // datos del formulario / documento electronico
 const formData = ref({
