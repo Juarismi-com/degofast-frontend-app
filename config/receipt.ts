@@ -8,7 +8,7 @@ export const deReceiptData = {
    montoLetras: "Doscientos mil guaranies",
    concepto: "PAGO POR SERVICIO",
    establecimiento: "001",
-   puntoExpedicion: "66c647dc2015360404836de6"
+   // puntoExpedicion: "66c647dc2015360404836de6"
 };
 
 
@@ -20,7 +20,7 @@ export const validateRecibo = (recibo: any) => {
       if (!recibo.montoLetras) throw "recibo.montoLetras es requerido";
       if (!recibo.concepto) throw "recibo.concepto es requerido";
       if (!recibo.establecimiento) throw "recibo.establecimiento es requerido";
-      if (!recibo.puntoExpedicion) throw "recibo.puntoExpedicion es requerido";
+      // if (!recibo.puntoExpedicion) throw "recibo.puntoExpedicion es requerido";
 
       return true;
    } catch (error) {

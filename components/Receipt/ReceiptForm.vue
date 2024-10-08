@@ -15,9 +15,7 @@
             <label for="fecha">Fecha:</label>
             <input type="datetime-local" v-model="formData.fecha" id="fecha" :class="INPUT_CLASS.sm" />
          </div>
-      </div>
-
-      <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
+      
          <div>
             <label for="monto">Monto</label>
             <input type="text" v-model="formData.monto" id="monto" :class="INPUT_CLASS.sm" />
@@ -30,9 +28,7 @@
             <label for="concepto">Concepto:</label>
             <input type="text" v-model="formData.concepto" id="concepto" :class="INPUT_CLASS.sm" />
          </div>
-      </div>
-
-      <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
+     
          <div>
             <label for="establecimiento">Establecimiento:</label>
             <select id="establecimiento" v-model="formData.establecimiento" :class="INPUT_CLASS.sm"
@@ -46,7 +42,7 @@
             </select>
          </div>
 
-         <div>
+         <!-- <div>
             <label for="punto_expedicion">Punto de Expedicion:</label>
             <select id="punto_expedicion" v-model="formData.puntoExpedicion" :class="INPUT_CLASS.sm">
                <option v-for="(item, index) in puntoExpedicionList" :key="index" :value="item._id">
@@ -55,7 +51,7 @@
                   }}
                </option>
             </select>
-         </div>
+         </div> -->
 
       </div>
 
@@ -129,35 +125,35 @@ const submitRecibo = async () => {
  * Selecciona un establecimiento y setea su punto de expedicion
  * @param e
  */
-const selectEstablecimiento = (e) => {
-   formData.value.establecimiento = e.target.value.toString();
-   setPuntoEstablecimientoList();
-};
+// const selectEstablecimiento = (e) => {
+//    formData.value.establecimiento = e.target.value.toString();
+//    setPuntoEstablecimientoList();
+// };
 
 /**
  * Carga el listado de establecimientos y setea el primero encontrado
  * por defecto
  */
-const setPuntoEstablecimientoList = async () => {
-   const establecimientoCodigo = formData.value.establecimiento;
+// const setPuntoEstablecimientoList = async () => {
+//    const establecimientoCodigo = formData.value.establecimiento;
 
-   const establecimiento = contributor.value.establecimientos.find(
-      (establecimiento) => {
-         return establecimiento.codigo == establecimientoCodigo;
-      },
-   );
+//    const establecimiento = contributor.value.establecimientos.find(
+//       (establecimiento) => {
+//          return establecimiento.codigo == establecimientoCodigo;
+//       },
+//    );
  
-   puntoExpedicionList.value = await getPuntoExpedicionByFilters({
-      contributor: contributor.value?._id,
-      establecimiento: establecimiento?._id,
-      tipoDocumento: formData.value?.tipoDocumento,
-   });
+//    puntoExpedicionList.value = await getPuntoExpedicionByFilters({
+//       contributor: contributor.value?._id,
+//       establecimiento: establecimiento?._id,
+//       tipoDocumento: formData.value?.tipoDocumento,
+//    });
 
-   formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
-};
+//    formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
+// };
 
-onMounted(() => {
-   setPuntoEstablecimientoList();  
-})
+// onMounted(() => {
+//    setPuntoEstablecimientoList();  
+// })
 
 </script>
