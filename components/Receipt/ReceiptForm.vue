@@ -8,6 +8,10 @@
 
       <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
          <div>
+            <label for="numero">Número:</label>
+            <input type="text" v-model="formData.numero" id="numero" :class="INPUT_CLASS.sm" />
+         </div>
+         <div>
             <label for="recibidoDe">Recibido de:</label>
             <input type="text" v-model="formData.recibidoDe" id="recibidoDe" :class="INPUT_CLASS.sm" />
          </div>
@@ -28,20 +32,7 @@
             <label for="concepto">Concepto:</label>
             <input type="text" v-model="formData.concepto" id="concepto" :class="INPUT_CLASS.sm" />
          </div>
-     
-         <div>
-            <label for="establecimiento">Establecimiento:</label>
-            <select id="establecimiento" v-model="formData.establecimiento" :class="INPUT_CLASS.sm"
-               @change="selectEstablecimiento($event)">
-               <option v-for="(establecimiento, index) in contributor.establecimientos" :key="index"
-                  :value="establecimiento.codigo">
-                  {{
-                     establecimiento.denominacion + " - " + establecimiento.codigo
-                  }}
-               </option>
-            </select>
-         </div>
-
+           
       </div>
 
       <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
