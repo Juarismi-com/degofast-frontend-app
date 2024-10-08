@@ -42,17 +42,6 @@
             </select>
          </div>
 
-         <!-- <div>
-            <label for="punto_expedicion">Punto de Expedicion:</label>
-            <select id="punto_expedicion" v-model="formData.puntoExpedicion" :class="INPUT_CLASS.sm">
-               <option v-for="(item, index) in puntoExpedicionList" :key="index" :value="item._id">
-                  {{
-                     item.codigo
-                  }}
-               </option>
-            </select>
-         </div> -->
-
       </div>
 
       <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
@@ -69,7 +58,6 @@
 
 <script setup>
 import { INPUT_CLASS } from "~/config";
-import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service.ts";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores";
 import { deReceiptData, validateRecibo } from "~/config/receipt";
@@ -119,41 +107,5 @@ const submitRecibo = async () => {
       console.log(error);
    }
 };
-
-
-/**
- * Selecciona un establecimiento y setea su punto de expedicion
- * @param e
- */
-// const selectEstablecimiento = (e) => {
-//    formData.value.establecimiento = e.target.value.toString();
-//    setPuntoEstablecimientoList();
-// };
-
-/**
- * Carga el listado de establecimientos y setea el primero encontrado
- * por defecto
- */
-// const setPuntoEstablecimientoList = async () => {
-//    const establecimientoCodigo = formData.value.establecimiento;
-
-//    const establecimiento = contributor.value.establecimientos.find(
-//       (establecimiento) => {
-//          return establecimiento.codigo == establecimientoCodigo;
-//       },
-//    );
- 
-//    puntoExpedicionList.value = await getPuntoExpedicionByFilters({
-//       contributor: contributor.value?._id,
-//       establecimiento: establecimiento?._id,
-//       tipoDocumento: formData.value?.tipoDocumento,
-//    });
-
-//    formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
-// };
-
-// onMounted(() => {
-//    setPuntoEstablecimientoList();  
-// })
 
 </script>
