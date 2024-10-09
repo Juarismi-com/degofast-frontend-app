@@ -19,7 +19,7 @@
             <label for="fecha">Fecha:</label>
             <input type="datetime-local" v-model="formData.fecha" id="fecha" :class="INPUT_CLASS.sm" />
          </div>
-      
+
          <div>
             <label for="monto">Monto</label>
             <input type="text" v-model="formData.monto" id="monto" :class="INPUT_CLASS.sm" />
@@ -32,7 +32,7 @@
             <label for="concepto">Concepto:</label>
             <input type="text" v-model="formData.concepto" id="concepto" :class="INPUT_CLASS.sm" />
          </div>
-           
+
       </div>
 
       <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
@@ -65,29 +65,29 @@ const { contributor } = storeToRefs(authStore);
 
 // datos del formulario / documento electronico
 const formData = ref({
-   ...deReceiptData,   
-   tipoDocumento: 50   
+   ...deReceiptData,
+   tipoDocumento: 50
 });
 
 const submitRecibo = async () => {
    try {
-      
+
       // if (validateRecibo(formData.value)) {     
-        
-         confirmSubmit.value = true;
 
-         const payload = {
-            ...formData.value,          
-            fecha: formatDateHours(formData.value.fecha),
-         };      
-     
-         const response = await saveRecibo(payload);
+      confirmSubmit.value = true;
 
-         if (response.de) {
-            submitDeSuccess.value = true;
-            resetForm();
-         }
-     // } 
+      const payload = {
+         ...formData.value,
+         fecha: formatDateHours(formData.value.fecha),
+      };
+
+      const response = await saveRecibo(payload);
+
+      if (response.de) {
+         submitDeSuccess.value = true;
+         resetForm();
+      }
+      // } 
    } catch (error) {
       console.log(error);
    }

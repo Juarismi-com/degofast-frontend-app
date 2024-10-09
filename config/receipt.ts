@@ -1,12 +1,12 @@
 import moment from "moment";
 
 export const deReceiptData = {
-   numero: "7",
+   numero: "",
    fecha: moment().format("YYYY-MM-DDTHH:mm"),
-   recibidoDe: "TEST",
-   monto: 200000,
-   montoLetras: "Doscientos mil guaranies",
-   concepto: "PAGO POR SERVICIO",
+   recibidoDe: "",
+   monto: 0,
+   montoLetras: "",
+   concepto: "",
 };
 
 
