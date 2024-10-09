@@ -4,16 +4,37 @@
          Recibo de Dinero
       </h2>
 
-      <div v-if="detalle" class="max-w-16 mx-auto border border-gray-300 p-4 shadow-md rounded">
-         <div>
-            <p><strong>Número de Recibo:</strong> {{ detalle.numero }}</p>
-         </div>
-
-         <p><strong>Lugar y Fecha:</strong> {{ detalle.lugar }}, {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</p>
-         <p><strong>Recibido de:</strong> {{ detalle.recibidoDe }}</p>
-         <p><strong>Monto recibido (en números):</strong> {{ detalle.monto }} {{ detalle.moneda }}</p>
-         <p><strong>Monto recibido (en letras):</strong> {{ detalle.montoLetras }}</p>
-         <p><strong>Por concepto de:</strong> {{ detalle.concepto }}</p>
+      <div v-if="detalle" class="w-full max-w-screen-md mx-auto border border-gray-300 p-4 shadow-md rounded">
+         <table class="w-full">
+            <tbody>
+               <tr>
+                  <td></td>
+                  <td class="text-lg">
+                     <label class="font-bold text-lg">Número de Recibo:</label> {{ detalle.numero }}
+                  </td>
+               </tr>
+               <tr>
+                  <td class="text-lg"><label class="font-bold text-lg">Lugar y Fecha: </label>
+                     {{ detalle.lugar }} {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</td>
+               </tr>
+               <tr>
+                  <td class="text-lg"><label class="font-bold text-lg">Recibido de: </label>
+                     {{ detalle.recibidoDe }}</td>
+               </tr>
+               <tr>
+                  <td class="text-lg"><label class="font-bold text-lg">Monto recibido (en números): </label>
+                     {{ detalle.monto }} GS.</td>
+               </tr>
+               <tr>
+                  <td class="text-lg"><label class="font-bold text-lg">Monto recibido (en letras): </label>
+                     {{ detalle.montoLetras }} </td>
+               </tr>
+               <tr>
+                  <td class="text-lg"><label class="font-bold text-lg">Por concepto de: </label>
+                     {{ detalle.concepto }}</td>
+               </tr>
+            </tbody>
+         </table>
       </div>
 
       <!-- Mensaje de carga si no hay detalles -->
