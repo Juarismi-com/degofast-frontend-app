@@ -5,7 +5,7 @@ import { useConfig } from "../config";
 const { API_URL } = useConfig()
 
 /**
- * Crea un documento electronico
+ * Crea un Recibo
  * @param data 
  * @returns 
  */
@@ -21,7 +21,7 @@ export const saveRecibo = async (data: any) => {
 
 
 /**
- * Actualiza el estado de un documento electronico
+ * Actualiza el estado de un Recibo
  * @param id
  * @param data 
  * @returns 
@@ -38,7 +38,7 @@ export const editRecibo = async (id: string, data: any) => {
 
 
 /**
- * Retorna un Documento electronico por ID
+ * Retorna un Recibo por ID
  * @param deId 
  * @returns 
  */
