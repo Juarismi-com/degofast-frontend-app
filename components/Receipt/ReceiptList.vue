@@ -30,8 +30,8 @@
             </div>
          </div>
       </div>
-
-      <div class="w-full overflow-x-auto">
+      <Loader v-if="loading" />
+      <div v-else lass="w-full overflow-x-auto">
          <table class="w-full whitespace-no-wrap">
             <thead>
                <tr
