@@ -185,7 +185,6 @@ const setPuntoEstablecimientoList = async () => {
       },
    );
 
-
    puntoExpedicionList.value = await getPuntoExpedicionByFilters({
       contributor: contributor.value?._id,
       establecimiento: establecimiento?._id,
@@ -198,7 +197,7 @@ const setPuntoEstablecimientoList = async () => {
 
 onMounted(() => {
    setPuntoEstablecimientoList();
-   console.log(props.documentType);
+
 })
 
 </script>
