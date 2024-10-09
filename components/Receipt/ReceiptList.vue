@@ -94,7 +94,6 @@
 import { ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import moment from "moment";
-import { useAuthStore } from "~/stores";
 import { get } from "~/services/http.service";
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
 
@@ -120,6 +119,10 @@ const getRecibo = async () => {
    }
 };
 
+const verDetalles = (id) => {
+   router.push({ path: `/receipt/detail/${id}` });
+};
+
 const buscar = async () => {
    loading.value = true;
    try {
@@ -143,10 +146,6 @@ const handlePageChange = (page) => {
    getRecibo();
 };
 
-onMounted(() => {
-   getRecibo();
-});
-
 watch(
    () => route.query.page,
    (newPage) => {
@@ -154,5 +153,10 @@ watch(
       getRecibo();
    }
 );
+
+onMounted(() => {
+   getRecibo();
+});
+
 
 </script>
