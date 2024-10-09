@@ -13,9 +13,6 @@ const { API_URL } = useConfig();
 export const getPuntoExpedicionByFilters = async (filters: any) => {
    try {
       const queryParams = objectToQueryParams(filters);
-
-      console.log(filters)
-
       const response = await axios.get(
          `${API_URL}/punto-expedicion?${queryParams}`,
       );
