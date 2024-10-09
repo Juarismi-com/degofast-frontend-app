@@ -93,4 +93,26 @@ const submitRecibo = async () => {
    }
 };
 
+
+// Función para convertir números a letras
+function numeroALetras(num) {
+    const unidades = ['cero', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
+    const decenas = ['diez', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
+    const centenas = ['cien', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
+
+    if (num < 10) return unidades[num];
+    if (num < 100) return decenas[Math.floor(num / 10)] + (num % 10 > 0 ? ' y ' + unidades[num % 10] : '');
+    
+    return num.toString(); // Por simplicidad
+}
+
+// Watch para actualizar el campo de "monto en letras"
+watch(() => formData.value.monto, (newMonto) => {
+   if (newMonto) {
+      formData.value.montoLetras = numeroALetras(parseInt(newMonto));
+   }
+});
+
+
+
 </script>
