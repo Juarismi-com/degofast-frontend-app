@@ -65,6 +65,7 @@
                <option :value="2">Persona Jurídica</option>
             </select>
          </div>
+
       </div>
 
       <div>
