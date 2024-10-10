@@ -9,8 +9,10 @@
          </div>
 
          <div class="grid grid-cols-2 gap-4">
-            <div class="col-span-1">
-               <h1></h1>
+            <div class="col-span-1 pt-4">
+               <h1>{{
+                  authStore.contributor.razonSocial
+               }}</h1>
                <br />
             </div>
             <div class="col-span-1 pt-4">
@@ -23,7 +25,7 @@
                   <label class="font-bold text-base mr-2">Fecha:</label>
                   <label class="font-bold"> {{
                      moment(detalle.fecha).format("DD/MM/YYYY")
-                  }}</label>
+                     }}</label>
                </div>
             </div>
          </div>
@@ -59,13 +61,9 @@
                   }} </label>
                   <input v-model="detalle.monto" id="monto" :class="INPUT_CLASS.sm" class="w-full" />
                </div>
-
-
             </div>
          </div>
-
       </div>
-
    </div>
 
    <div class="max-w-4xl pt-5">
@@ -80,6 +78,8 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "~/stores";
 import moment from "moment";
 import {
    getReciboById
@@ -99,9 +99,8 @@ definePageMeta({
    layout: "empty",
 });
 
-const activeTab = ref(0);
 const detalle = ref(null);
-const localCurrency = ref(null);
+const authStore = useAuthStore();
 
 const route = useRoute();
 
