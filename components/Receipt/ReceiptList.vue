@@ -38,9 +38,9 @@
                   class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                   <th class="px-4 py-3">Recibido de</th>
                   <th class="px-4 py-3">Numero</th>
+                  <th class="px-4 py-3">Estado</th>
                   <th class="px-4 py-3">Fecha</th>
                   <th class="px-4 py-3">Monto</th>
-                  <th class="px-4 py-3">Estado</th>
                   <th class="px-4 py-3">Acciones</th>
                </tr>
             </thead>
@@ -48,12 +48,6 @@
                <tr class="text-gray-700 dark:text-gray-400" v-for="(item, index) in filteredItems" :key="index">
                   <td class="px-4 py-3 text-sm">{{ item.recibidoDe }}</td>
                   <td class="px-4 py-3 text-sm">{{ item.numero }}</td>
-                  <td class="px-4 py-3 text-sm">
-                     {{ moment(item.fecha).format("DD/MM/YYYY") }}
-                  </td>
-                  <td class="px-4 py-3 text-sm text-right">
-                     {{ item.monto }}
-                  </td>
                   <td class="px-4 py-3 text-xs">
                      <span :class="[
                         'px-2 py-1 font-semibold leading-tight text-green-700 rounded-full dark:bg-green-700 dark:text-green-100',
@@ -62,6 +56,13 @@
                         {{ item.estado }}
                      </span>
                   </td>
+                  <td class="px-4 py-3 text-sm">
+                     {{ moment(item.fecha).format("DD/MM/YYYY") }}
+                  </td>
+                  <td class="px-4 py-3 text-sm text-right">
+                     {{ item.monto }}
+                  </td>
+
                   <td class="px-4 py-3">
                      <button @click="verDetalles(item._id)" class="text-blue-600 hover:underline focus:outline-none">
                         Ver detalles
