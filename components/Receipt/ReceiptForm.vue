@@ -1,10 +1,8 @@
 <template>
-   <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            Recibo
-         </h1>
-      </div>
+   <div class="w-full overflow-hidden rounded-lg shadow-xs">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+         Recibo
+      </h2>
 
       <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
          <div>
@@ -32,38 +30,24 @@
             <label for="concepto">Concepto:</label>
             <input type="text" v-model="formData.concepto" id="concepto" :class="INPUT_CLASS.sm" />
          </div>
-
+         <div class="m-5">
+            <button type="submit"
+               class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+               @click="submitRecibo">
+               Enviar
+            </button>
+         </div>
       </div>
-
-      <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
-         <button type="button"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            @click="submitRecibo">
-            Enviar
-         </button>
-
-      </div>
-
    </div>
 </template>
 
 <script setup>
 import { INPUT_CLASS } from "~/config";
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "~/stores";
 import { deReceiptData, validateRecibo } from "~/config/receipt";
 import { saveRecibo } from "~/services/recibo.service";
 import { formatDateHours } from "~/helpers/date.helper";
 
-// Relacionado al envio satisfactorio al api
-const confirmSubmit = ref(false);
-const submitDeSuccess = ref(false);
-
-// datos del contribuyente
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
-
-// datos del formulario / documento electronico
+// datos del formulario / recibo
 const formData = ref({
    ...deReceiptData,
    tipoDocumento: 50
@@ -72,25 +56,30 @@ const formData = ref({
 const submitRecibo = async () => {
    try {
 
-      // if (validateRecibo(formData.value)) {     
+      if (validateRecibo(formData.value)) {
 
-      confirmSubmit.value = true;
+         const payload = {
+            ...formData.value,
+            fecha: formatDateHours(formData.value.fecha),
+         };
 
-      const payload = {
-         ...formData.value,
-         fecha: formatDateHours(formData.value.fecha),
-      };
+         const response = await saveRecibo(payload);
 
-      const response = await saveRecibo(payload);
-
-      if (response.de) {
-         submitDeSuccess.value = true;
-         resetForm();
+         if (response) {
+            alert("Recibo enviado")
+            resetForm();
+         }
       }
-      // } 
    } catch (error) {
       console.log(error);
+      alert("Error: " + error);
    }
+};
+
+const resetForm = () => {
+   formData.value = {
+      ...deReceiptData
+   };
 };
 
 </script>

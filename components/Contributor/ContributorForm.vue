@@ -1,65 +1,29 @@
 <template>
-   <div
-      class="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700"
-   >
-      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-         <h1
-            class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
-         >
-            Contribuyente
-         </h1>
-      </div>
+   <div class="w-full overflow-hidden rounded-lg shadow-xs">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+         Contribuyente
+      </h2>
 
-      <DEStepperFull
-         :current-step="currentStep"
-         :steps="steps"
-         :next-step-fn="setCurrentStep"
-         :btn-control="true"
-      >
+      <DEStepperFull :current-step="currentStep" :steps="steps" :next-step-fn="setCurrentStep" :btn-control="true">
          <div>
-            <div
-               v-if="currentStep == 0"
-               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
-            >
-               <ContributorFormFullContributorDataComponent
-                  :contributor="contributor"
-               />
+            <div v-if="currentStep == 0" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
+               <ContributorFormFullContributorDataComponent :contributor="contributor" />
             </div>
 
-            <div
-               v-if="currentStep == 1"
-               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
-            >
-               <ContributorFormFullEstablecimientoComponent
-                  :contributor="contributor"
-               />
+            <div v-if="currentStep == 1" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
+               <ContributorFormFullEstablecimientoComponent :contributor="contributor" />
             </div>
 
-            <div
-               v-if="currentStep == 2"
-               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
-            >
-               <ContributorFormFullPuntoExpedicionComponent
-                  :contributor="contributor"
-               />
+            <div v-if="currentStep == 2" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
+               <ContributorFormFullPuntoExpedicionComponent :contributor="contributor" />
             </div>
 
-            <div
-               v-if="currentStep == 3"
-               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
-            >
-               <ContributorFormFullCertificadoComponent
-                  :contributor="contributor"
-               />
+            <div v-if="currentStep == 3" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
+               <ContributorFormFullCertificadoComponent :contributor="contributor" />
             </div>
 
-            <div
-               v-if="currentStep == 4"
-               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
-            >
-               <ContributorFormFullActividadEconomicaComponent
-                  :contributor="contributor"
-               />
+            <div v-if="currentStep == 4" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
+               <ContributorFormFullActividadEconomicaComponent :contributor="contributor" />
             </div>
 
             <!-- <div

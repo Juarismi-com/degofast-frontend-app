@@ -11,9 +11,8 @@ const { API_URL } = useConfig();
  * @returns 
  */
 export const getPuntoExpedicionByFilters = async (filters: any) => {
-   try {      
+   try {
       const queryParams = objectToQueryParams(filters);
-     
       const response = await axios.get(
          `${API_URL}/punto-expedicion?${queryParams}`,
       );
