@@ -18,14 +18,15 @@
             <div class="col-span-1 pt-4">
                <div class="mb-2 flex items-center">
                   <label class="font-bold text-xl mr-2">N°:</label>
-                  <input v-model="detalle.numero" id="numero" :class="INPUT_CLASS.sm" class="w-full" />
+                  <input v-model="detalle.numero" id="numero" :class="INPUT_CLASS.sm" class="w-full"
+                     style="font-size: 16px;" />
                </div>
 
                <div class="mb-2">
                   <label class="font-bold text-base mr-2">Fecha:</label>
                   <label class="font-bold"> {{
                      moment(detalle.fecha).format("DD/MM/YYYY")
-                     }}</label>
+                  }}</label>
                </div>
             </div>
          </div>
@@ -38,7 +39,8 @@
             </div>
             <div class="mb-2 flex items-center">
                <label class="font-bold text-base mr-2">La cantidad de:</label>
-               <input v-model="detalle.montoLetras" id="recibidoDe" :class="INPUT_CLASS.sm" class="w-full" />
+               <input v-model="detalle.montoLetras" id="recibidoDe" :class="INPUT_CLASS.sm" class="w-full"
+                  style="font-size: 16px;" />
             </div>
             <div class="mb-2 flex items-center">
                <label class="font-bold text-base mr-2">En concepto de:</label>
@@ -54,14 +56,18 @@
             </div>
             <div class="col-span-1 p-0">
                <div class="mb-2 flex items-center">
+                  <label class="font-bold text-base mr-2">Monto: </label>
                   <label class="font-bold text-xl mr-2"> {{
-                     detalle.moneda === "PYG"
-                        ? "Gs."
-                        : "$"
+                     isValidCurrency(detalle.moneda)
+                        ? formatPriceNumber(detalle.monto)
+                        : formatPriceNumberNoPYG(detalle.monto)
                   }} </label>
-                  <input v-model="detalle.monto" id="monto" :class="INPUT_CLASS.sm" class="w-full" />
+
                </div>
             </div>
+
+
+
          </div>
       </div>
    </div>
