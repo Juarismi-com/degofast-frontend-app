@@ -7,6 +7,7 @@ export const deReceiptData = {
    monto: 0,
    montoLetras: "",
    concepto: "",
+   moneda: ""
 };
 
 
