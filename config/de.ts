@@ -202,6 +202,7 @@ export const deFormData = {
       contribuyente: false,
       razonSocial: "",
       ruc: "",
+      direccion: "",
       tipoContribuyente: 1,
       tipoOperacion: 2,
       documentoTipo: 1,
