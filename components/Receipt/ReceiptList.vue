@@ -60,7 +60,11 @@
                      {{ moment(item.fecha).format("DD/MM/YYYY") }}
                   </td>
                   <td class="px-4 py-3 text-sm text-right">
-                     {{ item.monto }}
+                     {{
+                        item.moneda === "PYG"
+                           ? formatPriceNumber(item.monto)
+                           : formatPriceNumberNoPYG(item.monto)
+                     }}
                   </td>
 
                   <td class="px-4 py-3">
@@ -81,8 +85,13 @@
 import { ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import moment from "moment";
+import {
+   formatPriceNumber,
+   formatPriceNumberNoPYG
+} from "~/helpers/number.helper";
 import { get } from "~/services/http.service";
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
+
 
 const router = useRouter();
 const route = useRoute();
@@ -107,7 +116,7 @@ const getRecibo = async () => {
 };
 
 const verDetalles = (id) => {
-   router.push({ path: `/receipt/detail/${id}` });
+   window.open(`/receipt/detail/${id}`, "_blank");
 };
 
 const buscar = async () => {

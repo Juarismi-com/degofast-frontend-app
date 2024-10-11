@@ -17,7 +17,13 @@
             <label for="fecha">Fecha:</label>
             <input type="datetime-local" v-model="formData.fecha" id="fecha" :class="INPUT_CLASS.sm" />
          </div>
-
+         <div>
+            <label for="moneda">Moneda:</label>
+            <select v-model="formData.moneda" id="moneda" :class="INPUT_CLASS.sm">
+               <option value="PYG">PYG</option>
+               <option value="USD">USD</option>
+            </select>
+         </div>
          <div>
             <label for="monto">Monto</label>
             <input type="text" v-model="formData.monto" id="monto" :class="INPUT_CLASS.sm" />
