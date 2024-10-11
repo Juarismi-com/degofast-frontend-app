@@ -253,6 +253,44 @@ export const deItemData = {
    precioPorCantidad: "",
 };
 
+
+export const dePDF = {
+   fecha: new Date().toLocaleDateString(),
+   cliente: {
+      nombre: "Juan Pérez w",
+      direccion: "Av. Siempre Viva 123",
+      telefono: "123456789",
+      email: "juan.perez@mail.com",
+   },
+   emisor: {
+      nombre: "Empresa X",
+      direccion: "Calle Falsa ",
+      telefono: "987654321",
+      email: "contacto@empresa.com",
+      timbrado: "123456789",
+      logo: "https://via.placeholder.com/150",
+   },
+   items: [
+      {
+         descripcion: "Producto A",
+         cantidad: 2,
+         precio_unitario: 100,
+         total: 200,
+      },
+      {
+         descripcion: "Servicio B",
+         cantidad: 1,
+         precio_unitario: 150,
+         total: 150,
+      },
+   ],
+   total: 350,
+   totalEnLetas: ''
+};
+
+
+
+
 export const validateDeCondition = (de: any) => {
    try {
       const { fecha, puntoExpedicion, establecimiento } = de;
