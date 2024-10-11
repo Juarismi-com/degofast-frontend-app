@@ -3,62 +3,24 @@
       <form @submit.prevent="savePuntoExpedicion" method="post">
          <div class="col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6 m-5">
             <div>
-               <label
-                  for="formPuntoExpedicionNroActual"
-                  :class="[commonLabelClass]"
-                  >Nro. Actual</label
-               >
-               <input
-                  type="number"
-                  name="formPuntoExpedicionNroActual"
-                  id="formPuntoExpedicionNroActual"
-                  :class="[commonInputClass]"
-                  placeholder="Nro. Actual"
-                  v-model="formPuntoExpedicion.nroActual"
-               />
+               <label for="formPuntoExpedicionNroActual" :class="[commonLabelClass]">Nro. Actual</label>
+               <input type="number" name="formPuntoExpedicionNroActual" id="formPuntoExpedicionNroActual"
+                  :class="[commonInputClass]" placeholder="Nro. Actual" v-model="formPuntoExpedicion.nroActual" />
             </div>
             <div>
-               <label
-                  for="formPuntoExpedicionNroInicial"
-                  :class="[commonLabelClass]"
-                  >Nro. Inicial</label
-               >
-               <input
-                  type="text"
-                  name="formPuntoExpedicionNroInicial"
-                  id="formPuntoExpedicionNroInicial"
-                  :class="[commonInputClass]"
-                  placeholder="Nro. Inicial"
-                  v-model="formPuntoExpedicion.nroInicial"
-               />
+               <label for="formPuntoExpedicionNroInicial" :class="[commonLabelClass]">Nro. Inicial</label>
+               <input type="text" name="formPuntoExpedicionNroInicial" id="formPuntoExpedicionNroInicial"
+                  :class="[commonInputClass]" placeholder="Nro. Inicial" v-model="formPuntoExpedicion.nroInicial" />
             </div>
             <div>
-               <label
-                  for="formPuntoExpedicionCodigo"
-                  :class="[commonLabelClass]"
-                  >Código</label
-               >
-               <input
-                  type="text"
-                  name="formPuntoExpedicionCodigo"
-                  id="formPuntoExpedicionCodigo"
-                  :class="[commonInputClass]"
-                  placeholder="Codigo"
-                  v-model="formPuntoExpedicion.codigo"
-               />
+               <label for="formPuntoExpedicionCodigo" :class="[commonLabelClass]">Código</label>
+               <input type="text" name="formPuntoExpedicionCodigo" id="formPuntoExpedicionCodigo"
+                  :class="[commonInputClass]" placeholder="Codigo" v-model="formPuntoExpedicion.codigo" />
             </div>
             <div>
-               <label
-                  for="formPuntoExpedicionTipoDocumento"
-                  :class="[commonLabelClass]"
-                  >Tipo de Documento</label
-               >
-               <select
-                  name="formPuntoExpedicionTipoDocumento"
-                  :class="[commonInputClass]"
-                  id="formPuntoExpedicionTipoDocumento"
-                  v-model="formPuntoExpedicion.tipoDocumento"
-               >
+               <label for="formPuntoExpedicionTipoDocumento" :class="[commonLabelClass]">Tipo de Documento</label>
+               <select name="formPuntoExpedicionTipoDocumento" :class="[commonInputClass]"
+                  id="formPuntoExpedicionTipoDocumento" v-model="formPuntoExpedicion.tipoDocumento">
                   <option value="1">Factura Electrónica</option>
                   <option value="4">Autofactura electrónica</option>
                   <option value="5">Nota de crédito electrónica</option>
@@ -67,24 +29,12 @@
                </select>
             </div>
             <div>
-               <label
-                  for="formPuntoExpedicionEstablecimiento"
-                  :class="[commonLabelClass]"
-                  >Establecimiento</label
-               >
-               <select
-                  name="formPuntoExpedicionEstablecimiento"
-                  :class="[commonInputClass]"
-                  id="formPuntoExpedicionEstablecimiento"
-                  v-model="formPuntoExpedicion.establecimiento"
-               >
-                  <option
-                     v-for="(
+               <label for="formPuntoExpedicionEstablecimiento" :class="[commonLabelClass]">Establecimiento</label>
+               <select name="formPuntoExpedicionEstablecimiento" :class="[commonInputClass]"
+                  id="formPuntoExpedicionEstablecimiento" v-model="formPuntoExpedicion.establecimiento">
+                  <option v-for="(
                         establecimiento, index
-                     ) in contributor.establecimientos"
-                     :key="index"
-                     :value="establecimiento._id"
-                  >
+                     ) in contributor.establecimientos" :key="index" :value="establecimiento._id">
                      {{
                         establecimiento.denominacion +
                         " - " +
@@ -94,10 +44,8 @@
                </select>
             </div>
             <div class="m-5">
-               <button
-                  type="submit"
-                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
-               >
+               <button type="submit"
+                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
                   Guardar
                </button>
             </div>
@@ -107,43 +55,27 @@
             <table class="w-full divide-y divide-gray-200 overflow-x-auto">
                <thead class="bg-gray-50">
                   <tr>
-                     <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                     >
+                     <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nro Actual
                      </th>
-                     <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                     >
+                     <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nro. Inicial
                      </th>
-                     <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                     >
+                     <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Código
                      </th>
-                     <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                     >
+                     <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Tipo de Documento
                      </th>
-                     <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                     >
-                        Establecimiento
-                     </th>
+
                   </tr>
                </thead>
                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr
-                     v-for="item in puntoExpedicionData.items"
-                     :key="item.codigo"
-                  >
+                  <tr v-for="item in puntoExpedicionData.items" :key="item.codigo">
                      <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
                            {{ item.nroActual }}
@@ -161,12 +93,8 @@
                      </td>
                      <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
-                           {{ item.tipoDocumento }}
-                        </div>
-                     </td>
-                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
-                           {{ item.establecimiento }}
+                           {{ item.tipoDocumento === 1 ? 'Factura' : item.tipoDocumento === 2 ? 'Nota de crédito' :
+                              'Recibo' }}
                         </div>
                      </td>
                   </tr>

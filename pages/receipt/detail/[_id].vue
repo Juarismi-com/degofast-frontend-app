@@ -1,22 +1,79 @@
 <template>
-   <div>
-      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-         Recibo de Dinero
-      </h2>
-
-      <div v-if="detalle" class="max-w-16 mx-auto border border-gray-300 p-4 shadow-md rounded">
+   <div class="max-w-2xl my-3 p-5" v-if="detalle">
+      <!-- Membrete -->
+      <div class="rounded border border-gray-300 p-4 shadow-md my-3">
          <div>
-            <p><strong>Número de Recibo:</strong> {{ detalle.numero }}</p>
+            <h3 class="-mx-4 -mt-4 rounded-t-lg bg-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-800">
+               Recibo de dinero
+            </h3>
          </div>
 
-         <p><strong>Lugar y Fecha:</strong> {{ detalle.lugar }}, {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</p>
-         <p><strong>Recibido de:</strong> {{ detalle.recibidoDe }}</p>
-         <p><strong>Monto recibido (en números):</strong> {{ detalle.monto }} {{ detalle.moneda }}</p>
-         <p><strong>Monto recibido (en letras):</strong> {{ detalle.montoLetras }}</p>
-         <p><strong>Por concepto de:</strong> {{ detalle.concepto }}</p>
+         <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-1 pt-4">
+               <h1>{{
+                  authStore.contributor.razonSocial
+               }}</h1>
+               <br />
+            </div>
+            <div class="col-span-1 pt-4">
+               <div class="mb-2 flex items-center">
+                  <label class="font-bold text-xl mr-2">N°:</label>
+                  <input v-model="detalle.numero" id="numero" :class="INPUT_CLASS.sm" class="w-full"
+                     style="font-size: 16px;" />
+               </div>
+
+               <div class="mb-2">
+                  <label class="font-bold text-base mr-2">Fecha:</label>
+                  <label class="font-bold"> {{
+                     moment(detalle.fecha).format("DD/MM/YYYY")
+                  }}</label>
+               </div>
+            </div>
+         </div>
+
+
+         <div class="col-span-1 p-1">
+            <div class="mb-2 flex items-center">
+               <label class="font-bold text-base mr-2">Recibí de:</label>
+               {{ detalle.recibidoDe }}
+            </div>
+            <div class="mb-2 flex items-center">
+               <label class="font-bold text-base mr-2">La cantidad de:</label>
+               <input v-model="detalle.montoLetras" id="recibidoDe" :class="INPUT_CLASS.sm" class="w-full"
+                  style="font-size: 16px;" />
+            </div>
+            <div class="mb-2 flex items-center">
+               <label class="font-bold text-base mr-2">En concepto de:</label>
+               {{ detalle.concepto }}
+            </div>
+         </div>
+
+         <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-1 p-0">
+               <div class="mb-2 flex items-center">
+
+               </div>
+            </div>
+            <div class="col-span-1 p-0">
+               <div class="mb-2 flex items-center">
+                  <label class="font-bold text-base mr-2">Monto: </label>
+                  <label class="font-bold text-xl mr-2"> {{
+                     isValidCurrency(detalle.moneda)
+                        ? formatPriceNumber(detalle.monto)
+                        : formatPriceNumberNoPYG(detalle.monto)
+                  }} </label>
+
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+
+   <div class="max-w-4xl pt-5">
+      <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-3 gap-2">
       </div>
 
-      <!-- Mensaje de carga si no hay detalles -->
       <div v-else>
          <p>Cargando detalles...</p>
       </div>
@@ -25,25 +82,28 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "~/stores";
 import moment from "moment";
 import {
    getReciboById
 } from "~/services/recibo.service"
 import { useRoute } from "vue-router";
 import {
-   formatNumber,
    formatPriceNumber,
    formatPriceNumberNoPYG,
    isValidCurrency
 } from "~/helpers/number.helper";
+import {
+   INPUT_CLASS,
+} from "../../../config"
 
 definePageMeta({
-   middleware: ["auth"],
+   layout: "empty",
 });
 
-const activeTab = ref(0);
 const detalle = ref(null);
-const localCurrency = ref(null);
+const authStore = useAuthStore();
 
 const route = useRoute();
 
