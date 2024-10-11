@@ -66,8 +66,6 @@
                </div>
             </div>
 
-
-
          </div>
       </div>
    </div>
@@ -92,7 +90,6 @@ import {
 } from "~/services/recibo.service"
 import { useRoute } from "vue-router";
 import {
-   formatNumber,
    formatPriceNumber,
    formatPriceNumberNoPYG,
    isValidCurrency
