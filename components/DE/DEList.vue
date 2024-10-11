@@ -110,6 +110,11 @@
                      </button>
                   </td>
                   <td class="px-4 py-3">
+                     <button @click="enviarEmail(item._id)" class="text-blue-600 hover:underline focus:outline-none">
+                        Enviar email
+                     </button>
+                  </td>
+                  <td class="px-4 py-3">
                      <button v-if="item.estado == 'X'" @click="openModal(item.cdc)"
                         class="text-blue-600 hover:underline focus:outline-none">
                         Generar evento
@@ -167,6 +172,10 @@ const searchQuery = ref({
 const filteredItems = ref([]);
 const totalPagesLocal = ref(props.totalPages);
 
+const verDetalles = (id) => {
+   router.push({ path: `/de/detail/${id}` });
+};
+
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
 };
@@ -176,8 +185,7 @@ const generarPDF = async (id) => {
       const response = await create(
          `de/${id}/pdf`, dePDF
       );
-      console.log(response);
-      // return response;
+      return response;
 
    } catch (error) {
       console.error("Error al buscar el documento:", error);
@@ -186,10 +194,20 @@ const generarPDF = async (id) => {
    }
 };
 
+const enviarEmail = async (id) => {
+   try {
+      const response = await create(
+         `de/${id}/mail`, dePDF
+      );
+      return response;
 
-const verDetalles = (id) => {
-   router.push({ path: `/de/detail/${id}` });
+   } catch (error) {
+      console.error("Error al buscar el documento:", error);
+   } finally {
+      loading.value = false;
+   }
 };
+
 
 const consultarSifen = (cdc) => {
    const url = `https://ekuatia.set.gov.py/consultas/150/${cdc}`;
