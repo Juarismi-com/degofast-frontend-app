@@ -8,7 +8,8 @@
          :step-availability="availableSteps">
          <div>
             <div v-if="currentStep == 0" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ContributorFormFullContributorDataComponent :contributor="contributor" />
+               <ContributorFormFullContributorDataComponent :contributor="contributor"
+                  @save-data="updateAvailableSteps" />
             </div>
 
             <div v-if="currentStep == 1" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
@@ -90,17 +91,20 @@ const availableSteps = computed(() => {
    return [
       true,
       contributor.value?._id ? true : false,
-      contributor.value?.establecimientos ? true : false,
-      puntoExpedicionList.value.length > 0 ? true : false,
+      contributor.value?.establecimientos.length > 0 ? true : false,
+      puntoExpedicionList.value?.length > 0 ? true : false,
       contributor.value?.certData?.length > 0 ? true : false
    ];
 });
+
+
 
 onMounted(async () => {
    puntoExpedicionList.value = await getPuntoExpedicionByFilters({
       contributor: contributor.value?._id
    });
 });
+
 
 
 
