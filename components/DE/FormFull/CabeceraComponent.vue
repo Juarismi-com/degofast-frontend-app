@@ -190,6 +190,7 @@ const props = defineProps({
 
 const { formData, contributor } = toRefs(props);
 const puntoExpedicionList = ref([])
+const cuotaTable = ref([]);
 
 /**
  * Selecciona un establecimiento y setea su punto de expedicion
@@ -221,10 +222,7 @@ const setPuntoEstablecimientoList = async () => {
    formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
 };
 
-// Tablilla cuotas
-
-const cuotaTable = ref([]);
-
+/* Tablilla cuotas */
 const generateCuotasTable = () => {
    const cantidadCuotas = formData.value.condicion.credito.cuotas;
 
@@ -239,10 +237,7 @@ const generateCuotasTable = () => {
          fechaVencimiento: fechaVencimiento.toLocaleDateString()
       });
    }
-
-   console.log(cuotaTable.value)
 };
-
 
 onMounted(() => {
    setPuntoEstablecimientoList();
