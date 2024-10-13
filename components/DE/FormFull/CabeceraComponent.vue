@@ -130,7 +130,34 @@
                <input v-model="formData.condicion.credito.cuotas" id="condicionCreditoCuotas" type="number"
                   :class="INPUT_CLASS.sm" />
             </div>
+            <div v-if="formData.condicion.credito.tipo == '2' && formData.condicion.tipo == '2'" class="m-5">
+               <button type="submit"
+                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+                  @click="generateCuotasTable">
+                  Generar cuotas
+               </button>
+            </div>
          </div>
+
+         <div v-if="cuotaTable.length > 0">
+            <table class="divide-gray-200 min-w-full">
+               <thead class="bg-gray-50">
+                  <tr>
+                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">N° de
+                        Cuota</th>
+                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de
+                        Vencimiento</th>
+                  </tr>
+               </thead>
+               <tbody class="bg-white divide-y divide-gray-200">
+                  <tr v-for="(cuota, index) in cuotaTable" :key="index">
+                     <td class="px-6 py-4 whitespace-nowrap">{{ cuota.numeroCuota }}</td>
+                     <td class="px-6 py-4 whitespace-nowrap">{{ cuota.fechaVencimiento }}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
       </div>
 
       <div v-if="props.documentType == 5">
@@ -146,7 +173,7 @@ import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service
 import {
    INPUT_CLASS,
 } from "../../../config"
-
+import { formatDateHours } from "~/helpers/date.helper";
 import NotaCreditoDebito from "../Tipo/NotaCreditoDebito.vue";
 
 const props = defineProps({
@@ -192,6 +219,28 @@ const setPuntoEstablecimientoList = async () => {
    });
 
    formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
+};
+
+// Tablilla cuotas
+
+const cuotaTable = ref([]);
+
+const generateCuotasTable = () => {
+   const cantidadCuotas = formData.value.condicion.credito.cuotas;
+
+   cuotaTable.value = [];
+
+   for (let i = 1; i <= cantidadCuotas; i++) {
+      const fechaVencimiento = new Date();
+      fechaVencimiento.setMonth(fechaVencimiento.getMonth() + i);
+
+      cuotaTable.value.push({
+         numeroCuota: i,
+         fechaVencimiento: fechaVencimiento.toLocaleDateString()
+      });
+   }
+
+   console.log(cuotaTable.value)
 };
 
 
