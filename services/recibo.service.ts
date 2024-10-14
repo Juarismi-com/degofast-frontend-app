@@ -13,9 +13,12 @@ export const saveRecibo = async (data: any) => {
    try {
       const response = await create("recibo", data)
       return response;
-   } catch (error) {
-      console.error("Error submitting form:", error);
-      throw error;
+   } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.message) {
+         throw new Error(error.response.data.message);
+      } else {
+         throw new Error("Ocurrió un error al guardar el recibo.");
+      }
    }
 };
 
