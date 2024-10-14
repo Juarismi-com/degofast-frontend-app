@@ -6,7 +6,7 @@
             <h3 class="-mx-4 -mt-4 rounded-t-lg bg-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-800">
                KuDE de Factura Electrónica
             </h3>
-         </div>
+               </div>
          tipoDocumento
          <div class="grid grid-cols-6 gap-4">
             <div class="col-span-4">

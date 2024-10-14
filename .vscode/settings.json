@@ -33,8 +33,5 @@
    },
    "[dotenv]": {
       "editor.defaultFormatter": "foxundermoon.shell-format"
-   },   
-   "[vue]": {
-      "editor.defaultFormatter": "Vue.volar"
    }
 }
