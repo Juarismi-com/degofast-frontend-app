@@ -33,10 +33,7 @@
    },
    "[dotenv]": {
       "editor.defaultFormatter": "foxundermoon.shell-format"
-   },
-   "[typescript]": {
-      "editor.defaultFormatter": "vscode.typescript-language-features"
-   },
+   },   
    "[vue]": {
       "editor.defaultFormatter": "Vue.volar"
    }
