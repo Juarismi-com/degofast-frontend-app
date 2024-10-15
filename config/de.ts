@@ -275,9 +275,6 @@ export const dePDF = {
    totalEnLetas: ''
 };
 
-
-
-
 export const validateDeCondition = (de: any) => {
    try {
       const { fecha, puntoExpedicion, establecimiento } = de;

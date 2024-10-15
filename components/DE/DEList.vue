@@ -147,20 +147,6 @@ import DECancel from "./DECancel.vue";
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue"
 import { dePDF } from "@/config/de.ts";
 
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
-
-// datos del contributor / list
-const formData = ref({
-   ...dePDF,
-   emisor: {
-      ...dePDF.emisor,
-      nombre: contributor.value.razonSocial,
-      email: contributor.value.email,
-      timbrado: contributor.value.timbradoNumero,
-   }
-});
-
 const props = defineProps({
    items: {
       type: Array,
@@ -184,6 +170,7 @@ const searchQuery = ref({
 });
 const filteredItems = ref([]);
 const totalPagesLocal = ref(props.totalPages);
+const detalle = ref(null);
 
 const verDetalles = (id) => {
    router.push({ path: `/de/detail/${id}` });
@@ -195,16 +182,50 @@ const verKude = (id) => {
 
 const generarPDF = async (id) => {
    try {
-      const response = await create(
-         `de/${id}/pdf`, dePDF
-      );
-      return response;
+
+      const data = await get(`de/${id}`);
+      detalle.value = mapperDePDF(data);
+
+      // const response = await create(
+      //    `de/${id}/pdf`, detalle.value
+      // );
+      // return response;
 
    } catch (error) {
       console.error("Error al buscar el documento:", error);
    } finally {
       loading.value = false;
    }
+};
+
+const mapperDePDF = (de) => {
+   let sum = 0;
+
+   for (let i = 0; i < de.items.length; i++) {
+      const item = de.items[i];
+      sum += item?.precioUnitario * item?.cantidad;
+   }
+
+   return {
+      fecha: data.fecha.toLocaleDateString(),
+      cliente: {
+         nombre: data.cliente.razonSocial,
+         direccion: data.cliente.direccion,
+         telefono: data.cliente.telefono,
+         email: data.cliente.email
+      },
+      emisor: {
+         nombre: data.contributor.razonSocial,
+         email: data.contributor.email,
+         timbrado: data.contributor.timbradoNumero,
+         direccion: "",
+         telefono: "",
+         logo: ""
+      },
+      items: data.items,
+      total: sum,
+      totalEnLetas: ""
+   };
 };
 
 const enviarEmail = async (id) => {
@@ -236,7 +257,7 @@ const { items } = toRefs(props);
 
 onMounted(() => {
    filteredItems.value = [...items.value];
-   console.log(items.value)
+   console.log(items.value);
    loading.value = true;
 });
 
