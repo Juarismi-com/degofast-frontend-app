@@ -186,6 +186,8 @@ const generarPDF = async (id) => {
       const data = await get(`de/${id}`);
       detalle.value = mapperDePDF(data);
 
+      console.log(JSON.stringify(detalle.value));
+
       // const response = await create(
       //    `de/${id}/pdf`, detalle.value
       // );
@@ -206,23 +208,30 @@ const mapperDePDF = (de) => {
       sum += item?.precioUnitario * item?.cantidad;
    }
 
+   const establecimiento = de.contributor.establecimientos.find(
+      (est) => est.codigo === de.establecimiento
+   );
+
+   const direccion = establecimiento ? establecimiento.direccion : "";
+   const telefono = establecimiento ? establecimiento.telefono : "";
+
    return {
-      fecha: data.fecha.toLocaleDateString(),
+      fecha: new Date(de.fecha).toLocaleDateString(),
       cliente: {
-         nombre: data.cliente.razonSocial,
-         direccion: data.cliente.direccion,
-         telefono: data.cliente.telefono,
-         email: data.cliente.email
+         nombre: de.cliente.razonSocial,
+         direccion: de.cliente.direccion,
+         telefono: de.cliente.telefono,
+         email: de.cliente.email
       },
       emisor: {
-         nombre: data.contributor.razonSocial,
-         email: data.contributor.email,
-         timbrado: data.contributor.timbradoNumero,
-         direccion: "",
-         telefono: "",
+         nombre: de.contributor.razonSocial,
+         email: de.contributor.email,
+         timbrado: de.contributor.timbradoNumero,
+         direccion: direccion,
+         telefono: telefono,
          logo: ""
       },
-      items: data.items,
+      items: de.items,
       total: sum,
       totalEnLetas: ""
    };
