@@ -136,7 +136,11 @@ const setCurrentStep = (value) => {
 // Modal de previsualizacion de documento electronico
 const isPreviewModal = ref(false);
 const setIsPreviewModal = () => {
-   isPreviewModal.value = !isPreviewModal.value;
+   if (validatorDeForm(formData.value)) {
+      isPreviewModal.value = !isPreviewModal.value;
+   } else {
+      setCurrentStep(0);
+   }
 };
 
 // datos del contribuyente
@@ -159,30 +163,25 @@ const submitDeSuccess = ref(false);
  */
 const submitDe = async () => {
    try {
-      if (validatorDeForm(formData.value)) {
-         setIsPreviewModal();
-         confirmSubmit.value = true;
+      setIsPreviewModal();
+      confirmSubmit.value = true;
 
-         const payload = {
-            ...formData.value,
-            fecha: formatDateHours(formData.value.fecha),
-         };
+      const payload = {
+         ...formData.value,
+         fecha: formatDateHours(formData.value.fecha),
+      };
 
-         if (payload.tipoDocumento == 1) {
-            delete payload.documentoAsociado;
-            delete payload.notaCreditoDebito;
-         }
+      if (payload.tipoDocumento == 1) {
+         delete payload.documentoAsociado;
+         delete payload.notaCreditoDebito;
+      }
 
-         const response = await saveDE(payload);
+      const response = await saveDE(payload);
 
-         if (response.de) {
-            submitDeSuccess.value = true;
+      if (response.de) {
+         submitDeSuccess.value = true;
 
-            resetForm();
-         }
-      } else {
-         setIsPreviewModal();
-         setCurrentStep(0);
+         resetForm();
       }
    } catch (error) {
       console.log(error);

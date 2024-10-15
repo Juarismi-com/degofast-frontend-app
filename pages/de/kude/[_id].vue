@@ -3,7 +3,9 @@
       <!-- Membrete -->
       <div class="rounded border border-gray-300 p-4 shadow-md my-3">
          <div>
-            <h3 class="-mx-4 -mt-4 rounded-t-lg bg-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-800">
+            <h3
+               class="-mx-4 -mt-4 rounded-t-lg bg-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-800"
+            >
                KuDE de Factura Electrónica
             </h3>
          </div>
@@ -18,12 +20,13 @@
             </div>
             <div class="col-span-2">
                RUC:
-               <label class="font-bold">
-                  {{ detalle.contributor.ruc }} </label><br />
+               <label class="font-bold"> {{ detalle.contributor.ruc }} </label
+               ><br />
 
                Timbrado N°:
                <label class="font-bold">
-                  {{ detalle.contributor.timbradoNumero }} </label><br />
+                  {{ detalle.contributor.timbradoNumero }} </label
+               ><br />
 
                Fecha de timbrado:
                <label class="font-bold">
@@ -38,7 +41,9 @@
       </div>
 
       <!-- Cabecera de documento electronico -->
-      <div class="rounded border border-gray-300 p-2 my-3 shadow-md md:col-span-3">
+      <div
+         class="rounded border border-gray-300 p-2 my-3 shadow-md md:col-span-3"
+      >
          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div class="col-span-1 grid grid-cols-1 md:col-span-3">
                <table class="w-full border-collapse">
@@ -49,7 +54,9 @@
                            moment(detalle.fecha).format("DD/MM/YYYY HH:mm:ss")
                         }}</label>
                      </td>
-                     <td class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium">
+                     <td
+                        class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                     >
                         RUC/Documento de identidad N°:
                         <label class="font-bold">{{
                            detalle.cliente.ruc ||
@@ -64,7 +71,9 @@
                            detalle.condicionName
                         }}</label>
                      </td>
-                     <td class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium">
+                     <td
+                        class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                     >
                         Nombre o Razón Social:
                         <label class="font-bold">{{
                            detalle.cliente.razonSocial
@@ -75,7 +84,9 @@
                      <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Cuotas: -
                      </td>
-                     <td class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium">
+                     <td
+                        class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                     >
                         Dirección:
                         <label class="font-bold">{{
                            detalle.cliente.direccion
@@ -90,14 +101,17 @@
                      <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Tipo de cambio:
                         <label class="font-bold">
-                           {{ detalle.cambio ?? "-" }}</label>
+                           {{ detalle.cambio ?? "-" }}</label
+                        >
                      </td>
                   </tr>
                   <tr>
                      <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
                         Tipo de cambio: -
                      </td>
-                     <td class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium">
+                     <td
+                        class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                     >
                         Correo electrónico:
                         <label class="font-bold">{{
                            detalle?.cliente?.email
@@ -142,37 +156,60 @@
 
       <!-- Detalle y totales -->
       <div class="col-span-3 p-1 shadow-md rounded my-3">
-         <table class="table-fixed border border-gray-200 text-sm text-gray-900">
+         <table
+            class="table-fixed border border-gray-200 text-sm text-gray-900"
+         >
             <thead class="bg-gray-300 text-gray-800">
                <tr>
-                  <th scope="col" class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b">
+                  <th
+                     scope="col"
+                     class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
+                  >
                      Cod
                   </th>
-                  <th scope="col" class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b">
+                  <th
+                     scope="col"
+                     class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
+                  >
                      Descripción
                   </th>
-                  <th scope="col"
-                     class="px-2 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b">
+                  <th
+                     scope="col"
+                     class="px-2 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
+                  >
                      Cantidad
                   </th>
-                  <th scope="col"
-                     class="px-2 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b">
+                  <th
+                     scope="col"
+                     class="px-2 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
+                  >
                      Precio
                   </th>
-                  <th scope="col" class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b">
+                  <th
+                     scope="col"
+                     class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
+                  >
                      Total
                   </th>
-                  <th scope="col" class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b">
+                  <th
+                     scope="col"
+                     class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
+                  >
                      Descuento
                   </th>
-                  <th scope="col" class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b">
+                  <th
+                     scope="col"
+                     class="text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b"
+                  >
                      IVA
                   </th>
                </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                <tr v-for="item in detalle.items" :key="item._id" class="">
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      {{ item.codigo }}
                   </td>
                   <td class="whitespace-nowrap border border-gray-200">
@@ -182,40 +219,56 @@
                         </p>
                      </div>
                   </td>
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      {{ formatNumber(item.cantidad) }}
                   </td>
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      {{
                         isValidCurrency(localCurrency)
                            ? formatPriceNumber(item.precioUnitario)
                            : formatPriceNumberNoPYG(item.precioUnitario)
                      }}
                   </td>
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
-
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      {{
                         isValidCurrency(localCurrency)
-                           ? formatPriceNumber(item.precioUnitario * item.cantidad)
-                           : formatPriceNumberNoPYG(item.precioUnitario * item.cantidad)
+                           ? formatPriceNumber(
+                                item.precioUnitario * item.cantidad,
+                             )
+                           : formatPriceNumberNoPYG(
+                                item.precioUnitario * item.cantidad,
+                             )
                      }}
-
-
                   </td>
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      {{ formatNumber(item.descuento ? item.descuento : "0") }}
                   </td>
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      {{ calculateIVA(item) }}
                   </td>
                </tr>
             </tbody>
             <tfoot class="bg-gray-300 text-gray-800">
                <tr>
-                  <td colspan="6" class="whitespace-nowrap border border-gray-200 font-bold">
+                  <td
+                     colspan="6"
+                     class="whitespace-nowrap border border-gray-200 font-bold"
+                  >
                      Subtotal:
                   </td>
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      {{
                         isValidCurrency(localCurrency)
                            ? formatPriceNumber(detalle.total)
@@ -224,10 +277,15 @@
                   </td>
                </tr>
                <tr>
-                  <td colspan="6" class="whitespace-nowrap border border-gray-200 font-bold">
+                  <td
+                     colspan="6"
+                     class="whitespace-nowrap border border-gray-200 font-bold"
+                  >
                      Total de la operación:
                   </td>
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      <!-- {{
                         localCurrency === "PYG"
                            ? formatPriceNumber(detalle.total)
@@ -248,7 +306,10 @@
                   </td>
                </tr> -->
                <tr>
-                  <td colspan="2" class="whitespace-nowrap border border-gray-200">
+                  <td
+                     colspan="2"
+                     class="whitespace-nowrap border border-gray-200"
+                  >
                      <label class="font-bold">IVA (5%):</label>
                      {{
                         isValidCurrency(localCurrency)
@@ -257,7 +318,10 @@
                      }}
                   </td>
 
-                  <td colspan="3" class="whitespace-nowrap border border-gray-200">
+                  <td
+                     colspan="3"
+                     class="whitespace-nowrap border border-gray-200"
+                  >
                      <label class="font-bold">IVA (10%):</label>
                      {{
                         isValidCurrency(localCurrency)
@@ -265,11 +329,16 @@
                            : formatPriceNumberNoPYG(detalle.iva10)
                      }}
                   </td>
-                  <td colspan="1" class="whitespace-nowrap border border-gray-200">
+                  <td
+                     colspan="1"
+                     class="whitespace-nowrap border border-gray-200"
+                  >
                      <label class="font-bold">Total IVA:</label>
                   </td>
 
-                  <td class="whitespace-nowrap border border-gray-200 text-right">
+                  <td
+                     class="whitespace-nowrap border border-gray-200 text-right"
+                  >
                      {{
                         isValidCurrency(localCurrency)
                            ? formatPriceNumber(detalle.totalIva)
@@ -311,12 +380,11 @@ import {
    formatPriceNumberNoPYG,
    getDeNumberCode,
    getEstablecimientoNumberCode,
-   isValidCurrency
+   isValidCurrency,
 } from "~/helpers/number.helper";
 import { deValues } from "~/config/de";
 import { useAuthStore } from "~/stores";
 import moment from "moment";
-
 
 definePageMeta({
    layout: "empty",
@@ -374,8 +442,6 @@ const mapperDeName = (de) => {
       totalIva: iva10 + iva5,
    };
 };
-
-
 
 const calculateIVA = (item) => {
    if (item?.iva === 5) {
