@@ -130,10 +130,8 @@
 
 <script setup>
 import { ref, toRefs } from "vue";
-import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import moment from "moment";
-import { useAuthStore } from "~/stores";
 import {
    formatPriceNumber,
    formatPriceNumberNoPYG,
