@@ -147,12 +147,15 @@
                         Cuota</th>
                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de
                         Vencimiento</th>
+                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Moneda
+                     </th>
                   </tr>
                </thead>
                <tbody class="bg-white divide-y divide-gray-200">
                   <tr v-for="(cuota, index) in cuotaTable" :key="index">
                      <td class="px-6 py-4 whitespace-nowrap">{{ cuota.numeroCuota }}</td>
                      <td class="px-6 py-4 whitespace-nowrap">{{ cuota.fechaVencimiento }}</td>
+                     <td class="px-6 py-4 whitespace-nowrap">{{ cuota.moneda }}</td>
                   </tr>
                </tbody>
             </table>
@@ -234,7 +237,8 @@ const generateCuotasTable = () => {
 
       cuotaTable.value.push({
          numeroCuota: i,
-         fechaVencimiento: fechaVencimiento.toLocaleDateString()
+         fechaVencimiento: fechaVencimiento.toLocaleDateString(),
+         moneda: formData.value.moneda
       });
    }
 };
