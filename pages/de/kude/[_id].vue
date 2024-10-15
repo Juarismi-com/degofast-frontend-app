@@ -7,7 +7,7 @@
                KuDE de Factura Electrónica
             </h3>
          </div>
-
+         tipoDocumento
          <div class="grid grid-cols-6 gap-4">
             <div class="col-span-4">
                <h1>{{ detalle.contributor.razonSocial }}</h1>

@@ -78,7 +78,11 @@ const submitRecibo = async () => {
       }
    } catch (error) {
       console.log(error);
-      alert("Error: " + error);
+      if (error.message) {
+         alert(`Error: ${error.message}`);
+      } else {
+         alert(error);
+      }
    }
 };
 
