@@ -176,7 +176,6 @@ import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service
 import {
    INPUT_CLASS,
 } from "../../../config"
-import { formatDateHours } from "~/helpers/date.helper";
 import NotaCreditoDebito from "../Tipo/NotaCreditoDebito.vue";
 
 const props = defineProps({
