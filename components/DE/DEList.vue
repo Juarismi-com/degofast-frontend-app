@@ -1,11 +1,5 @@
 <template>
    <div class="w-full overflow-hidden rounded-lg shadow-xs">
-      <DECancel
-         :show="showModal"
-         :cdc="cdcActual"
-         @update:show="handleCloseModal"
-      />
-
       <div class="flex flex-col gap-4 mt-4 mb-4">
          <div class="flex gap-4">
             <div class="flex-1">
