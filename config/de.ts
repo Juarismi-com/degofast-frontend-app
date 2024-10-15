@@ -257,10 +257,10 @@ export const deItemData = {
 export const dePDF = {
    fecha: new Date().toLocaleDateString(),
    cliente: {
-      nombre: "Juan Pérez w",
-      direccion: "Av. Siempre Viva 123",
-      telefono: "123456789",
-      email: "juan.perez@mail.com",
+      nombre: "",
+      direccion: "",
+      telefono: "",
+      email: "",
    },
    emisor: {
       nombre: "",
@@ -270,21 +270,8 @@ export const dePDF = {
       timbrado: "",
       logo: "",
    },
-   items: [
-      {
-         descripcion: "Producto A",
-         cantidad: 2,
-         precio_unitario: 100,
-         total: 200,
-      },
-      {
-         descripcion: "Servicio B",
-         cantidad: 1,
-         precio_unitario: 150,
-         total: 150,
-      },
-   ],
-   total: 350,
+   items: [],
+   total: 0,
    totalEnLetas: ''
 };
 
