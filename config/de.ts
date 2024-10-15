@@ -263,12 +263,12 @@ export const dePDF = {
       email: "juan.perez@mail.com",
    },
    emisor: {
-      nombre: "Empresa X",
-      direccion: "Calle Falsa ",
-      telefono: "987654321",
-      email: "contacto@empresa.com",
-      timbrado: "123456789",
-      logo: "https://via.placeholder.com/150",
+      nombre: "",
+      direccion: " ",
+      telefono: "",
+      email: "",
+      timbrado: "",
+      logo: "",
    },
    items: [
       {

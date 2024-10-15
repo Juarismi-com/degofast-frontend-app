@@ -130,6 +130,7 @@
 
 <script setup>
 import { ref, toRefs } from "vue";
+import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import moment from "moment";
 import { useAuthStore } from "~/stores";
@@ -147,6 +148,18 @@ import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev
 import { dePDF } from "@/config/de.ts";
 
 const authStore = useAuthStore();
+const { contributor } = storeToRefs(authStore);
+
+// datos del contributor / list
+const formData = ref({
+   ...dePDF,
+   emisor: {
+      ...dePDF.emisor,
+      nombre: contributor.value.razonSocial,
+      email: contributor.value.email,
+      timbrado: contributor.value.timbradoNumero,
+   }
+});
 
 const props = defineProps({
    items: {
