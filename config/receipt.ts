@@ -13,9 +13,12 @@ export const deReceiptData = {
 
 export const validateRecibo = (recibo: any) => {
    try {
+<<<<<<< HEAD
 
       console.log(typeof recibo.montoLetras);
 
+=======
+>>>>>>> 62d82ee64ca26d38ba19128dc00220c797ede23a
       if (!recibo.numero) throw "El campo numero es requerido";
       if (!recibo.recibidoDe) throw "El campo recibidoDe es requerido";
       if (!recibo.monto || isNaN(Number(recibo.monto))) throw "El campo 'monto' es requerido y debe ser numérico";
