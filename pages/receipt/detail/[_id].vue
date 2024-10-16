@@ -170,13 +170,20 @@
                      <td class="pt-3"></td>
                      <td class="pt-3"></td>
                      <td class="pt-3">Firma</td>
-                     <td class="pt-3">--------------------------------</td>
+                     <td class="pt-3">----------------------------------</td>
                   </tr>
                </tbody>
             </table>
-            <div class="grid grid-cols-5 gap-4">
+            <div class="grid grid-cols-4 gap-4 pt-3">
                <div class="col-span-2 pt-4">
-                  <label class="font-bold text-base mr-2">RUC:</label>
+                  <label class="font-bold text-base mr-2">Asunción,</label>
+                  <label>
+                     {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</label
+                  >
+               </div>
+               <div class="col-span-2 pt-4">
+                  <label class="font-bold text-base mr-2">C.I. N°.</label>
+                  <label> ----------------------------------</label>
                </div>
             </div>
          </div>
@@ -194,6 +201,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import moment from "moment";
 import { useAuthStore } from "~/stores";
 import { getReciboById } from "~/services/recibo.service";
 import { useRoute } from "vue-router";
