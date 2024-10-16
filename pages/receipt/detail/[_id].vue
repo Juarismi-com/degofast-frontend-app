@@ -10,13 +10,39 @@
             </h3>
          </div>
 
-         <div class="grid grid-cols-5 gap-4">
+         <div class="grid grid-cols-5 gap-4 mt-0">
             <div
-               class="col-span-3 pt-4 items-center justify-center text-center"
+               class="col-span-3 items-center justify-center text-center flex flex-col mt-3 border border-gray-400 p-4 rounded-lg"
             >
                <h1 class="text-3xl font-bold">BUENA SUERTE S.A.I.C.</h1>
-               <br />
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  >Inmobiliaria Constructora</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  >YKUA SATI</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  >Servicios de alojamiento</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  ><u>Casa central:</u> Alberdi N°: 456 - Planta baja - Tel:
+                  (021) 449-801</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  ><u>Sucursal:</u> Mayor Evacio Perenciollo e/ Cnel. Alejo S. y
+                  Dr. Jaime Bestard - Tel/Fax: (021 601-230)</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  >Asunción - Paraguay</label
+               >
             </div>
+
             <div class="col-span-2 pt-4">
                <div class="mb-2 flex items-center">
                   <label class="font-bold text-xl mr-2">₲s./U$S </label>
