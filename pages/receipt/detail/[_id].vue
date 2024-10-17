@@ -45,13 +45,16 @@
 
             <div class="col-span-2 pt-4">
                <div class="mb-2 flex items-center">
-                  <label class="font-bold text-xl mr-2">₲s./U$S </label>
+                  <label class="font-bold text-xl mr-2"
+                     >{{ isValidCurrency(localCurrency) ? "₲s." : "U$S" }}
+                  </label>
                   <input
                      id="numero"
                      :value="detalle.monto"
                      :class="INPUT_CLASS.sm"
                      class="w-full text-center font-bold"
                      style="font-size: 18px"
+                     disabled
                   />
                </div>
 
@@ -79,6 +82,7 @@
                </div>
                <div class="col-span-2 pt-4">
                   <label class="font-bold text-base mr-2">RUC:</label>
+                  {{ detalle.ruc }}
                </div>
             </div>
 
@@ -116,6 +120,7 @@
                   :class="INPUT_CLASS.sm"
                   class="w-full font-bold"
                   style="font-size: 18px"
+                  disabled
                />
             </div>
 
@@ -140,6 +145,7 @@
                            type="checkbox"
                            id="cheque"
                            class="mr-2"
+                           v-model="ChequeChecked"
                            disabled
                         />
                      </td>
@@ -152,9 +158,11 @@
                      <td class="pt-2">
                         <input
                            id="banco"
+                           v-model="detalle.banco"
                            :class="INPUT_CLASS.sm"
                            class="w-full"
                            style="font-size: 16px"
+                           disabled
                         />
                      </td>
                      <td class="pt-3">
@@ -163,8 +171,10 @@
                      <td class="pt-3">
                         <input
                            id="numeroBanco"
+                           v-model="detalle.nroBanco"
                            :class="INPUT_CLASS.sm"
                            style="font-size: 16px"
+                           disabled
                         />
                      </td>
                   </tr>
@@ -178,6 +188,7 @@
                            type="checkbox"
                            id="transferencia"
                            class="mr-2"
+                           v-model="TransferenciaChecked"
                            disabled
                         />
                      </td>
@@ -190,6 +201,7 @@
                            type="checkbox"
                            id="efectivo"
                            class="mr-2"
+                           v-model="EfectivoChecked"
                            disabled
                         />
                      </td>
@@ -208,8 +220,8 @@
                   >
                </div>
                <div class="col-span-2 pt-4">
-                  <label class="font-bold text-base mr-2">C.I. N°.</label>
-                  <label> ----------------------------------</label>
+                  <label class="font-bold text-base mr-2">C.I. N°: </label>
+                  <label> {{ detalle.ci }} </label>
                </div>
             </div>
          </div>
@@ -232,6 +244,7 @@ import { useAuthStore } from "~/stores";
 import { getReciboById } from "~/services/recibo.service";
 import { useRoute } from "vue-router";
 import { INPUT_CLASS } from "../../../config";
+import { isValidCurrency } from "~/helpers/number.helper";
 
 definePageMeta({
    layout: "empty",
@@ -239,6 +252,9 @@ definePageMeta({
 
 const guaraniesChecked = ref(false);
 const dolaresChecked = ref(false);
+const ChequeChecked = ref(false);
+const TransferenciaChecked = ref(false);
+const EfectivoChecked = ref(false);
 const detalle = ref(null);
 const authStore = useAuthStore();
 
@@ -251,6 +267,7 @@ const fetchDetalle = async () => {
       const deRes = await getReciboById(id);
       detalle.value = deRes;
       checkCurrency(detalle.value.moneda);
+      checkFormaPago(detalle.value.formaPago);
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
@@ -265,6 +282,20 @@ function checkCurrency(currency) {
       guaraniesChecked.value = true;
    } else {
       dolaresChecked.value = true;
+   }
+}
+
+function checkFormaPago(formaPago) {
+   ChequeChecked.value = false;
+   TransferenciaChecked.value = false;
+   EfectivoChecked.value = false;
+
+   if (formaPago === "Cheque") {
+      ChequeChecked.value = true;
+   } else if (formaPago === "Transferencia") {
+      TransferenciaChecked.value = true;
+   } else {
+      EfectivoChecked.value = true;
    }
 }
 
