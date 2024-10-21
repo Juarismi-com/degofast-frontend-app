@@ -122,8 +122,7 @@ export const calculateIVA = (item: any) => {
    return result;
 };
 
-
-export const isValidCurrency = (currency:string) => {
+export const isValidCurrency = (currency: string) => {
    const validCurrencies = ["PYG", "Gs.", "GS", "GS."];
    return validCurrencies.includes(currency);
 };
