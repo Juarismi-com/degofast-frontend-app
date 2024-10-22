@@ -169,7 +169,7 @@
 
 <script setup>
 import { getClientByRuc } from "~/services";
-import { INPUT_CLASS, TIPO_DOCUMENT_LIST, useConfig } from "../../../config";
+import { INPUT_CLASS } from "../../../config";
 
 const props = defineProps({
    formData: {
