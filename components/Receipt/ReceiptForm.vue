@@ -188,7 +188,3 @@ const resetForm = () => {
    };
 };
 </script>
-
-- datos del recibo comun (numero, fecha, recibido de, concepto) - monto, monto
-en letras (verificar libreria luego) - forma de pago, banco, numero cuenta - que
-se visualice en formato de impresion
