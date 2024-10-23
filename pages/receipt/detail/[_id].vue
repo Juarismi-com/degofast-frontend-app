@@ -71,6 +71,14 @@
                      detalle.numero
                   }}</label>
                </div>
+               <div
+                  class="mb-2 flex items-center justify-center text-center pb-2"
+               >
+                  <label class="font-bold text-base mr-2">Asunción,</label>
+                  <label class="font-bold text-base mr-2">
+                     {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</label
+                  >
+               </div>
             </div>
          </div>
 
@@ -86,33 +94,6 @@
                </div>
             </div>
 
-            <div class="grid grid-cols-5 gap-4">
-               <div class="col-span-1 pt-4">
-                  <label class="font-bold text-base mr-2"
-                     >La cantidad de:</label
-                  >
-               </div>
-               <div class="col-span-1 pt-4">
-                  <label class="font-bold text-base mr-2">Guaranies</label>
-                  <input
-                     type="checkbox"
-                     id="guaranies"
-                     v-model="guaraniesChecked"
-                     class="mr-2"
-                     disabled
-                  />
-               </div>
-               <div class="col-span-3 pt-4">
-                  <label class="font-bold text-base mr-2">Dólares</label>
-                  <input
-                     type="checkbox"
-                     id="dolares"
-                     v-model="dolaresChecked"
-                     class="mr-2"
-                     disabled
-                  />
-               </div>
-            </div>
             <div class="grid grid-cols-1 gap-4 p-2">
                <input
                   v-model="detalle.montoLetras"
@@ -136,18 +117,8 @@
                   <tr>
                      <td class="pt-3">
                         <label class="font-bold text-base mr-2"
-                           ><u>Pagó en:</u></label
-                        >
-                     </td>
-                     <td class="pt-3">
-                        <label class="font-bold text-base mr-2">Cheque</label>
-                        <input
-                           type="checkbox"
-                           id="cheque"
-                           class="mr-2"
-                           v-model="ChequeChecked"
-                           disabled
-                        />
+                           ><u>Pagó en: </u> </label
+                        >{{ detalle.formaPago }}
                      </td>
 
                      <td class="pt-3">
@@ -178,52 +149,14 @@
                         />
                      </td>
                   </tr>
-                  <tr>
-                     <td class="pt-3"></td>
-                     <td class="pt-3">
-                        <label class="font-bold text-base mr-2"
-                           >Transferencia</label
-                        >
-                        <input
-                           type="checkbox"
-                           id="transferencia"
-                           class="mr-2"
-                           v-model="TransferenciaChecked"
-                           disabled
-                        />
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class="pt-3"></td>
-                     <td class="pt-3">
-                        <label class="font-bold text-base mr-2">Efectivo</label>
-                        <input
-                           type="checkbox"
-                           id="efectivo"
-                           class="mr-2"
-                           v-model="EfectivoChecked"
-                           disabled
-                        />
-                     </td>
-                     <td class="pt-3"></td>
-                     <td class="pt-3"></td>
-                     <td class="pt-3">Firma</td>
-                     <td class="pt-3">----------------------------------</td>
-                  </tr>
                </tbody>
             </table>
-            <div class="grid grid-cols-4 gap-4 pt-3">
+            <!-- <div class="grid grid-cols-4 gap-4 pt-3">
                <div class="col-span-2 pt-4">
-                  <label class="font-bold text-base mr-2">Asunción,</label>
-                  <label>
-                     {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</label
-                  >
+                  <label class="font-bold text-base mr-2">Firma: </label>
+                  <label> ---------------------------------- </label>
                </div>
-               <div class="col-span-2 pt-4">
-                  <label class="font-bold text-base mr-2">C.I. N°: </label>
-                  <label> {{ detalle.ci }} </label>
-               </div>
-            </div>
+            </div> -->
          </div>
       </div>
    </div>
@@ -250,11 +183,6 @@ definePageMeta({
    layout: "empty",
 });
 
-const guaraniesChecked = ref(false);
-const dolaresChecked = ref(false);
-const ChequeChecked = ref(false);
-const TransferenciaChecked = ref(false);
-const EfectivoChecked = ref(false);
 const detalle = ref(null);
 const authStore = useAuthStore();
 
@@ -266,38 +194,11 @@ const fetchDetalle = async () => {
       if (!id) return;
       const deRes = await getReciboById(id);
       detalle.value = deRes;
-      checkCurrency(detalle.value.moneda);
-      checkFormaPago(detalle.value.formaPago);
+      console.log(detalle.value);
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }
 };
-
-/* Checkbox */
-function checkCurrency(currency) {
-   guaraniesChecked.value = false;
-   dolaresChecked.value = false;
-
-   if (currency === "PYG") {
-      guaraniesChecked.value = true;
-   } else {
-      dolaresChecked.value = true;
-   }
-}
-
-function checkFormaPago(formaPago) {
-   ChequeChecked.value = false;
-   TransferenciaChecked.value = false;
-   EfectivoChecked.value = false;
-
-   if (formaPago === "Cheque") {
-      ChequeChecked.value = true;
-   } else if (formaPago === "Transferencia") {
-      TransferenciaChecked.value = true;
-   } else {
-      EfectivoChecked.value = true;
-   }
-}
 
 onMounted(() => {
    fetchDetalle();
