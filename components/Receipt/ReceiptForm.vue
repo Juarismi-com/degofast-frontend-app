@@ -4,8 +4,12 @@
          Recibo
       </h2>
 
-      <div>
-         <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
+      <div class="p-6 bg-white">
+         <div class="text-xl">
+            <h3>Detalles</h3>
+            <hr />
+         </div>
+         <div class="p-6 bg-white grid grid-cols-4 gap-4">
             <div>
                <label for="numero">Número:</label>
                <input
@@ -34,6 +38,15 @@
                />
             </div>
             <div>
+               <label for="ruc">RUC:</label>
+               <input
+                  type="text"
+                  v-model="formData.ruc"
+                  id="ruc"
+                  :class="INPUT_CLASS.sm"
+               />
+            </div>
+            <div>
                <label for="concepto">Concepto:</label>
                <input
                   type="text"
@@ -44,7 +57,12 @@
             </div>
          </div>
 
-         <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
+         <div class="text-xl">
+            <h3>Monto</h3>
+            <hr />
+         </div>
+
+         <div class="p-6 bg-white grid grid-cols-4 gap-4">
             <div>
                <label for="monto">Monto</label>
                <input
@@ -65,7 +83,12 @@
             </div>
          </div>
 
-         <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
+         <div class="text-xl">
+            <h3>Pago</h3>
+            <hr />
+         </div>
+
+         <div class="p-6 bg-white grid grid-cols-4 gap-4">
             <div>
                <label for="moneda">Moneda:</label>
                <select
@@ -104,27 +127,6 @@
                   type="text"
                   v-model="formData.nroBanco"
                   id="nroBanco"
-                  :class="INPUT_CLASS.sm"
-               />
-            </div>
-         </div>
-
-         <div class="p-6 bg-white grid grid-cols-4 gap-4 pb-4">
-            <div>
-               <label for="ruc">RUC:</label>
-               <input
-                  type="text"
-                  v-model="formData.ruc"
-                  id="ruc"
-                  :class="INPUT_CLASS.sm"
-               />
-            </div>
-            <div>
-               <label for="ci">C.I.N°.</label>
-               <input
-                  type="text"
-                  v-model="formData.ci"
-                  id="ci"
                   :class="INPUT_CLASS.sm"
                />
             </div>
