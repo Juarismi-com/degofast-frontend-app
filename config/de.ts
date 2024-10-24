@@ -253,6 +253,28 @@ export const deItemData = {
    precioPorCantidad: "",
 };
 
+
+export const dePDF = {
+   fecha: new Date().toLocaleDateString(),
+   cliente: {
+      nombre: "",
+      direccion: "",
+      telefono: "",
+      email: "",
+   },
+   emisor: {
+      nombre: "",
+      direccion: " ",
+      telefono: "",
+      email: "",
+      timbrado: "",
+      logo: "",
+   },
+   items: [],
+   total: 0,
+   totalEnLetas: ''
+};
+
 export const validateDeCondition = (de: any) => {
    try {
       const { fecha, puntoExpedicion, establecimiento } = de;

@@ -1,78 +1,168 @@
 <template>
-   <div class="max-w-2xl my-3 p-5" v-if="detalle">
+   <div class="max-w-screen-lg my-3 p-5" v-if="detalle">
       <!-- Membrete -->
       <div class="rounded border border-gray-300 p-4 shadow-md my-3">
          <div>
-            <h3 class="-mx-4 -mt-4 rounded-t-lg bg-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-800">
+            <h3
+               class="-mx-4 -mt-4 rounded-t-lg bg-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-800"
+            >
                Recibo de dinero
             </h3>
          </div>
 
-         <div class="grid grid-cols-2 gap-4">
-            <div class="col-span-1 pt-4">
-               <h1>{{
-                  authStore.contributor.razonSocial
-               }}</h1>
-               <br />
+         <div class="grid grid-cols-5 gap-4 mt-0">
+            <div
+               class="col-span-3 items-center justify-center text-center flex flex-col mt-3 border border-gray-400 p-4 rounded-lg"
+            >
+               <h1 class="text-3xl font-bold">BUENA SUERTE S.A.I.C.</h1>
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  >Inmobiliaria Constructora</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  >YKUA SATI</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  >Servicios de alojamiento</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  ><u>Casa central:</u> Alberdi N°: 456 - Planta baja - Tel:
+                  (021) 449-801</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  ><u>Sucursal:</u> Mayor Evacio Perenciollo e/ Cnel. Alejo S. y
+                  Dr. Jaime Bestard - Tel/Fax: (021 601-230)</label
+               >
+               <label
+                  class="text-xs items-center justify-center text-center m-0"
+                  >Asunción - Paraguay</label
+               >
             </div>
-            <div class="col-span-1 pt-4">
+
+            <div class="col-span-2 pt-4">
                <div class="mb-2 flex items-center">
-                  <label class="font-bold text-xl mr-2">N°:</label>
-                  <input v-model="detalle.numero" id="numero" :class="INPUT_CLASS.sm" class="w-full"
-                     style="font-size: 16px;" />
+                  <label class="font-bold text-xl mr-2"
+                     >{{ isValidCurrency(localCurrency) ? "₲s." : "U$S" }}
+                  </label>
+                  <input
+                     id="numero"
+                     :value="detalle.monto"
+                     :class="INPUT_CLASS.sm"
+                     class="w-full text-center font-bold"
+                     style="font-size: 18px"
+                     disabled
+                  />
                </div>
 
-               <div class="mb-2">
-                  <label class="font-bold text-base mr-2">Fecha:</label>
-                  <label class="font-bold"> {{
-                     moment(detalle.fecha).format("DD/MM/YYYY")
+               <div class="mb-2 flex items-center justify-center text-center">
+                  <label class="text-lg mr-2">RUC:</label>
+                  <label class="text-lg mr-2">{{
+                     authStore.contributor.ruc
                   }}</label>
                </div>
+
+               <div class="mb-2 flex items-center justify-center text-center">
+                  <label class="font-bold text-xl mr-2">N°: </label>
+                  <label class="font-bold text-xl mr-2">{{
+                     detalle.numero
+                  }}</label>
+               </div>
+               <div
+                  class="mb-2 flex items-center justify-center text-center pb-2"
+               >
+                  <label class="font-bold text-base mr-2">Asunción,</label>
+                  <label class="font-bold text-base mr-2">
+                     {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</label
+                  >
+               </div>
             </div>
          </div>
-
 
          <div class="col-span-1 p-1">
-            <div class="mb-2 flex items-center">
-               <label class="font-bold text-base mr-2">Recibí de:</label>
-               {{ detalle.recibidoDe }}
+            <div class="grid grid-cols-5 gap-4">
+               <div class="col-span-3 pt-4">
+                  <label class="font-bold text-base mr-2">Recibí de:</label>
+                  {{ detalle.recibidoDe }}
+               </div>
+               <div class="col-span-2 pt-4">
+                  <label class="font-bold text-base mr-2">RUC:</label>
+                  {{ detalle.ruc }}
+               </div>
             </div>
-            <div class="mb-2 flex items-center">
-               <label class="font-bold text-base mr-2">La cantidad de:</label>
-               <input v-model="detalle.montoLetras" id="recibidoDe" :class="INPUT_CLASS.sm" class="w-full"
-                  style="font-size: 16px;" />
+
+            <div class="grid grid-cols-1 gap-4 p-2">
+               <input
+                  v-model="detalle.montoLetras"
+                  id="recibidoDe"
+                  :class="INPUT_CLASS.sm"
+                  class="w-full font-bold"
+                  style="font-size: 18px"
+                  disabled
+               />
             </div>
-            <div class="mb-2 flex items-center">
-               <label class="font-bold text-base mr-2">En concepto de:</label>
-               {{ detalle.concepto }}
+
+            <div class="col-span-3 pt-4">
+               <label class="font-bold text-base mr-2">Por concepto de: </label
+               >{{ detalle.concepto }}
             </div>
          </div>
 
-         <div class="grid grid-cols-2 gap-4">
-            <div class="col-span-1 p-0">
-               <div class="mb-2 flex items-center">
+         <div class="col-span-1 p-1 font-bold">
+            <table>
+               <tbody>
+                  <tr>
+                     <td class="pt-3">
+                        <label class="font-bold text-base mr-2"
+                           ><u>Pagó en: </u> </label
+                        >{{ detalle.formaPago }}
+                     </td>
 
+                     <td class="pt-3">
+                        <label class="font-bold text-base mr-2 p-4"
+                           >Banco:</label
+                        >
+                     </td>
+                     <td class="pt-2">
+                        <input
+                           id="banco"
+                           v-model="detalle.banco"
+                           :class="INPUT_CLASS.sm"
+                           class="w-full"
+                           style="font-size: 16px"
+                           disabled
+                        />
+                     </td>
+                     <td class="pt-3">
+                        <label class="font-bold text-base mr-2 p-4">N°:</label>
+                     </td>
+                     <td class="pt-3">
+                        <input
+                           id="numeroBanco"
+                           v-model="detalle.nroBanco"
+                           :class="INPUT_CLASS.sm"
+                           style="font-size: 16px"
+                           disabled
+                        />
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+            <!-- <div class="grid grid-cols-4 gap-4 pt-3">
+               <div class="col-span-2 pt-4">
+                  <label class="font-bold text-base mr-2">Firma: </label>
+                  <label> ---------------------------------- </label>
                </div>
-            </div>
-            <div class="col-span-1 p-0">
-               <div class="mb-2 flex items-center">
-                  <label class="font-bold text-base mr-2">Monto: </label>
-                  <label class="font-bold text-xl mr-2"> {{
-                     isValidCurrency(detalle.moneda)
-                        ? formatPriceNumber(detalle.monto)
-                        : formatPriceNumberNoPYG(detalle.monto)
-                  }} </label>
-
-               </div>
-            </div>
-
+            </div> -->
          </div>
       </div>
    </div>
 
    <div class="max-w-4xl pt-5">
-      <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-3 gap-2">
-      </div>
+      <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-3 gap-2"></div>
 
       <div v-else>
          <p>Cargando detalles...</p>
@@ -82,21 +172,12 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "~/stores";
 import moment from "moment";
-import {
-   getReciboById
-} from "~/services/recibo.service"
+import { useAuthStore } from "~/stores";
+import { getReciboById } from "~/services/recibo.service";
 import { useRoute } from "vue-router";
-import {
-   formatPriceNumber,
-   formatPriceNumberNoPYG,
-   isValidCurrency
-} from "~/helpers/number.helper";
-import {
-   INPUT_CLASS,
-} from "../../../config"
+import { INPUT_CLASS } from "../../../config";
+import { isValidCurrency } from "~/helpers/number.helper";
 
 definePageMeta({
    layout: "empty",
@@ -112,9 +193,8 @@ const fetchDetalle = async () => {
       const id = route.params._id;
       if (!id) return;
       const deRes = await getReciboById(id);
-      detalle.value = deRes
-      console.log(JSON.stringify(detalle.value));
-      // localCurrency.value = detalle.value.moneda;
+      detalle.value = deRes;
+      console.log(detalle.value);
    } catch (error) {
       console.error("Error al obtener los detalles de la factura:", error);
    }

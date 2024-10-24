@@ -1,5 +1,11 @@
 <template>
    <div class="w-full overflow-hidden rounded-lg shadow-xs">
+      <DECancel
+         :show="showModal"
+         :cdc="cdcActual"
+         @update:show="handleCloseModal"
+      />
+
       <div class="flex flex-col gap-4 mt-4 mb-4">
          <div class="flex gap-4">
             <div class="flex-1">
@@ -144,6 +150,22 @@
                   </td>
                   <td class="px-4 py-3">
                      <button
+                        @click="generarPDF(item._id)"
+                        class="text-blue-600 hover:underline focus:outline-none"
+                     >
+                        Generar PDF
+                     </button>
+                  </td>
+                  <td class="px-4 py-3">
+                     <button
+                        @click="enviarEmail(item._id)"
+                        class="text-blue-600 hover:underline focus:outline-none"
+                     >
+                        Enviar email
+                     </button>
+                  </td>
+                  <td class="px-4 py-3">
+                     <button
                         v-if="item.estado == 'X'"
                         @click="openModal(item.cdc)"
                         class="text-blue-600 hover:underline focus:outline-none"
@@ -166,7 +188,6 @@
 import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
-import { useAuthStore } from "~/stores";
 import {
    formatPriceNumber,
    formatPriceNumberNoPYG,
@@ -174,13 +195,11 @@ import {
    getPuntoExpedicionNumberCode,
    getDeNumberCode,
 } from "~/helpers/number.helper";
-import { get } from "~/services/http.service";
+import { get, create } from "~/services/http.service";
 import Loader from "@/components/Loader/Loader.vue";
-
-import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
 import DECancel from "./DECancel.vue";
-
-const authStore = useAuthStore();
+import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
+import { dePDF } from "@/config/de.ts";
 
 const props = defineProps({
    items: {
@@ -205,13 +224,80 @@ const searchQuery = ref({
 });
 const filteredItems = ref([]);
 const totalPagesLocal = ref(props.totalPages);
+const detalle = ref(null);
+
+const verDetalles = (id) => {
+   router.push({ path: `/de/detail/${id}` });
+};
 
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
 };
 
-const verDetalles = (id) => {
-   router.push({ path: `/de/detail/${id}` });
+const generarPDF = async (id) => {
+   try {
+      const data = await get(`de/${id}`);
+      detalle.value = mapperDePDF(data);
+
+      console.log(JSON.stringify(detalle.value));
+
+      // const response = await create(
+      //    `de/${id}/pdf`, detalle.value
+      // );
+      // return response;
+   } catch (error) {
+      console.error("Error al buscar el documento:", error);
+   } finally {
+      loading.value = false;
+   }
+};
+
+const mapperDePDF = (de) => {
+   let sum = 0;
+
+   for (let i = 0; i < de.items.length; i++) {
+      const item = de.items[i];
+      sum += item?.precioUnitario * item?.cantidad;
+   }
+
+   const establecimiento = de.contributor.establecimientos.find(
+      (est) => est.codigo === de.establecimiento,
+   );
+
+   const direccion = establecimiento ? establecimiento.direccion : "";
+   const telefono = establecimiento ? establecimiento.telefono : "";
+
+   return {
+      fecha: new Date(de.fecha).toLocaleDateString(),
+      cliente: {
+         nombre: de.cliente.razonSocial,
+         direccion: de.cliente.direccion,
+         telefono: de.cliente.telefono,
+         email: de.cliente.email,
+      },
+      emisor: {
+         nombre: de.contributor.razonSocial,
+         email: de.contributor.email,
+         timbrado: de.contributor.timbradoNumero,
+         direccion: direccion,
+         telefono: telefono,
+         logo: "",
+      },
+      items: de.items,
+      total: sum,
+      totalEnLetas: "",
+   };
+};
+
+const enviarEmail = async (id) => {
+   try {
+      const response = await create(`de/${id}/mail`, dePDF);
+      return response;
+   } catch (error) {
+      console.error("Error al buscar el documento:", error);
+   } finally {
+      loading.value = false;
+   }
 };
 
 const consultarSifen = (cdc) => {
@@ -228,6 +314,7 @@ const { items } = toRefs(props);
 
 onMounted(() => {
    filteredItems.value = [...items.value];
+   console.log(items.value);
    loading.value = true;
 });
 
