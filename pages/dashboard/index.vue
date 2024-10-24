@@ -1,8 +1,11 @@
 <template>
-   <div>
-      <button @click="generarReportes">Reporte</button>
+   <div class="w-full overflow-hidden rounded-lg shadow-xs m-4">
+      <div class="text-xl">
+         <h3>Dashboard</h3>
+         <hr />
+      </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mt-6">
          <a
             v-for="(card, index) in cards"
             :key="index"
@@ -14,7 +17,10 @@
             >
                {{ card.title }}
             </h5>
-            <p class="font-normal text-gray-700 dark:text-gray-400">
+            <hr />
+            <p
+               class="font-normal text-gray-700 dark:text-gray-400 text-center m-4"
+            >
                {{ card.content }}
             </p>
          </a>
@@ -23,9 +29,9 @@
 </template>
 
 <script setup>
-// import { storeToRefs } from "pinia";
-// import { useAuthStore } from "~/stores";
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "~/stores";
 import { getReports } from "~/services/dashboard.service";
 
 definePageMeta({
@@ -33,62 +39,48 @@ definePageMeta({
 });
 
 // datos del contribuyente
-// const authStore = useAuthStore();
-// const { contributor } = storeToRefs(authStore);
+const authStore = useAuthStore();
+const { contributor } = storeToRefs(authStore);
 
 const cards = ref([
-   {
-      title: "Noteworthy technology acquisitions 2021",
-      content:
-         "Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.",
-   },
-   {
-      title: "Top AI Trends to Watch in 2024",
-      content:
-         "Discover the most influential trends shaping artificial intelligence in the coming year.",
-   },
-   {
-      title: "The Rise of Quantum Computing",
-      content:
-         "Quantum computing is set to revolutionize industries. Learn what it means for the future of tech.",
-   },
-   {
-      title: "Blockchain Beyond Cryptocurrencies",
-      content:
-         "Explore how blockchain technology is being applied beyond the world of digital currencies.",
-   },
-   {
-      title: "Advancements in Renewable Energy",
-      content:
-         "How the latest innovations are making renewable energy more efficient and accessible.",
-   },
-   {
-      title: "Cybersecurity in a Digital Age",
-      content:
-         "Protecting data and privacy is more important than ever. Learn about the latest in cybersecurity.",
-   },
-   {
-      title: "5G and the Future of Connectivity",
-      content:
-         "5G technology is transforming how we connect, work, and live. Here’s what you need to know.",
-   },
-   {
-      title: "Virtual and Augmented Reality: The Next Frontier",
-      content:
-         "VR and AR are reshaping industries from gaming to healthcare. Discover what’s next.",
-   },
+   { title: "Total de Facturas", content: "Cargando..." },
+   { title: "Facturas al Contado", content: "Cargando..." },
+   { title: "Facturas a Crédito", content: "Cargando..." },
+   { title: "Facturas con Contribuyentes", content: "Cargando..." },
+   { title: "Facturas Anuladas", content: "Cargando..." },
+   { title: "Facturas Canceladas", content: "Cargando..." },
+   { title: "Total de Notas de Crédito", content: "Cargando..." },
+   { title: "Notas de Crédito Anuladas", content: "Cargando..." },
+   { title: "Notas de Crédito Canceladas", content: "Cargando..." },
+   { title: "Notas de Débito", content: "Cargando..." },
 ]);
 
 const generarReportes = async () => {
-   console.log("Estoy");
+   const contributorId = contributor._object.contributor._id;
+
    try {
-      const data = await getReports("66b160707ed87d4d67aaa973");
+      const data = await getReports(contributorId);
 
-      console.log(JSON.stringify(data));
-
-      // return data;
+      cards.value = [
+         { title: "Total de Facturas", content: data.totalFactura },
+         { title: "Facturas al Contado", content: data.totalFacturaContado },
+         { title: "Facturas a Crédito", content: data.totalFacturaCredito },
+         {
+            title: "Facturas con Contribuyentes",
+            content: data.totalFacturaContribuyentes,
+         },
+         { title: "Facturas Anuladas", content: data.totalFacturaAnulados },
+         { title: "Facturas Canceladas", content: 0 },
+         { title: "Total de Notas de Crédito", content: data.totalNotaCredito },
+         {
+            title: "Notas de Crédito Anuladas",
+            content: data.totalNotaCreditoAnulados,
+         },
+         { title: "Notas de Crédito Canceladas", content: 0 },
+         { title: "Notas de Débito", content: data.totalNotaDebito },
+      ];
    } catch (error) {
-      console.error("Error al buscar el documento:", error);
+      console.error("Error:", error);
    }
 };
 
