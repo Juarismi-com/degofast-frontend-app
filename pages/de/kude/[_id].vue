@@ -383,14 +383,12 @@ import {
    isValidCurrency,
 } from "~/helpers/number.helper";
 import { deValues } from "~/config/de";
-import { useAuthStore } from "~/stores";
 import moment from "moment";
 
 definePageMeta({
    layout: "empty",
 });
 
-const authStore = useAuthStore();
 const route = useRoute();
 const title = ref("");
 const detalle = ref(null);

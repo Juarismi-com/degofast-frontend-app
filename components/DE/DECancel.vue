@@ -4,7 +4,7 @@
       class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
    >
       <div
-         class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+         class="relative top-20 mx-auto p-5 border max-w-prose shadow-lg rounded-md bg-white"
       >
          <div class="mt-3 text-center">
             <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -20,10 +20,10 @@
                      >
                      <input
                         v-model="formData.cdc"
-                        :class="INPUT_CLASS.basic"
+                        :class="[INPUT_CLASS.basic, 'text-center']"
                         id="cdc"
                         type="text"
-                        placeholder="CDC"
+                        disabled
                      />
                   </div>
                   <div class="mb-4">
@@ -35,7 +35,7 @@
                      </label>
                      <select
                         v-model="formData.tipo"
-                        :class="INPUT_CLASS.basic"
+                        :class="[INPUT_CLASS.basic]"
                         id="tipo"
                         placeholder="Tipo"
                      >
@@ -65,7 +65,7 @@
 
                   <div class="flex justify-end">
                      <button
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
                         type="submit"
                      >
                         Guardar

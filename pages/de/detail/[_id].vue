@@ -3,12 +3,36 @@
       <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
          Detalles de la Factura
       </h2>
+
+      <!-- Modal -->
+      <div
+         v-if="openModal"
+         id="default-modal"
+         tabindex="-1"
+         class="fixed inset-0 z-50 flex items-center justify-center w-full bg-gray-800 bg-opacity-50"
+      >
+         <DECancel
+            :show="showModal"
+            :cdc="detalle?.cdc"
+            @update:show="handleCloseModal"
+         />
+      </div>
+
       <div v-if="detalle" class="grid grid-cols-1 md:grid-cols-3 gap-4">
          <div
             class="md:col-span-3 text-center border border-gray-300 p-4 shadow-md rounded"
          >
             <label class="text-lg font-bold">CDC: </label>
             <label class="text-lg">{{ detalle.cdc }}</label>
+            <button
+               class="ml-4 p-2 bg-purple-600 hover:bg-purple-700 text-white rounded dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+               @click="
+                  openModal = true;
+                  showModal = true;
+               "
+            >
+               Generar Evento
+            </button>
          </div>
          <div
             class="md:col-span-3 border border-gray-300 p-4 shadow-md rounded grid grid-cols-2"
@@ -324,8 +348,9 @@ import {
    formatPriceNumberNoPYG,
    getDeNumberCode,
    getEstablecimientoNumberCode,
-   isValidCurrency
+   isValidCurrency,
 } from "~/helpers/number.helper";
+import DECancel from "~/components/DE/DECancel.vue";
 
 definePageMeta({
    middleware: ["auth"],
@@ -334,6 +359,8 @@ definePageMeta({
 const activeTab = ref(0);
 const detalle = ref(null);
 const localCurrency = ref(null);
+const openModal = ref(false);
+const showModal = ref(false);
 
 const route = useRoute();
 
@@ -401,6 +428,11 @@ const calculateIVA = (item) => {
          : formatPriceNumberNoPYG((item.precioUnitario * item.cantidad) / 11);
    }
    return 0;
+};
+
+const handleCloseModal = (value) => {
+   showModal.value = value;
+   openModal.value = false;
 };
 
 onMounted(() => {
