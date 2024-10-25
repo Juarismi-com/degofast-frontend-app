@@ -23,7 +23,7 @@ export const update = async (path: string, payload: any) => {
    }
 };
 
-export const get = async (path: string, query: string) => {
+export const get = async (path: string) => {
    try {
       const res = await axios.get(`${API_URL}/${path}`);
       return res.data;
