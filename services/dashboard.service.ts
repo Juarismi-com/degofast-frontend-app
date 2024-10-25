@@ -8,7 +8,7 @@ const { API_URL } = useConfig();
  */
 export const getReports = async (contributorId: string) => {
    try {
-      const response = await get(`${API_URL}/de/${contributorId}/report`);
+      const response = await get(`/de/${contributorId}/report`);
       return response.data;
    } catch (error) {
       console.error("Error getting Reports:", error);
