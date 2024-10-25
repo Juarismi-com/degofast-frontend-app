@@ -19,7 +19,7 @@
             </h5>
             <hr />
             <p
-               class="font-normal text-gray-700 dark:text-gray-400 text-center m-4"
+               class="text-2xl font-bold text-gray-700 dark:text-gray-400 text-center m-4"
             >
                {{ card.content }}
             </p>
