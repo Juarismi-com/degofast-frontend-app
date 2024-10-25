@@ -139,7 +139,7 @@
             </div>
          </div>
 
-         <div v-if="cuotaTable.length > 0">
+         <div v-if="cuotaTable.length > 0 && formData.condicion.credito.tipo == '2' && formData.condicion.tipo == '2'">
             <table class="divide-gray-200 min-w-full">
                <thead class="bg-gray-50">
                   <tr>
