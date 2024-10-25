@@ -14,32 +14,35 @@
             <div
                class="col-span-3 items-center justify-center text-center flex flex-col mt-3 border border-gray-400 p-4 rounded-lg"
             >
-               <h1 class="text-3xl font-bold">BUENA SUERTE S.A.I.C.</h1>
+               <h1 class="text-3xl font-bold">
+                  {{ authStore.contributor.recibo.cabecera.empresa }}
+               </h1>
                <label
                   class="text-xs items-center justify-center text-center m-0"
-                  >Inmobiliaria Constructora</label
+                  >{{ authStore.contributor.recibo.cabecera.rubro }}</label
                >
                <label
                   class="text-xs items-center justify-center text-center m-0"
-                  >YKUA SATI</label
+                  >{{ authStore.contributor.recibo.cabecera.zona }}</label
                >
                <label
                   class="text-xs items-center justify-center text-center m-0"
-                  >Servicios de alojamiento</label
+                  >{{ authStore.contributor.recibo.cabecera.servicio }}</label
                >
                <label
                   class="text-xs items-center justify-center text-center m-0"
-                  ><u>Casa central:</u> Alberdi N°: 456 - Planta baja - Tel:
-                  (021) 449-801</label
+                  ><u>Casa central:</u>
+                  {{ authStore.contributor.recibo.cabecera.casaCentral }}</label
                >
                <label
                   class="text-xs items-center justify-center text-center m-0"
-                  ><u>Sucursal:</u> Mayor Evacio Perenciollo e/ Cnel. Alejo S. y
-                  Dr. Jaime Bestard - Tel/Fax: (021 601-230)</label
+                  ><u>Sucursal:</u>
+                  {{ authStore.contributor.recibo.cabecera.sucursal }}</label
                >
                <label
                   class="text-xs items-center justify-center text-center m-0"
-                  >Asunción - Paraguay</label
+                  >{{ authStore.contributor.recibo.cabecera.ciudad }} -
+                  {{ authStore.contributor.recibo.cabecera.pais }}</label
                >
             </div>
 
@@ -183,9 +186,10 @@ definePageMeta({
    layout: "empty",
 });
 
-const detalle = ref(null);
+// store
 const authStore = useAuthStore();
 
+const detalle = ref(null);
 const route = useRoute();
 
 const fetchDetalle = async () => {
