@@ -148,12 +148,13 @@ const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
 
 // datos del formulario / documento electronico
+const initialFormData = JSON.parse(JSON.stringify(deFormData));
+
 const formData = ref({
    ...deFormData,
    tipoDocumento: tipoDocumento.value,
 });
 
-// Relacionado al envio satisfactorio al api
 const confirmSubmit = ref(false);
 const submitDeSuccess = ref(false);
 
@@ -164,6 +165,7 @@ const submitDeSuccess = ref(false);
 const submitDe = async () => {
    try {
       setIsPreviewModal();
+
       confirmSubmit.value = true;
 
       const payload = {
@@ -190,7 +192,7 @@ const submitDe = async () => {
 
 const resetForm = () => {
    formData.value = {
-      ...deFormData,
+      ...initialFormData,
       tipoDocumento: tipoDocumento.value,
    };
 };
