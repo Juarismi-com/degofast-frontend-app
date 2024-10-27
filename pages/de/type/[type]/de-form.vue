@@ -165,7 +165,7 @@ const submitDeSuccess = ref(false);
 const submitDe = async () => {
    try {
       setIsPreviewModal();
-      // Relacionado al envio satisfactorio al api
+
       confirmSubmit.value = true;
 
       const payload = {
