@@ -12,7 +12,7 @@ export const deReceiptData = {
    formaPago: "Efectivo",
    banco: "",
    nroBanco: "",
-   ci: "",
+   ciNumero: "",
 };
 
 export const validateRecibo = (recibo: any) => {

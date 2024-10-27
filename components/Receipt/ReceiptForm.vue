@@ -47,6 +47,15 @@
                />
             </div>
             <div>
+               <label for="ci">C.I. N°:</label>
+               <input
+                  type="text"
+                  v-model="formData.ciNumero"
+                  id="ci"
+                  :class="INPUT_CLASS.sm"
+               />
+            </div>
+            <div>
                <label for="concepto">Concepto:</label>
                <input
                   type="text"
