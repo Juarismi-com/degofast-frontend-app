@@ -92,14 +92,6 @@
                      detalle.ruc
                   }}</label>
                </div>
-               <div class="col-span-1 pt-4">
-                  <label class="font-bold text-xl mr-2 underline"
-                     >C.I. N°:</label
-                  >
-                  <label class="font-bold text-xl mr-2">{{
-                     detalle.ciNumber
-                  }}</label>
-               </div>
             </div>
 
             <div class="grid grid-cols-3 gap-4 pt-4">
@@ -186,6 +178,12 @@
                   <label class="font-bold text-xl ml-3 mr-3">Firma: </label>
                   <label> ______________________________ </label>
                </div>
+            </div>
+            <div class="col-span-1 pt-4">
+               <label class="font-bold text-xl mr-2 underline">C.I. N°:</label>
+               <label class="font-bold text-xl mr-2">{{
+                  detalle.ciNumber
+               }}</label>
             </div>
          </div>
       </div>
