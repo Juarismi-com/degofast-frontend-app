@@ -1,162 +1,143 @@
 <template>
-   <div class="max-w-screen-lg my-3 p-5" v-if="detalle">
-      <!-- Membrete -->
-      <div class="rounded border border-gray-300 p-4 shadow-md my-3">
+   <div class="max-w-screen-md my-3 p-3" v-if="detalle">
+      <div class="rounded border-2 border-gray-300 shadow-md">
+         <!-- Membrete -->
          <div>
             <h3
-               class="-mx-4 -mt-4 rounded-t-lg bg-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-800"
+               class="rounded-t-md bg-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-800"
             >
                Recibo de dinero
             </h3>
          </div>
 
-         <div class="grid grid-cols-5 gap-4 mt-0">
+         <!-- Cabecera -->
+         <div class="grid grid-cols-5 gap-4 px-3">
             <div
-               class="col-span-3 items-center justify-center text-center flex flex-col mt-3 border border-gray-400 p-4 rounded-lg"
+               class="col-span-3 justify-center text-center flex flex-col border-gray-400 p-4 rounded-md text-xs item-center border-2 my-3"
             >
-               <h1 class="text-3xl font-bold">BUENA SUERTE S.A.I.C.</h1>
+               <h1 class="text-xl font-bold">
+                  {{ authStore.contributor.recibo.cabecera.empresa }}
+               </h1>
+               <label>{{ authStore.contributor.recibo.cabecera.rubro }}</label>
+               <label>{{ authStore.contributor.recibo.cabecera.zona }}</label>
+               <label>{{
+                  authStore.contributor.recibo.cabecera.servicio
+               }}</label>
                <label
-                  class="text-xs items-center justify-center text-center m-0"
-                  >Inmobiliaria Constructora</label
+                  ><u>Casa central:</u>
+                  {{ authStore.contributor.recibo.cabecera.casaCentral }}</label
                >
                <label
-                  class="text-xs items-center justify-center text-center m-0"
-                  >YKUA SATI</label
+                  ><u>Sucursal:</u>
+                  {{ authStore.contributor.recibo.cabecera.sucursal }}</label
                >
                <label
-                  class="text-xs items-center justify-center text-center m-0"
-                  >Servicios de alojamiento</label
-               >
-               <label
-                  class="text-xs items-center justify-center text-center m-0"
-                  ><u>Casa central:</u> Alberdi N°: 456 - Planta baja - Tel:
-                  (021) 449-801</label
-               >
-               <label
-                  class="text-xs items-center justify-center text-center m-0"
-                  ><u>Sucursal:</u> Mayor Evacio Perenciollo e/ Cnel. Alejo S. y
-                  Dr. Jaime Bestard - Tel/Fax: (021 601-230)</label
-               >
-               <label
-                  class="text-xs items-center justify-center text-center m-0"
-                  >Asunción - Paraguay</label
+                  >{{ authStore.contributor.recibo.cabecera.ciudad }} -
+                  {{ authStore.contributor.recibo.cabecera.pais }}</label
                >
             </div>
-
-            <div class="col-span-2 pt-4">
-               <div class="mb-2 flex items-center">
-                  <label class="font-bold text-xl mr-2"
-                     >{{ isValidCurrency(localCurrency) ? "₲s." : "U$S" }}
-                  </label>
-                  <input
-                     id="numero"
-                     :value="detalle.monto"
-                     :class="INPUT_CLASS.sm"
-                     class="w-full text-center font-bold"
-                     style="font-size: 18px"
-                     disabled
-                  />
-               </div>
-
-               <div class="mb-2 flex items-center justify-center text-center">
-                  <label class="text-lg mr-2">RUC:</label>
-                  <label class="text-lg mr-2">{{
-                     authStore.contributor.ruc
+            <div class="col-span-2">
+               <div class="justify-center text-center mt-10 text-base">
+                  <label class="font-bold">{{
+                     isValidCurrency(localCurrency) ? "₲s." : "U$S"
                   }}</label>
-               </div>
+                  <label class="font-bold">{{ detalle.monto }}</label>
+                  <br />
 
-               <div class="mb-2 flex items-center justify-center text-center">
-                  <label class="font-bold text-xl mr-2">N°: </label>
-                  <label class="font-bold text-xl mr-2">{{
-                     detalle.numero
-                  }}</label>
-               </div>
-               <div
-                  class="mb-2 flex items-center justify-center text-center pb-2"
-               >
-                  <label class="font-bold text-base mr-2">Asunción,</label>
-                  <label class="font-bold text-base mr-2">
-                     {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</label
-                  >
+                  <label class="">RUC:</label>
+                  <label class="">{{ authStore.contributor.ruc }}</label>
+                  <br />
+
+                  <label class="font-bold">N°: </label>
+                  <label class="font-bold">{{ detalle.numero }}</label>
                </div>
             </div>
          </div>
 
-         <div class="col-span-1 p-1">
-            <div class="grid grid-cols-5 gap-4">
-               <div class="col-span-3 pt-4">
-                  <label class="font-bold text-base mr-2">Recibí de:</label>
-                  {{ detalle.recibidoDe }}
-               </div>
-               <div class="col-span-2 pt-4">
-                  <label class="font-bold text-base mr-2">RUC:</label>
-                  {{ detalle.ruc }}
-               </div>
+         <!-- Relacionado con el emisor-->
+         <div class="grid grid-cols-4 gap-4 px-3 py-1 text-sm">
+            <div class="col-span-2">
+               <label class="font-bold underline">Recibí de:</label>
+               <label class="font-bold text-sm">
+                  {{ detalle.recibidoDe }}</label
+               >
             </div>
+            <div>
+               <label class="font-bold underline">RUC:</label>
+               <label class="font-bold text-sm">{{ detalle.ruc }}</label>
+            </div>
+            <div>
+               <label class="font-bold underline">C.I. N°:</label>
+               <label class="font-bold">{{ detalle.ciNumber }}</label>
+            </div>
+         </div>
 
-            <div class="grid grid-cols-1 gap-4 p-2">
+         <!-- Contenido/cuerpo -->
+         <div class="grid grid-cols-2 gap-4 py-1 px-3 text-sm">
+            <div class="col-span-2">
+               <label class="font-bold underline">La cantidad de:</label>
                <input
                   v-model="detalle.montoLetras"
                   id="recibidoDe"
                   :class="INPUT_CLASS.sm"
-                  class="w-full font-bold"
-                  style="font-size: 18px"
+                  class="font-bold"
                   disabled
                />
             </div>
 
-            <div class="col-span-3 pt-4">
-               <label class="font-bold text-base mr-2">Por concepto de: </label
-               >{{ detalle.concepto }}
+            <div class="col-span-2">
+               <span class="underline font-bold">Por concepto de: </span>
+               {{ detalle.concepto }}
+            </div>
+
+            <div>
+               <label class="font-bold underline">Pagó en:</label>
+               <label class="font-bold">{{ detalle.formaPago }}</label>
             </div>
          </div>
 
-         <div class="col-span-1 p-1 font-bold">
-            <table>
-               <tbody>
-                  <tr>
-                     <td class="pt-3">
-                        <label class="font-bold text-base mr-2"
-                           ><u>Pagó en: </u> </label
-                        >{{ detalle.formaPago }}
-                     </td>
+         <!-- Tipo Pago Info -->
+         <div
+            class="grid grid-cols-2 gap-4 px-3 py-1"
+            v-if="
+               detalle.formaPago == 'Cheque' ||
+               detalle.formaPago == 'Transferencia'
+            "
+         >
+            <div>
+               <label class="font-bold text-sm underline">Banco:</label>
+               <input
+                  id="banco"
+                  v-model="detalle.banco"
+                  :class="[INPUT_CLASS.sm, 'text-sm']"
+                  style="font-size: 12px"
+                  disabled
+               />
+            </div>
+            <div>
+               <label class="font-bold text-sm underline">NRO:</label>
+               <input
+                  id="numeroBanco"
+                  v-model="detalle.nroBanco"
+                  :class="[INPUT_CLASS.sm, 'text-sm']"
+                  style="font-size: 12px"
+                  disabled
+               />
+            </div>
+         </div>
 
-                     <td class="pt-3">
-                        <label class="font-bold text-base mr-2 p-4"
-                           >Banco:</label
-                        >
-                     </td>
-                     <td class="pt-2">
-                        <input
-                           id="banco"
-                           v-model="detalle.banco"
-                           :class="INPUT_CLASS.sm"
-                           class="w-full"
-                           style="font-size: 16px"
-                           disabled
-                        />
-                     </td>
-                     <td class="pt-3">
-                        <label class="font-bold text-base mr-2 p-4">N°:</label>
-                     </td>
-                     <td class="pt-3">
-                        <input
-                           id="numeroBanco"
-                           v-model="detalle.nroBanco"
-                           :class="INPUT_CLASS.sm"
-                           style="font-size: 16px"
-                           disabled
-                        />
-                     </td>
-                  </tr>
-               </tbody>
-            </table>
-            <!-- <div class="grid grid-cols-4 gap-4 pt-3">
-               <div class="col-span-2 pt-4">
-                  <label class="font-bold text-base mr-2">Firma: </label>
-                  <label> ---------------------------------- </label>
-               </div>
-            </div> -->
+         <!-- footer/firma y fecha -->
+         <div class="grid grid-cols-2 gap-4 px-3 py-5 my-5">
+            <div>
+               <label class="font-bold text-sm mr-2">Asunción,</label>
+               <label class="font-bold text-sm mr-2">
+                  {{ moment(detalle.fecha).format("DD/MM/YYYY") }}</label
+               >
+            </div>
+            <div>
+               <label class="font-bold text-sm">Firma: </label>
+               <hr />
+            </div>
          </div>
       </div>
    </div>
@@ -183,9 +164,10 @@ definePageMeta({
    layout: "empty",
 });
 
-const detalle = ref(null);
+// store
 const authStore = useAuthStore();
 
+const detalle = ref(null);
 const route = useRoute();
 
 const fetchDetalle = async () => {
@@ -194,13 +176,20 @@ const fetchDetalle = async () => {
       if (!id) return;
       const deRes = await getReciboById(id);
       detalle.value = deRes;
-      console.log(detalle.value);
    } catch (error) {
-      console.error("Error al obtener los detalles de la factura:", error);
+      alert(error);
+      console.error("Error al obtener datos del recibo:", error);
    }
+};
+
+const printPage = (isPrint) => {
+   if (isPrint) window.print();
 };
 
 onMounted(() => {
    fetchDetalle();
+   setTimeout(() => {
+      printPage(route.query?.print === "true");
+   }, 1000);
 });
 </script>

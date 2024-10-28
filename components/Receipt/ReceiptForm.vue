@@ -47,6 +47,15 @@
                />
             </div>
             <div>
+               <label for="ci">C.I. N°:</label>
+               <input
+                  type="text"
+                  v-model="formData.ciNumero"
+                  id="ci"
+                  :class="INPUT_CLASS.sm"
+               />
+            </div>
+            <div>
                <label for="concepto">Concepto:</label>
                <input
                   type="text"
@@ -107,12 +116,17 @@
                   id="formaPago"
                   :class="INPUT_CLASS.sm"
                >
+                  <option value="Efectivo">Efectivo</option>
                   <option value="Cheque">Cheque</option>
                   <option value="Transferencia">Transferencia</option>
-                  <option value="Efectivo">Efectivo</option>
                </select>
             </div>
-            <div>
+            <div
+               v-if="
+                  formData.formaPago == 'Cheque' ||
+                  formData.formaPago == 'Transferencia'
+               "
+            >
                <label for="banco">Banco</label>
                <input
                   type="text"
@@ -121,7 +135,12 @@
                   :class="INPUT_CLASS.sm"
                />
             </div>
-            <div>
+            <div
+               v-if="
+                  formData.formaPago == 'Cheque' ||
+                  formData.formaPago == 'Transferencia'
+               "
+            >
                <label for="nroBanco">N° Banco</label>
                <input
                   type="text"
