@@ -68,7 +68,7 @@
             </div>
             <div>
                <label class="font-bold underline">C.I. N°:</label>
-               <label class="font-bold">{{ detalle.ciNumber }}</label>
+               <label class="font-bold">{{ detalle.ciNumero }}</label>
             </div>
          </div>
 

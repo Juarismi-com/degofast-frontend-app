@@ -96,7 +96,7 @@
                         Ver detalles
                      </button>
                   </td>
-                  <td class="px-4 py-3">
+                  <td class="px-2 py-3">
                      <button
                         @click="imprimir(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
