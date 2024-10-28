@@ -253,7 +253,6 @@ export const deItemData = {
    precioPorCantidad: "",
 };
 
-
 export const dePDF = {
    fecha: new Date().toLocaleDateString(),
    cliente: {
@@ -272,7 +271,7 @@ export const dePDF = {
    },
    items: [],
    total: 0,
-   totalEnLetas: ''
+   totalEnLetas: "",
 };
 
 export const validateDeCondition = (de: any) => {
