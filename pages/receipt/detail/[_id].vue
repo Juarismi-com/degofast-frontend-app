@@ -176,14 +176,20 @@ const fetchDetalle = async () => {
       if (!id) return;
       const deRes = await getReciboById(id);
       detalle.value = deRes;
-      console.log(detalle.value);
    } catch (error) {
       alert(error);
       console.error("Error al obtener datos del recibo:", error);
    }
 };
 
+const printPage = (isPrint) => {
+   if (isPrint) window.print();
+};
+
 onMounted(() => {
    fetchDetalle();
+   setTimeout(() => {
+      printPage(route.query?.print === "true");
+   }, 1000);
 });
 </script>
