@@ -1,6 +1,6 @@
 <template>
    <div class="max-w-screen-md my-3 p-3" v-if="detalle">
-      <div class="rounded border border-gray-300 shadow-md">
+      <div class="rounded border-2 border-gray-300 shadow-md">
          <!-- Membrete -->
          <div>
             <h3
@@ -11,9 +11,9 @@
          </div>
 
          <!-- Cabecera -->
-         <div class="grid grid-cols-5 gap-4 px-3 pb-4">
+         <div class="grid grid-cols-5 gap-4 px-3">
             <div
-               class="col-span-3 justify-center text-center flex flex-col mt-3 border-gray-400 p-4 rounded-md text-xs item-center border-2"
+               class="col-span-3 justify-center text-center flex flex-col border-gray-400 p-4 rounded-md text-xs item-center border-2 my-3"
             >
                <h1 class="text-xl font-bold">
                   {{ authStore.contributor.recibo.cabecera.empresa }}
@@ -36,10 +36,8 @@
                   {{ authStore.contributor.recibo.cabecera.pais }}</label
                >
             </div>
-            <div class="col-span-2 content-center">
-               <div
-                  class="items-center justify-center text-center mt-5 text-base"
-               >
+            <div class="col-span-2">
+               <div class="justify-center text-center mt-10 text-base">
                   <label class="font-bold">{{
                      isValidCurrency(localCurrency) ? "₲s." : "U$S"
                   }}</label>
@@ -75,11 +73,9 @@
          </div>
 
          <!-- Contenido/cuerpo -->
-         <div class="grid grid-cols-2 gap-4 py-1 px-3">
+         <div class="grid grid-cols-2 gap-4 py-1 px-3 text-sm">
             <div class="col-span-2">
-               <label class="font-bold text-sm underline"
-                  >La cantidad de:</label
-               >
+               <label class="font-bold underline">La cantidad de:</label>
                <input
                   v-model="detalle.montoLetras"
                   id="recibidoDe"
@@ -90,14 +86,13 @@
             </div>
 
             <div class="col-span-2">
-               <label class="font-bold text-sm underline"
-                  >Por concepto de: </label
-               ><label class="font-bold text-sm">{{ detalle.concepto }}</label>
+               <span class="underline font-bold">Por concepto de: </span>
+               {{ detalle.concepto }}
             </div>
 
             <div>
-               <label class="font-bold text-sm underline">Pagó en:</label>
-               <label class="font-bold text-sm">{{ detalle.formaPago }}</label>
+               <label class="font-bold underline">Pagó en:</label>
+               <label class="font-bold">{{ detalle.formaPago }}</label>
             </div>
          </div>
 
@@ -183,7 +178,8 @@ const fetchDetalle = async () => {
       detalle.value = deRes;
       console.log(detalle.value);
    } catch (error) {
-      console.error("Error al obtener los detalles de la factura:", error);
+      alert(error);
+      console.error("Error al obtener datos del recibo:", error);
    }
 };
 
@@ -191,26 +187,3 @@ onMounted(() => {
    fetchDetalle();
 });
 </script>
-
-<style>
-@media print {
-   .max-w-screen-md {
-      max-width: none; /* Usa el ancho completo del papel */
-   }
-   .my-3,
-   .p-5,
-   .p-4 {
-      margin: 0;
-      padding: 0;
-   }
-   .border,
-   .shadow-md {
-      border: none;
-      box-shadow: none;
-   }
-
-   .no-print {
-      display: none;
-   }
-}
-</style>
