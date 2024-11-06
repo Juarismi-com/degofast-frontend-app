@@ -16,24 +16,22 @@
                class="col-span-3 justify-center text-center flex flex-col border-gray-400 p-4 rounded-md text-xs item-center border-2 my-3"
             >
                <h1 class="text-xl font-bold">
-                  {{ authStore.contributor.recibo.cabecera.empresa }}
+                  {{ detalle.contributor }}
                </h1>
-               <label>{{ authStore.contributor.recibo.cabecera.rubro }}</label>
-               <label>{{ authStore.contributor.recibo.cabecera.zona }}</label>
-               <label>{{
-                  authStore.contributor.recibo.cabecera.servicio
-               }}</label>
+               <label>{{ detalle.recibo.cabecera.rubro }}</label>
+               <label>{{ detalle.recibo.cabecera.zona }}</label>
+               <label>{{ detalle.recibo.cabecera.servicio }}</label>
                <label
                   ><u>Casa central:</u>
-                  {{ authStore.contributor.recibo.cabecera.casaCentral }}</label
+                  {{ detalle.recibo.cabecera.casaCentral }}</label
                >
                <label
                   ><u>Sucursal:</u>
-                  {{ authStore.contributor.recibo.cabecera.sucursal }}</label
+                  {{ detalle.recibo.cabecera.sucursal }}</label
                >
                <label
-                  >{{ authStore.contributor.recibo.cabecera.ciudad }} -
-                  {{ authStore.contributor.recibo.cabecera.pais }}</label
+                  >{{ detalle.recibo.cabecera.ciudad }} -
+                  {{ detalle.recibo.cabecera.pais }}</label
                >
             </div>
             <div class="col-span-2">
@@ -45,7 +43,7 @@
                   <br />
 
                   <label class="">RUC:</label>
-                  <label class="">{{ authStore.contributor.ruc }}</label>
+                  <label class="">{{ detalle.ruc }}</label>
                   <br />
 
                   <label class="font-bold">N°: </label>
@@ -156,6 +154,7 @@ import { ref, onMounted } from "vue";
 import moment from "moment";
 import { useAuthStore } from "~/stores";
 import { getReciboById } from "~/services/recibo.service";
+import { getContributorById } from "~/services";
 import { useRoute } from "vue-router";
 import { INPUT_CLASS } from "../../../config";
 import { isValidCurrency } from "~/helpers/number.helper";
@@ -168,6 +167,7 @@ definePageMeta({
 const authStore = useAuthStore();
 
 const detalle = ref(null);
+const reciboData = ref(null);
 const route = useRoute();
 
 const fetchDetalle = async () => {
@@ -182,12 +182,22 @@ const fetchDetalle = async () => {
    }
 };
 
+const getReciboCabecera = async (id) => {
+   try {
+      const contributorRes = await getContributorById(id);
+      reciboData.value = contributorRes;
+   } catch (error) {
+      console.error("Error al obtener los detalles de la factura:", error);
+   }
+};
+
 const printPage = (isPrint) => {
    if (isPrint) window.print();
 };
 
 onMounted(() => {
    fetchDetalle();
+   getReciboCabecera();
    setTimeout(() => {
       printPage(route.query?.print === "true");
    }, 1000);
