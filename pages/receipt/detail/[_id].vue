@@ -34,6 +34,7 @@
                   {{ detalle.recibo.cabecera.pais }}</label
                >
             </div>
+              </div>
             <div class="col-span-2">
                <div class="justify-center text-center mt-10 text-base">
                   <label class="font-bold">{{
