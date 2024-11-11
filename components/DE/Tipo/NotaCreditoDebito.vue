@@ -46,17 +46,40 @@
          </div>
 
          <div>
-            <label for="formato">Tipo:</label>
+            <label for="formato">
+               {{
+                  formData.documentoAsociado.formato === "2"
+                     ? "Tipo de documento"
+                     : "Tipo"
+               }}:
+            </label>
+
+            <!-- Mostrar `tipoDocumentoImpreso` cuando el formato es Impreso -->
             <select
-               v-model="formData.documentoAsociado.tipo"
-               id="formato"
+               v-if="formData.documentoAsociado.formato === '2'"
+               v-model="formData.documentoAsociado.tipoDocumentoImpreso"
+               id="tipoDocumentoImpreso"
                :class="INPUT_CLASS.sm"
             >
                <option value="1">Factura</option>
                <option value="2">Nota de Crédito</option>
                <option value="3">Nota de Débito</option>
-               <option value="4">Nota de remisión</option>
-               <option value="5">Comprobante de retención</option>
+               <option value="4">Nota de Remisión</option>
+               <option value="5">Comprobante de Retención</option>
+            </select>
+
+            <!-- Mostrar `tipo` en otros casos -->
+            <select
+               v-else
+               v-model="formData.documentoAsociado.tipo"
+               id="tipo"
+               :class="INPUT_CLASS.sm"
+            >
+               <option value="1">Factura</option>
+               <option value="2">Nota de Crédito</option>
+               <option value="3">Nota de Débito</option>
+               <option value="4">Nota de Remisión</option>
+               <option value="5">Comprobante de Retención</option>
             </select>
          </div>
 
