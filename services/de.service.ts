@@ -2,16 +2,16 @@ import axios from "axios";
 import { create } from "./http.service.js";
 import { useConfig } from "../config";
 
-const { API_URL }  = useConfig()
+const { API_URL } = useConfig();
 
 /**
  * Crea un documento electronico
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 export const saveDE = async (data: any) => {
    try {
-      const response = await create("de/async", data)
+      const response = await create("de/async", data);
       return response;
    } catch (error) {
       console.error("Error submitting form:", error);
@@ -19,12 +19,11 @@ export const saveDE = async (data: any) => {
    }
 };
 
-
 /**
  * Actualiza el estado de un documento electronico
  * @param id
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 export const editDE = async (id: string, data: any) => {
    try {
@@ -36,11 +35,10 @@ export const editDE = async (id: string, data: any) => {
    }
 };
 
-
 /**
  * Retorna un Documento electronico por ID
- * @param deId 
- * @returns 
+ * @param deId
+ * @returns
  */
 export const getDesById = async (deId: string) => {
    try {
