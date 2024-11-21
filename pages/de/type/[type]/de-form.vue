@@ -90,7 +90,7 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "../../../../stores";
 import { TIPO_DOCUMENT_LIST } from "../../../../config";
 import { deFormData, validatorDeForm } from "~/config/de";
-import { formatDateHours } from "~/helpers/date.helper";
+import { formatDateHours, formatDate } from "~/helpers/date.helper";
 import { saveDE } from "~/services";
 
 // metadata
@@ -172,6 +172,12 @@ const submitDe = async () => {
          ...formData.value,
          fecha: formatDateHours(formData.value.fecha),
       };
+
+      if (formData.value.documentoAsociado.formato === "2") {
+         payload.documentoAsociado.fecha = formatDate(
+            payload.documentoAsociado.fecha,
+         );
+      }
 
       if (payload.tipoDocumento == 1) {
          delete payload.documentoAsociado;
