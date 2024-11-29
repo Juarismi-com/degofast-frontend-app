@@ -1,6 +1,6 @@
+import { useConfig } from "../config";
 import axios from "axios";
 import { create } from "./http.service.js";
-import { useConfig } from "../config";
 
 const { API_URL } = useConfig();
 
