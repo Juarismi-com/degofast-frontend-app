@@ -108,7 +108,7 @@ const props = defineProps({
 const emit = defineEmits(["update:show", "submit"]);
 
 const formData = ref({
-   tipo: "",
+   tipo: 1,
    motivo: "",
    cdc: "",
 });
@@ -139,6 +139,7 @@ const handleSubmit = async () => {
 
 const handleClose = () => {
    emit("update:show", false);
+   formData.value.motivo = "";
 };
 
 watch(
