@@ -143,6 +143,7 @@ const handleSubmit = async () => {
 
 const handleClose = () => {
    emit("update:show", false);
+   formData.value.motivo = "";
 };
 
 watch(
