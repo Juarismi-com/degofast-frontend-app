@@ -56,7 +56,7 @@
                      >
                      <input
                         v-model="formData.motivo"
-                        :class="INPUT_CLASS.basic"
+                        :class="[INPUT_CLASS.basic]"
                         id="motivo"
                         type="text"
                         placeholder="Motivo"
@@ -68,7 +68,7 @@
                         class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
                         type="submit"
                      >
-                        Guardar
+                        Generar
                      </button>
                      <button
                         @click="handleClose"
@@ -81,6 +81,9 @@
             </div>
          </div>
       </div>
+
+      <!-- Loader Overlay -->
+      <Loader v-if="loading" />
    </div>
 </template>
 
@@ -88,8 +91,11 @@
 import { ref, watch } from "vue";
 import { TipoList } from "../../config/event.ts";
 import { INPUT_CLASS } from "../../config";
+import Loader from "@/components/Loader/Loader.vue";
 
 import { create } from "~/services/http.service";
+
+const loading = ref(false);
 
 const props = defineProps({
    show: {
@@ -104,10 +110,11 @@ const emit = defineEmits(["update:show", "submit"]);
 const formData = ref({
    tipo: "",
    motivo: "",
-   fecha: "",
+   cdc: "",
 });
 
 const handleSubmit = async () => {
+   loading.value = true;
    try {
       const payload = {
          motivo: formData.value.motivo,
@@ -125,8 +132,8 @@ const handleSubmit = async () => {
 
       alert(errorMessage);
    } finally {
+      loading.value = false;
       emit("submit", formData.value);
-      handleClose();
    }
 };
 
