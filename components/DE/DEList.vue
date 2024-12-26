@@ -166,7 +166,6 @@
                   </td>
                   <td class="px-4 py-3">
                      <button
-                        v-if="item.estado == 'X'"
                         @click="openModal(item.cdc)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >

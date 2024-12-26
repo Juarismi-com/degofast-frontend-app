@@ -310,7 +310,7 @@ export const validateDeCliente = (de: any) => {
       if (cliente.contribuyente) {
          if (!cliente.ruc) throw "cliente.ruc es requerido";
          if (!cliente.telefono) throw "cliente.telefono es requerido";
-         if (!cliente.email) throw "cliente.telefono es requerido";
+         if (!cliente.email) throw "cliente.email es requerido";
       } else {
          if (!cliente.documentoNumero)
             throw "cliente.documentoNumero es requerido";

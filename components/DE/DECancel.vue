@@ -1,4 +1,5 @@
 <template>
+   <Loader v-if="loading" />
    <div
       v-if="show"
       class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
@@ -7,19 +8,20 @@
          class="relative top-20 mx-auto p-5 border max-w-prose shadow-lg rounded-md bg-white"
       >
          <div class="mt-3 text-center">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
+            <h3 class="text-xl leading-6 font-medium text-gray-900">
                Generar evento
             </h3>
             <div class="mt-2 px-7 py-3">
                <form @submit.prevent="handleSubmit">
                   <div class="mb-4">
                      <label
-                        class="block text-gray-700 text-sm font-bold mb-2"
+                        class="block text-gray-700 text-ls font-bold mb-2"
                         for="cdc"
                         >CDC</label
                      >
                      <input
                         v-model="formData.cdc"
+                        class="!text-lg"
                         :class="[INPUT_CLASS.basic, 'text-center']"
                         id="cdc"
                         type="text"
@@ -35,6 +37,7 @@
                      </label>
                      <select
                         v-model="formData.tipo"
+                        class="!text-lg"
                         :class="[INPUT_CLASS.basic]"
                         id="tipo"
                         placeholder="Tipo"
@@ -56,6 +59,7 @@
                      >
                      <input
                         v-model="formData.motivo"
+                        class="!text-lg"
                         :class="INPUT_CLASS.basic"
                         id="motivo"
                         type="text"
@@ -68,7 +72,7 @@
                         class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
                         type="submit"
                      >
-                        Guardar
+                        Generar
                      </button>
                      <button
                         @click="handleClose"
@@ -90,6 +94,9 @@ import { TipoList } from "../../config/event.ts";
 import { INPUT_CLASS } from "../../config";
 
 import { create } from "~/services/http.service";
+import Loader from "@/components/Loader/Loader.vue";
+
+const loading = ref(false);
 
 const props = defineProps({
    show: {
@@ -102,7 +109,7 @@ const props = defineProps({
 const emit = defineEmits(["update:show", "submit"]);
 
 const formData = ref({
-   tipo: "",
+   tipo: 1,
    motivo: "",
    fecha: "",
 });
