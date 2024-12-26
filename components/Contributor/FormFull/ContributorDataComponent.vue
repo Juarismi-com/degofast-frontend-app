@@ -86,6 +86,8 @@ const formData = ref({
       : null,
 });
 
+const emit = defineEmits(["save-data"]);
+
 const saveContributorData = async (e) => {
    if (validateForm()) {
       let timbradoFecha = moment(formData.value.timbradoFecha).format(
@@ -110,12 +112,17 @@ const saveContributorData = async (e) => {
             console.log("Datos creados:", res);
             alert("Datos creados");
          }
+
+         emit("save-data", true);
+
       } catch (error) {
          alert("Error: " + error);
          throw error;
       }
    }
 };
+
+
 
 /**
  *@todo ajustar validadores para que todos tengan el mismo formato y que que esten en sus respectivos archivos 
