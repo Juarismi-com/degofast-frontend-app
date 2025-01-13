@@ -195,6 +195,8 @@ import {
    getDeNumberCode,
 } from "~/helpers/number.helper";
 import { get, create } from "~/services/http.service";
+import { getDesById } from "../../services";
+import { sendEmailNotification } from "~/services/mail.service";
 import Loader from "@/components/Loader/Loader.vue";
 import DECancel from "./DECancel.vue";
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
@@ -225,14 +227,17 @@ const filteredItems = ref([]);
 const totalPagesLocal = ref(props.totalPages);
 const detalle = ref(null);
 
+/* Detalles */
 const verDetalles = (id) => {
    router.push({ path: `/de/detail/${id}` });
 };
 
+/* Kude */
 const verKude = (id) => {
    window.open(`/de/kude/${id}`, "_blank");
 };
 
+/* PDF */
 const generarPDF = async (id) => {
    try {
       const data = await get(`de/${id}`);
@@ -288,14 +293,20 @@ const mapperDePDF = (de) => {
    };
 };
 
+/* Email */
 const enviarEmail = async (id) => {
    try {
-      const response = await create(`de/${id}/mail`, dePDF);
-      return response;
+      const deRes = await getDesById(id);
+
+      const response = await sendEmailNotification(
+         deRes.cdc,
+         deRes.cliente.email,
+         deRes._id,
+      );
+      alert(JSON.stringify(response.message));
+      console.log("Respuesta del servidor:", response);
    } catch (error) {
-      console.error("Error al buscar el documento:", error);
-   } finally {
-      loading.value = false;
+      console.error("Error al enviar la notificación:", error);
    }
 };
 
