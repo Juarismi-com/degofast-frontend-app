@@ -8,7 +8,7 @@
             >
                KuDE de Factura Electrónica
             </h3>
-         </div>         
+         </div>
          <div class="grid grid-cols-6 gap-4">
             <div class="col-span-4">
                <h1>{{ detalle.contributor.razonSocial }}</h1>
@@ -35,6 +35,25 @@
                      )
                   }}
                </label>
+
+               <div v-if="detalle.tipoDocumento == 5">
+                  N° de factura:
+                  <label class="font-bold">
+                     {{
+                        getEstablecimientoNumberCode(
+                           detalle.documentoAsociado.establecimiento,
+                        )
+                     }}
+                     -
+                     {{
+                        getEstablecimientoNumberCode(
+                           detalle.documentoAsociado.punto,
+                        )
+                     }}
+                     -
+                     {{ detalle.numero }}
+                  </label>
+               </div>
             </div>
          </div>
       </div>
