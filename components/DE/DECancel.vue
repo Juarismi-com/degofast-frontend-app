@@ -59,8 +59,7 @@
                      >
                      <input
                         v-model="formData.motivo"
-                        class="!text-lg"
-                        :class="INPUT_CLASS.basic"
+                        :class="[INPUT_CLASS.basic]"
                         id="motivo"
                         type="text"
                         placeholder="Motivo"
@@ -85,6 +84,9 @@
             </div>
          </div>
       </div>
+
+      <!-- Loader Overlay -->
+      <Loader v-if="loading" />
    </div>
 </template>
 
@@ -92,6 +94,7 @@
 import { ref, watch } from "vue";
 import { TipoList } from "../../config/event.ts";
 import { INPUT_CLASS } from "../../config";
+import Loader from "@/components/Loader/Loader.vue";
 
 import { create } from "~/services/http.service";
 import Loader from "@/components/Loader/Loader.vue";
@@ -111,10 +114,11 @@ const emit = defineEmits(["update:show", "submit"]);
 const formData = ref({
    tipo: 1,
    motivo: "",
-   fecha: "",
+   cdc: "",
 });
 
 const handleSubmit = async () => {
+   loading.value = true;
    try {
       const payload = {
          motivo: formData.value.motivo,
@@ -132,8 +136,8 @@ const handleSubmit = async () => {
 
       alert(errorMessage);
    } finally {
+      loading.value = false;
       emit("submit", formData.value);
-      handleClose();
    }
 };
 
