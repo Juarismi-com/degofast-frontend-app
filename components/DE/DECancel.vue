@@ -98,6 +98,8 @@ import Loader from "@/components/Loader/Loader.vue";
 
 import { create } from "~/services/http.service";
 
+const loading = ref(false);
+
 const props = defineProps({
    show: {
       type: Boolean,

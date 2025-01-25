@@ -167,7 +167,11 @@
                               {{ item.codigo }}
                            </td>
                            <td class="px-4 py-2 whitespace-nowrap">
-                              {{ item.descripcion }}
+                              <input
+                                 type="text"
+                                 v-model="item.descripcion"
+                                 class="border rounded px-2 py-1"
+                              />
                            </td>
                            <td class="px-4 py-2 whitespace-nowrap text-right">
                               {{ formatNumber(item.precioUnitario) }}
