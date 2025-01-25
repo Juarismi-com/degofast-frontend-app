@@ -65,78 +65,95 @@
          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div class="col-span-1 grid grid-cols-1 md:col-span-3">
                <table class="w-full border-collapse">
-                  <tr>
-                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
-                        Fecha y hora de emisión:
-                        <label class="font-bold">{{
-                           moment(detalle.fecha).format("DD/MM/YYYY HH:mm:ss")
-                        }}</label>
-                     </td>
-                     <td
-                        class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
-                     >
-                        RUC/Documento de identidad N°:
-                        <label class="font-bold">{{
-                           detalle.cliente.ruc ||
-                           detalle.cliente.documentoNumero
-                        }}</label>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
-                        Condición de venta:
-                        <label class="font-bold">{{
-                           detalle.condicionName
-                        }}</label>
-                     </td>
-                     <td
-                        class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
-                     >
-                        Nombre o Razón Social:
-                        <label class="font-bold">{{
-                           detalle.cliente.razonSocial
-                        }}</label>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
-                        Cuotas: -
-                     </td>
-                     <td
-                        class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
-                     >
-                        Dirección:
-                        <label class="font-bold">{{
-                           detalle.cliente.direccion
-                        }}</label>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
-                        Moneda:
-                        <label class="font-bold">{{ detalle.moneda }}</label>
-                     </td>
-                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
-                        Tipo de cambio:
-                        <label class="font-bold">
-                           {{ detalle.cambio ?? "-" }}</label
+                  <tbody>
+                     <tr>
+                        <td
+                           class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                         >
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class="w-1/2 px-2 py-1 text-left text-sm font-medium">
-                        Tipo de cambio: -
-                     </td>
-                     <td
-                        class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
-                     >
-                        Correo electrónico:
-                        <label class="font-bold">{{
-                           detalle?.cliente?.email
-                        }}</label>
-                     </td>
-                  </tr>
-                  <!--tr>
+                           Fecha y hora de emisión:
+                           <label class="font-bold">
+                              {{
+                                 moment(detalle.fecha).format(
+                                    "DD/MM/YYYY HH:mm:ss",
+                                 )
+                              }}
+                           </label>
+                        </td>
+                        <td
+                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                        >
+                           RUC/Documento de identidad N°:
+                           <label class="font-bold">{{
+                              detalle.cliente.ruc ||
+                              detalle.cliente.documentoNumero
+                           }}</label>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td
+                           class="w-1/2 px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Condición de venta:
+                           <label class="font-bold">{{
+                              detalle.condicionName
+                           }}</label>
+                        </td>
+                        <td
+                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Nombre o Razón Social:
+                           <label class="font-bold">{{
+                              detalle.cliente.razonSocial
+                           }}</label>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td
+                           class="w-1/2 px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Cuotas: -
+                        </td>
+                        <td
+                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Dirección:
+                           <label class="font-bold">{{
+                              detalle.cliente.direccion
+                           }}</label>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td
+                           class="w-1/2 px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Moneda:
+                           <label class="font-bold">{{ detalle.moneda }}</label>
+                        </td>
+                        <td
+                           class="w-1/2 px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Tipo de cambio:
+                           <label class="font-bold">
+                              {{ detalle.cambio ?? "-" }}</label
+                           >
+                        </td>
+                     </tr>
+                     <tr>
+                        <td
+                           class="w-1/2 px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Tipo de cambio: -
+                        </td>
+                        <td
+                           class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-sm font-medium"
+                        >
+                           Correo electrónico:
+                           <label class="font-bold">{{
+                              detalle?.cliente?.email
+                           }}</label>
+                        </td>
+                     </tr>
+                     <!--tr>
                      <td
                         class="w-1/2 px-2 py-1 text-left text-sm font-medium"
                      >
@@ -167,6 +184,7 @@
                         }}</label>
                      </td>
                   </tr-->
+                  </tbody>
                </table>
             </div>
          </div>

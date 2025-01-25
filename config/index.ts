@@ -61,6 +61,7 @@ export const useConfig = () => {
       APP_ENV: config.APP_ENV,
       DEGOFAST_RUCPY_API: config.DEGOFAST_RUCPY_API,
       DE_SUBMIT_FORM: config.DE_SUBMIT_FORM,
+      DEGOFAST_SYNC_SQL_API: config.DEGOFAST_SYNC_SQL_API,
    };
 };
 
