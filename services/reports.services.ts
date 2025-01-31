@@ -10,9 +10,7 @@ const { DEGOFAST_SYNC_SQL_API } = useConfig();
  */
 export const getCountersInvoicesByState = async (ruc: string) => {
    try {
-      const response = await axios.get(
-         `${DEGOFAST_SYNC_SQL_API}/reports/counters`,
-      );
+      const response = await axios.get(`${DEGOFAST_SYNC_SQL_API}/contributors`);
       return response.data;
    } catch (error) {
       console.error("getCountersInvoicesByState():", error);
