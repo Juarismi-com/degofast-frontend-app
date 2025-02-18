@@ -16,7 +16,7 @@
             <h1
                class="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white text-center"
             >
-               Ingrese un correo existente
+               Ingrese un correo válido
             </h1>
 
             <div class="flex flex-col items-center space-y-4">
@@ -34,7 +34,7 @@
                   v-if="!isEmailValid && form.username"
                   class="text-red-500 text-sm"
                >
-                  Ingrese un correo válido.
+                  email
                </p>
             </div>
 
