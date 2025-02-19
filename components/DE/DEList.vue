@@ -377,12 +377,7 @@ const buscar = async () => {
       }
    }
 
-   // if (searchQuery.value.facturaNumero) {
-   //    queryParams["numero"] = searchQuery.value.facturaNumero;
-   // }
-
    if (searchQuery.value.facturaNumero) {
-      // Añadir ceros iniciales al número de factura
       const formattedFacturaNumero = padWithZeros(
          searchQuery.value.facturaNumero,
          7,
