@@ -5,13 +5,13 @@
       </h2>
 
       <div class="col-span-3 flex justify-left">
-         <a
-            :href="`/receipt/receipt-form`"
+         <NuxtLink
+            to="/receipt/receipt-form"
             class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
             type="submit"
          >
             Nuevo
-         </a>
+         </NuxtLink>
       </div>
 
       <div class="flex flex-col gap-4 mt-4 mb-4">
