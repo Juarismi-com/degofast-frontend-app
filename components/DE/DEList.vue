@@ -202,6 +202,11 @@ import DECancel from "./DECancel.vue";
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
 import { dePDF } from "@/config/de.ts";
 
+import { useAuthStore } from "../../stores/auth.store.js";
+import { storeToRefs } from "pinia";
+
+const authStore = useAuthStore();
+
 const props = defineProps({
    items: {
       type: Array,
@@ -354,6 +359,10 @@ const handleCloseModal = (newVal) => {
    showModal.value = newVal;
 };
 
+const padWithZeros = (number, length) => {
+   return String(number).padStart(length, "0");
+};
+
 const buscar = async () => {
    loading.value = true;
 
@@ -368,8 +377,17 @@ const buscar = async () => {
       }
    }
 
+   // if (searchQuery.value.facturaNumero) {
+   //    queryParams["numero"] = searchQuery.value.facturaNumero;
+   // }
+
    if (searchQuery.value.facturaNumero) {
-      queryParams["numero"] = searchQuery.value.facturaNumero;
+      // Añadir ceros iniciales al número de factura
+      const formattedFacturaNumero = padWithZeros(
+         searchQuery.value.facturaNumero,
+         7,
+      );
+      queryParams["numero"] = formattedFacturaNumero;
    }
 
    const queryString = new URLSearchParams(queryParams).toString();
