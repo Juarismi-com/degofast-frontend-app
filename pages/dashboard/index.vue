@@ -67,14 +67,14 @@ const generarReportes = async () => {
          { title: "Facturas a Crédito", content: data.totalFacturaCredito },
          {
             title: "Facturas con Contribuyentes",
-            content: data.totalFacturaContribuyentes,
+            content: data.totalFacturaConContribuyente,
          },
-         { title: "Facturas Anuladas", content: data.totalFacturaAnulados },
+         { title: "Facturas Anuladas", content: data.totalFacturaAnuladas },
          { title: "Facturas Canceladas", content: 0 },
          { title: "Total de Notas de Crédito", content: data.totalNotaCredito },
          {
             title: "Notas de Crédito Anuladas",
-            content: data.totalNotaCreditoAnulados,
+            content: data.totalNotaCreditoAnuladas,
          },
          { title: "Notas de Crédito Canceladas", content: 0 },
          { title: "Notas de Débito", content: data.totalNotaDebito },
