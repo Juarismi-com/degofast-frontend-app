@@ -75,58 +75,58 @@
                   >Registrarte</NuxtLink
                >
             </p>
+            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+               ¿Olvidaste la contraseña?
+               <NuxtLink
+                  class="font-medium text-purple-600 hover:underline dark:text-purple-500"
+                  to="/auth/reset"
+                  >Genera una nueva</NuxtLink
+               >
+            </p>
          </form>
       </div>
    </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 import { HOME_PAGE_PATH } from "../../config";
 
 const authStore = useAuthStore();
+const { setAuth } = authStore;
+const { auth } = storeToRefs(authStore);
+const router = useRouter();
 
-export default defineComponent({
-   setup() {
-      const form = {
-         username: "",
-         password: "",
-      };
-
-      const loginFail = false;
-      const showToast = ref(false);
-
-      const { setAuth } = authStore;
-      const { auth } = storeToRefs(authStore);
-
-      return { form, loginFail, showToast, authStore, setAuth, auth };
-   },
-
-   methods: {
-      async login(e) {
-         this.loginFail = false;
-         e.preventDefault();
-
-         await this.setAuth(this.form.username, this.form.password);
-
-         if (this.auth.authToken) {
-            const { contributor } = storeToRefs(authStore);
-
-            if (contributor.value) {
-               this.$router.push(HOME_PAGE_PATH);
-            } else {
-               this.$router.push("/contributor");
-            }
-         } else {
-            this.loginFail = true;
-            this.showToast = true;
-
-            setTimeout(() => {
-               this.showToast = false;
-            }, 3000);
-         }
-      },
-   },
+const form = ref({
+   username: "",
+   password: "",
 });
+
+const loginFail = ref(false);
+const showToast = ref(false);
+
+const login = async (e) => {
+   e.preventDefault();
+   loginFail.value = false;
+
+   await setAuth(form.value.username, form.value.password);
+
+   if (auth.value.authToken) {
+      if (authStore.contributor) {
+         router.push(HOME_PAGE_PATH);
+      } else {
+         router.push("/contributor");
+      }
+   } else {
+      loginFail.value = true;
+      showToast.value = true;
+
+      setTimeout(() => {
+         showToast.value = false;
+      }, 3000);
+   }
+};
 </script>

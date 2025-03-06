@@ -170,7 +170,7 @@
                               <input
                                  type="text"
                                  v-model="item.descripcion"
-                                 class="border rounded px-2 py-1"
+                                 :class="INPUT_CLASS.sm"
                               />
                            </td>
                            <td class="px-4 py-2 whitespace-nowrap text-right">
