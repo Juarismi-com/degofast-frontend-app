@@ -1,38 +1,65 @@
 <template>
    <div
-      class="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900"
+      class="items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900"
    >
-      <div
-         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+      <button
+         @click="goBack"
+         class="absolute top-4 left-4 flex items-center text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-2 rounded-lg shadow-md text-lg font-medium"
       >
-         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+         ⬅ Volver
+      </button>
+
+      <div
+         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-lg xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+      >
+         <div class="p-8 space-y-6">
             <h1
-               class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+               class="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white text-center"
             >
-               Resetear contraseña?
+               Ingrese un correo válido
             </h1>
-            <form
-               class="space-y-4 md:space-y-6"
-               action="#"
-               @submit.prevent="resetPassword"
-               method="post"
-            >
+
+            <div class="flex flex-col items-center space-y-4">
+               <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
+                  placeholder="Email"
+                  required
+                  v-model="form.username"
+                  @input="validateEmail"
+               />
+               <p
+                  v-if="!isEmailValid && form.username"
+                  class="text-red-500 text-sm"
+               >
+                  email
+               </p>
+            </div>
+
+            <form class="flex justify-center" @submit.prevent="resetPassword">
                <button
                   type="submit"
-                  class="w-full text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+                  :disabled="!isEmailValid"
+                  class="w-3/4 text-white font-medium rounded-lg text-lg px-5 py-4 text-center transition-all duration-200"
+                  :class="
+                     isEmailValid
+                        ? 'bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800'
+                        : 'bg-gray-400 cursor-not-allowed'
+                  "
                >
-                  Confirmar
+                  Generar Contraseña
                </button>
             </form>
-            <div v-if="newPass">
-               <h1
-                  class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
-               >
+
+            <div v-if="newPass" class="text-center">
+               <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                   Su nueva contraseña es:
                </h1>
                <br />
                <h2
-                  class="text-lg font-bold leading-tight tracking-tight text-white bg-purple-600 hover:bg-purple-700 md:text-lg dark:text-white text-center"
+                  class="text-lg font-bold text-white bg-purple-600 hover:bg-purple-700 p-4 rounded-md"
                >
                   {{ newPass }}
                </h2>
@@ -44,25 +71,30 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { create } from "@/services/http.service";
 
-import { useAuthStore } from "~/stores";
-const authStore = useAuthStore();
-const username = authStore.user.username;
-
+const router = useRouter();
+const form = ref({ username: "" });
 const newPass = ref("");
+const isEmailValid = ref(false);
+
+const validateEmail = () => {
+   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   isEmailValid.value = emailPattern.test(form.value.username);
+};
 
 const resetPassword = async () => {
    try {
-      console.log();
-
-      const payload = { username: username };
-
+      const payload = { username: form.value.username };
       const result = await create("auth/reset-password", payload);
-      console.log(result.newPassword);
       newPass.value = result.newPassword;
    } catch (error) {
       console.error("Error al resetear la contraseña:", error);
    }
+};
+
+const goBack = () => {
+   router.go(-1);
 };
 </script>

@@ -75,6 +75,14 @@
                   >Registrarte</NuxtLink
                >
             </p>
+            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+               ¿Olvidaste la contraseña?
+               <NuxtLink
+                  class="font-medium text-purple-600 hover:underline dark:text-purple-500"
+                  to="/auth/reset"
+                  >Genera una nueva</NuxtLink
+               >
+            </p>
          </form>
       </div>
    </div>
