@@ -139,23 +139,39 @@
             </div>
          </div>
 
-         <div v-if="cuotaTable.length > 0 && formData.condicion.credito.tipo == '2' && formData.condicion.tipo == '2'">
-            <table class="divide-gray-200 min-w-full">
+         <div v-if="formData.condicion.credito.tipo == '2' && formData.condicion.tipo == '2'"
+            class="m-5 flex space-x-4">
+
+
+            <button v-if="cuotaTable.length > 0" type="button"
+               class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+               @click="confirmDeleteTable">
+               Eliminar tabla
+            </button>
+         </div>
+
+         <div v-if="cuotaTable.length > 0 && formData.condicion.credito.tipo == '2' && formData.condicion.tipo == '2'"
+            class="flex justify-center">
+            <table class="divide-gray-200 w-3/4">
                <thead class="bg-gray-50">
                   <tr>
-                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">N° de
+                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">N° de
                         Cuota</th>
-                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de
+                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de
                         Vencimiento</th>
-                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Moneda
+                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto
                      </th>
                   </tr>
                </thead>
                <tbody class="bg-white divide-y divide-gray-200">
                   <tr v-for="(cuota, index) in cuotaTable" :key="index">
-                     <td class="px-6 py-4 whitespace-nowrap">{{ cuota.numeroCuota }}</td>
-                     <td class="px-6 py-4 whitespace-nowrap">{{ cuota.fechaVencimiento }}</td>
-                     <td class="px-6 py-4 whitespace-nowrap">{{ cuota.moneda }}</td>
+                     <td class="px-4 py-2 whitespace-nowrap">{{ cuota.numeroCuota }}</td>
+                     <td class="px-4 py-2 whitespace-nowrap">
+                        <input type="date" v-model="cuota.fechaVencimiento" :class="INPUT_CLASS.sm" />
+                     </td>
+                     <td class="px-4 py-2 whitespace-nowrap">
+                        <input type="text" v-model="cuota.monto" :class="INPUT_CLASS.sm" />
+                     </td>
                   </tr>
                </tbody>
             </table>
@@ -231,16 +247,20 @@ const generateCuotasTable = () => {
    cuotaTable.value = [];
 
    for (let i = 1; i <= cantidadCuotas; i++) {
-      const fechaVencimiento = new Date();
-      fechaVencimiento.setMonth(fechaVencimiento.getMonth() + i);
-
       cuotaTable.value.push({
          numeroCuota: i,
-         fechaVencimiento: fechaVencimiento.toLocaleDateString(),
-         moneda: formData.value.moneda
+         fechaVencimiento: '',
+         monto: ''
       });
    }
 };
+
+const confirmDeleteTable = () => {
+   if (confirm("¿Estás seguro de que deseas eliminar la tabla de cuotas?")) {
+      cuotaTable.value = [];
+   }
+};
+
 
 onMounted(() => {
    setPuntoEstablecimientoList();
