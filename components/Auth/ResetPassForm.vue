@@ -72,11 +72,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { create } from "@/services/http.service";
 
-const router = useRouter();
 const form = ref({ username: "" });
 const newPass = ref("");
 const isEmailValid = ref(false);
