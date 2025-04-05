@@ -51,7 +51,7 @@
                         )
                      }}
                      -
-                     {{ detalle.numero }}
+                     {{ detalle.documentoAsociado.numero }}
                   </label>
                </div>
             </div>
