@@ -310,6 +310,8 @@ export const validateDeCliente = (de: any) => {
       if (cliente.contribuyente) {
          if (!cliente.ruc) throw "cliente.ruc es requerido";
          if (!cliente.telefono) throw "cliente.telefono es requerido";
+         if (cliente.telefono.length > 10)
+            throw "cliente.telefono no puede tener más de 10 caracteres";
          if (!cliente.email) throw "cliente.email es requerido";
       } else {
          if (!cliente.documentoNumero)
