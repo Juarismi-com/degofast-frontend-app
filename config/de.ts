@@ -319,6 +319,8 @@ export const validateDeCliente = (de: any) => {
             throw "cliente.telefono no debe contener letras";
 
          if (!cliente.email) throw "cliente.email es requerido";
+         if (!cliente.email.includes("@"))
+            throw "cliente.email debe contener un arroba (@)";
       } else {
          if (!cliente.documentoNumero)
             throw "cliente.documentoNumero es requerido";
