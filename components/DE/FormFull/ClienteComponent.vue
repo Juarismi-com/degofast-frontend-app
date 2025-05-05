@@ -170,7 +170,6 @@
 <script setup>
 import { getClientByRuc } from "~/services";
 import { INPUT_CLASS } from "../../../config";
-import Loader from "@/components/Loader/Loader.vue";
 
 const props = defineProps({
    formData: {
@@ -184,14 +183,12 @@ const props = defineProps({
 });
 
 const { formData } = toRefs(props);
-const loading = ref(false);
 
 /**
  * Busca un cliente por el valor del ruc
  * @param ruc
  */
 const buscarCliente = async (ruc) => {
-   loading.value = true;
    try {
       if (ruc.length == 0) throw { message: "Asigne un ruc" };
 
@@ -208,8 +205,6 @@ const buscarCliente = async (ruc) => {
    } catch (error) {
       console.error("Error al buscar el cliente:", error);
       alert(error?.response?.data?.error);
-   } finally {
-      loading.value = false;
    }
 };
 </script>
