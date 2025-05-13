@@ -12,11 +12,12 @@
             </dt>
          </div>
          <ul class="p-5 list-disc list-inside">
-            <li>{{ counters?.estado_a }} Aceptados</li>
-            <li>{{ counters?.estado_r }} Rechazados</li>
-            <li>{{ counters?.estado_e }} Enviados</li>
-            <li>{{ counters?.estado_i }} Inconsistentes</li>
-            <li>{{ counters?.estado_c }} con Lote Cancelado</li>
+            <li>{{ counters?.estado_a }} (A) - Aceptados</li>
+            <li>{{ counters?.estado_p }} (P) - Pendientes de enviar</li>
+            <li>{{ counters?.estado_r }} (R) - Rechazados</li>
+            <li>{{ counters?.estado_e }} (E) - En proceso (enviados)</li>
+            <li>{{ counters?.estado_i }} (I) - Inconsistentes</li>
+            <li>{{ counters?.estado_c }} (C) - Lote Cancelado</li>
          </ul>
       </div>
 
