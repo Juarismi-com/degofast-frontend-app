@@ -202,4 +202,8 @@ const resetForm = () => {
       tipoDocumento: tipoDocumento.value,
    };
 };
+
+onMounted(() => {
+   console.log(deFormData);
+});
 </script>
