@@ -188,12 +188,11 @@ const submitDe = async () => {
 
       if (response.de) {
          submitDeSuccess.value = true;
-
          resetForm();
       }
    } catch (error) {
       console.log(error);
-   }
+   } 
 };
 
 const resetForm = () => {

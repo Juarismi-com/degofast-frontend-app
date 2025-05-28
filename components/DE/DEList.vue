@@ -134,21 +134,13 @@
                   <!-- Opciones -->
                   <td class="px-4 py-3">
                      <button
-                        @click="verDetalles(item._id)"
-                        class="text-blue-600 hover:underline focus:outline-none"
-                     >
-                        Ver detalles
-                     </button>
-                  </td>
-                  <td class="px-4 py-3">
-                     <button
                         @click="verKude(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
                      >
                         Ver kude
                      </button>
                   </td>
-                  <td class="px-4 py-3">
+                  <!-- <td class="px-4 py-3">
                      <button
                         @click="generarPDF(item._id)"
                         class="text-blue-600 hover:underline focus:outline-none"
@@ -163,7 +155,7 @@
                      >
                         Enviar email
                      </button>
-                  </td>
+                  </td> -->
                   <td class="px-4 py-3">
                      <button
                         @click="openModal(item.cdc)"
