@@ -192,9 +192,7 @@ const submitDe = async () => {
       }
    } catch (error) {
       console.log(error);
-   } finally {
-      resetForm();
-   }
+   } 
 };
 
 const resetForm = () => {
