@@ -5,11 +5,26 @@ import { create } from "./http.service.js";
 const { API_URL } = useConfig();
 
 /**
- * Crea un documento electronico
+ * Guarda un documento electronico, pero aun no lo presenta
  * @param data
  * @returns
  */
 export const saveDE = async (data: any) => {
+   try {
+      const response = await create("de", data);
+      return response;
+   } catch (error) {
+      console.error("Error submitting form:", error);
+      throw error;
+   }
+};
+
+/**
+ * Guarda un documento electronico, pero aun no lo presenta
+ * @param data
+ * @returns
+ */
+export const createDEAsync = async (data: any) => {
    try {
       const response = await create("de/async", data);
       return response;
