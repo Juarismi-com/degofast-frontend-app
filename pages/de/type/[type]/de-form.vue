@@ -61,6 +61,19 @@
                   v-if="currentStep == 3"
                   class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
                >
+                  <div class="flex" v-if="APP_ENV != 'prod'">
+                     <div class="flex items-center h-5 mr-3 mb-3">
+                        <input
+                           aria-describedby="helper-checkbox-text"
+                           type="checkbox"
+                           id="submitSifen"
+                           v-model="submitSifen"
+                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                     </div>
+                     Presentar Ahora en la SIFEN
+                  </div>
+
                   <DEMessageEnvioComponent
                      title="Procesamiento de Documento Electronico"
                      :submit-de-success="submitDeSuccess"
@@ -91,17 +104,21 @@ import { useAuthStore } from "../../../../stores";
 import { TIPO_DOCUMENT_LIST } from "../../../../config";
 import { deFormData, validatorDeForm } from "~/config/de";
 import { formatDateHours, formatDate } from "~/helpers/date.helper";
-import { saveDE } from "~/services";
+import { saveDE, createDEAsync } from "~/services";
+import { useConfig } from "../../../../config";
 
 // metadata
 definePageMeta({
    middleware: ["auth"],
 });
 
+const { APP_ENV } = useConfig();
+
 // Datos de la url/ruta
 const route = useRoute();
 const tipoDocumento = ref(route.params.type);
 const routeList = ref(TIPO_DOCUMENT_LIST);
+const submitSifen = ref(APP_ENV != "prod" ? true : false);
 const routeSelected = ref(
    routeList.value.find((item) => item.tipoDocumento == route.params.type),
 );
@@ -184,9 +201,14 @@ const submitDe = async () => {
          delete payload.notaCreditoDebito;
       }
 
-      const response = await saveDE(payload);
+      let response;
+      if (submitSifen) {
+         response = await createDEAsync(payload);
+      } else {
+         response = await saveDE(payload);
+      }
 
-      if (response.de) {
+      if (response?.de) {
          submitDeSuccess.value = true;
 
          resetForm();
