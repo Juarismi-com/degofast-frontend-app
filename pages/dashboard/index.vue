@@ -37,7 +37,7 @@ import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores";
 import { getReports } from "~/services/dashboard.service";
-import BillingChart from "~/components/Chart/BillingChart.vue";
+//import BillingChart from "~/components/Chart/BillingChart.vue";
 
 definePageMeta({
    middleware: ["auth"],
