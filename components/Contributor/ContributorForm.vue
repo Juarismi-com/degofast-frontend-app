@@ -104,10 +104,6 @@ const steps = [
    {
       title: "Actividades Económicas",
    },
-   // {
-   //    title: "Usuarios con acceso",
-   //    available: false,
-   // },
 ];
 
 const setCurrentStep = (value) => {
