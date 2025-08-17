@@ -4,28 +4,58 @@
          Contribuyente
       </h2>
 
-      <DEStepperFull :current-step="currentStep" :steps="steps" :next-step-fn="setCurrentStep" :btn-control="true"
-         :step-availability="availableSteps">
+      <DEStepperFull
+         :current-step="currentStep"
+         :steps="steps"
+         :next-step-fn="setCurrentStep"
+         :btn-control="true"
+         :step-availability="availableSteps"
+      >
          <div>
-            <div v-if="currentStep == 0" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ContributorFormFullContributorDataComponent :contributor="contributor"
-                  @save-data="updateAvailableSteps" />
+            <div
+               v-if="currentStep == 0"
+               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
+            >
+               <ContributorFormFullContributorDataComponent
+                  :contributor="contributor"
+                  @save-data="updateAvailableSteps"
+               />
             </div>
 
-            <div v-if="currentStep == 1" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ContributorFormFullEstablecimientoComponent :contributor="contributor" />
+            <div
+               v-if="currentStep == 1"
+               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
+            >
+               <ContributorFormFullEstablecimientoComponent
+                  :contributor="contributor"
+               />
             </div>
 
-            <div v-if="currentStep == 2" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ContributorFormFullPuntoExpedicionComponent :contributor="contributor" />
+            <div
+               v-if="currentStep == 2"
+               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
+            >
+               <ContributorFormFullPuntoExpedicionComponent
+                  :contributor="contributor"
+               />
             </div>
 
-            <div v-if="currentStep == 3" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ContributorFormFullCertificadoComponent :contributor="contributor" />
+            <div
+               v-if="currentStep == 3"
+               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
+            >
+               <ContributorFormFullCertificadoComponent
+                  :contributor="contributor"
+               />
             </div>
 
-            <div v-if="currentStep == 4" class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-               <ContributorFormFullActividadEconomicaComponent :contributor="contributor" />
+            <div
+               v-if="currentStep == 4"
+               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
+            >
+               <ContributorFormFullActividadEconomicaComponent
+                  :contributor="contributor"
+               />
             </div>
 
             <!-- <div
@@ -52,11 +82,10 @@ import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service
 // datos del contribuyente
 const authStore = useAuthStore();
 const { contributor } = storeToRefs(authStore);
-const puntoExpedicionList = ref([])
+const puntoExpedicionList = ref([]);
 
 // current form view
 const currentStep = ref(0);
-
 
 // manejo de pestañas
 const steps = [
@@ -93,33 +122,13 @@ const availableSteps = computed(() => {
       contributor.value?._id ? true : false,
       contributor.value?.establecimientos.length > 0 ? true : false,
       puntoExpedicionList.value?.length > 0 ? true : false,
-      contributor.value?.certData?.length > 0 ? true : false
+      contributor.value?.certData?.length > 0 ? true : false,
    ];
 });
 
-
-
 onMounted(async () => {
    puntoExpedicionList.value = await getPuntoExpedicionByFilters({
-      contributor: contributor.value?._id
+      contributor: contributor.value?._id,
    });
 });
-
-
-
-
-// const setContributorDefault = () => {
-//    contributor;
-// };
-
-// const getDepartments = async () => {
-//    try {
-//       const departaments = await get("departments");
-//       console.log(departaments);
-//       return departaments;
-//    } catch (error) {
-//       console.log(error);
-//       const data = error?.response?.data?.error;
-//    }
-// };
 </script>
