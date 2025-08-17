@@ -5,6 +5,10 @@
          <hr />
       </div>
 
+      <!--div>
+         <BillingChart />
+      </div-->
+
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mt-6">
          <a
             v-for="(card, index) in cards"
@@ -33,6 +37,7 @@ import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores";
 import { getReports } from "~/services/dashboard.service";
+import BillingChart from "~/components/Chart/BillingChart.vue";
 
 definePageMeta({
    middleware: ["auth"],

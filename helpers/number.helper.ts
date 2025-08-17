@@ -46,6 +46,14 @@ export const getEstablecimientoNumberCode = (numero: number | string) => {
    return addPrefixCero(numero, 3);
 };
 
+export const concatNumeroFactura = (item: any) => {
+   const establecimiento = getEstablecimientoNumberCode(item.establecimiento);
+   const punto = getPuntoExpedicionNumberCode(item.punto);
+   const numero = getDeNumberCode(item.numero);
+
+   return `${establecimiento}-${punto}-${numero}`;
+};
+
 /**
  * Agrega cantidad de cero al numero como prefijo hasta que tenga
  * maxLength string

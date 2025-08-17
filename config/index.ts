@@ -18,42 +18,42 @@ export const TIPO_DOCUMENT_LIST = [
    {
       title: "Facturacion Electronica",
       tipoDocumento: 1,
-      path: "/de/type/1",
+      path: "/documentos-electronicos/tipos/1",
       svgIcon:
          "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01",
    },
    /*{
       title: "Autofactura",
       tipoDocumento: 4,
-      path: "/de/type/4",
+      path: "/documentos-electronicos/tipos/4",
       svgIcon:
          "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01",
    },*/
    {
       title: "Nota de Crédito",
       tipoDocumento: 5,
-      path: "/de/type/5",
+      path: "/documentos-electronicos/tipos/5",
       svgIcon:
          "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01",
    },
    /*{
       title: "Nota de Débito",
       tipoDocumento: 6,
-      path: "/de/type/6",
+      path: "/documentos-electronicos/tipos/6",
       svgIcon:
          "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01",
    },*/
    // {
    //    title: "Nota de Remisión",
    //    tipoDocumento: 7,
-   //    path: "/de/type/7",
+   //    path: "/documentos-electronicos/tipos/7",
    //    svgIcon:
    //       "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01",
    // },
    // {
    //    title: "Recibo",
    //    tipoDocumento: 50,
-   //    path: "/de/type/50",
+   //    path: "/documentos-electronicos/tipos/50",
    //    svgIcon:
    //       "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01",
    // },

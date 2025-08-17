@@ -1,5 +1,5 @@
 <template>
-   <div class="w-full overflow-hidden rounded-lg shadow-xs">
+   <div class="w-full overflow-hidden">
       <DECancel
          :show="showModal"
          :cdc="cdcActual"
@@ -58,13 +58,13 @@
                <tr
                   class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                >
-                  <th class="px-4 py-3">Cliente</th>
-                  <th class="px-4 py-3">Nro</th>
-                  <th class="px-4 py-3">Identificador</th>
-                  <th class="px-4 py-3">Estado</th>
-                  <th class="px-4 py-3">Fecha</th>
-                  <th class="px-4 py-3 text-center">Total</th>
-                  <th class="px-4 py-3">Acciones</th>
+                  <th class="px-3 py-2">Cliente</th>
+                  <th class="px-3 py-2">Doc. Elec.</th>
+
+                  <th class="px-3 py-2">Fecha</th>
+                  <th class="px-3 py-2 text-right">Total</th>
+                  <th class="px-3 py-2">Estado</th>
+                  <th class="px-3 py-2 text-center">Acciones</th>
                </tr>
             </thead>
             <tbody
@@ -75,42 +75,37 @@
                   v-for="(item, index) in filteredItems"
                   :key="index"
                >
-                  <td class="px-4 py-3">
+                  <td class="px-3 py-2">
                      <div class="flex items-center text-sm">
-                        <!-- Avatar with inset shadow -->
-                        <div
-                           class="relative hidden w-8 h-8 mr-3 rounded-full md:block"
-                        >
-                           <img
-                              class="object-cover w-full h-full rounded-full"
-                              src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-                              alt=""
-                              loading="lazy"
-                           />
-                           <div
-                              class="absolute inset-0 rounded-full shadow-inner"
-                              aria-hidden="true"
-                           ></div>
-                        </div>
                         <div>
                            <p class="font-semibold">
                               {{ item?.cliente?.razonSocial }}
                            </p>
                            <p class="text-xs text-gray-600 dark:text-gray-400">
-                              {{ item?.cliente?.ruc }}
+                              {{ item?.cliente?.ruc || "XXXXXX-X" }}
                            </p>
                         </div>
                      </div>
                   </td>
-                  <td class="px-4 py-3 text-sm">
-                     {{ getEstablecimientoNumberCode(item.establecimiento) }}
-                     -
-                     {{ getPuntoExpedicionNumberCode(item.punto) }}
-                     -
-                     {{ getDeNumberCode(item.numero) }}
+                  <td class="px-3 py-2 text-sm">
+                     <b>{{ concatNumeroFactura(item) }}</b>
+                     <p class="text-xs text-gray-600 dark:text-gray-400">
+                        {{ item?.cdc }}
+                     </p>
                   </td>
-                  <td class="px-4 py-3 text-sm">{{ item._id }}</td>
-                  <td class="px-4 py-3 text-xs">
+
+                  <td class="px-3 py-2 text-sm">
+                     {{ moment(item.fecha).format("DD/MM/YYYY hh:mm:ss") }}
+                  </td>
+                  <td class="px-3 py-2 text-sm text-right">
+                     {{
+                        item.moneda === "PYG"
+                           ? formatPriceNumber(item.total)
+                           : formatPriceNumberNoPYG(item.total)
+                     }}
+                  </td>
+
+                  <td class="px-3 py-2 text-xs">
                      <span
                         :class="[
                            'px-2 py-1 font-semibold leading-tight text-green-700 rounded-full dark:bg-green-700 dark:text-green-100',
@@ -121,56 +116,64 @@
                      </span>
                   </td>
 
-                  <td class="px-4 py-3 text-sm">
-                     {{ moment(item.fecha).format("DD/MM/YYYY") }}
-                  </td>
-                  <td class="px-4 py-3 text-sm text-right">
-                     {{
-                        item.moneda === "PYG"
-                           ? formatPriceNumber(item.total)
-                           : formatPriceNumberNoPYG(item.total)
-                     }}
-                  </td>
                   <!-- Opciones -->
-                  <td class="px-4 py-3">
-                     <button
-                        @click="verDetalles(item._id)"
-                        class="text-blue-600 hover:underline focus:outline-none"
-                     >
-                        Ver detalles
-                     </button>
-                  </td>
-                  <td class="px-4 py-3">
-                     <button
-                        @click="verKude(item._id)"
-                        class="text-blue-600 hover:underline focus:outline-none"
-                     >
-                        Ver kude
-                     </button>
-                  </td>
-                  <td class="px-4 py-3">
-                     <button
-                        @click="generarPDF(item._id)"
-                        class="text-blue-600 hover:underline focus:outline-none"
-                     >
-                        Generar PDF
-                     </button>
-                  </td>
-                  <td class="px-4 py-3">
-                     <button
-                        @click="enviarEmail(item._id)"
-                        class="text-blue-600 hover:underline focus:outline-none"
-                     >
-                        Enviar email
-                     </button>
-                  </td>
-                  <td class="px-4 py-3">
-                     <button
-                        @click="openModal(item.cdc)"
-                        class="text-blue-600 hover:underline focus:outline-none"
-                     >
-                        Generar evento
-                     </button>
+                  <td class="text-center">
+                     <Menu as="div" class="relative inline-block">
+                        <MenuButton
+                           class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50"
+                        >
+                           Ver opciones
+                           <ChevronDownIcon
+                              class="-mr-1 size-5 text-gray-400"
+                              aria-hidden="true"
+                           />
+                        </MenuButton>
+
+                        <transition
+                           enter-active-class="transition ease-out duration-100"
+                           enter-from-class="transform opacity-0 scale-95"
+                           enter-to-class="transform scale-100"
+                           leave-active-class="transition ease-in duration-75"
+                           leave-from-class="transform scale-100"
+                           leave-to-class="transform opacity-0 scale-95"
+                        >
+                           <MenuItems
+                              class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5"
+                           >
+                              <div class="py-1">
+                                 <MenuItem v-slot="{ active }">
+                                    <NuxtLink
+                                       :to="`../kude/${item._id}`"
+                                       target="_blank"
+                                       :class="[
+                                          active
+                                             ? 'bg-gray-100 text-gray-900 outline-hidden'
+                                             : 'text-gray-700',
+                                          'block px-4 py-2 text-sm',
+                                       ]"
+                                    >
+                                       Ver Kude
+                                    </NuxtLink>
+                                 </MenuItem>
+                                 <MenuItem
+                                    v-slot="{ active }"
+                                    @click="openModal(item.cdc)"
+                                 >
+                                    <NuxtLink
+                                       :class="[
+                                          active
+                                             ? 'bg-gray-100 text-gray-900 outline-hidden'
+                                             : 'text-gray-700',
+                                          'block px-4 py-2 text-sm',
+                                       ]"
+                                    >
+                                       Anular Documento
+                                    </NuxtLink>
+                                 </MenuItem>
+                              </div>
+                           </MenuItems>
+                        </transition>
+                     </Menu>
                   </td>
                </tr>
             </tbody>
@@ -188,12 +191,11 @@ import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
 import {
+   concatNumeroFactura,
    formatPriceNumber,
-   formatPriceNumberNoPYG,
-   getEstablecimientoNumberCode,
-   getPuntoExpedicionNumberCode,
-   getDeNumberCode,
 } from "~/helpers/number.helper";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import { get, create } from "~/services/http.service";
 import { getDesById } from "../../services";
 import { sendEmailNotification } from "~/services/mail.service";
