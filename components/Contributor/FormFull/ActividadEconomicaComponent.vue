@@ -65,12 +65,12 @@
                      v-for="item in actividadEconomicaData.items"
                      :key="item.codigo"
                   >
-                     <td class="px-6 py-4 whitespace-nowrap">
+                     <td class="px-3 py-2 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
                            {{ item.codigo }}
                         </div>
                      </td>
-                     <td class="px-6 py-4 whitespace-nowrap">
+                     <td class="px-3 py-2 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
                            {{ item.descripcion }}
                         </div>

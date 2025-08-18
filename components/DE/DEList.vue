@@ -199,7 +199,7 @@ import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import { get, create } from "~/services/http.service";
 import { getDesById } from "../../services";
 import { sendEmailNotification } from "~/services/mail.service";
-import Loader from "@/components/Loader/Loader.vue";
+import Loader from "@/components/Theme/Loader/Loader.vue";
 import DECancel from "./DECancel.vue";
 import PaginationNextPrev from "@/components/Theme/Pagination/PaginationNextPrev.vue";
 import { dePDF } from "@/config/de.ts";

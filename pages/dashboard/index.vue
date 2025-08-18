@@ -35,7 +35,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import { useAuthStore } from "~/stores";
+import { useContributorStore } from "~/stores";
 import { getReports } from "~/services/dashboard.service";
 //import BillingChart from "~/components/Chart/BillingChart.vue";
 
@@ -44,8 +44,8 @@ definePageMeta({
 });
 
 // datos del contribuyente
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
+const contributorStore = useContributorStore();
+const { contributor } = storeToRefs(contributorStore);
 
 const cards = ref([
    { title: "Total de Facturas", content: "Cargando..." },
@@ -61,7 +61,7 @@ const cards = ref([
 ]);
 
 const generarReportes = async () => {
-   const contributorId = contributor._object.contributor._id;
+   const contributorId = contributor.value._id;
 
    try {
       const data = await getReports(contributorId);

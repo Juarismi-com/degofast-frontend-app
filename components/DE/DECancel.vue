@@ -94,7 +94,7 @@
 import { ref, watch } from "vue";
 import { TipoList } from "../../config/event.ts";
 import { INPUT_CLASS } from "../../config";
-import Loader from "@/components/Loader/Loader.vue";
+import Loader from "@/components/Theme/Loader/Loader.vue";
 
 import { create } from "~/services/http.service";
 

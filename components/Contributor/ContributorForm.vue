@@ -18,7 +18,6 @@
             >
                <ContributorFormFullContributorDataComponent
                   :contributor="contributor"
-                  @save-data="updateAvailableSteps"
                />
             </div>
 
@@ -57,14 +56,8 @@
                   :contributor="contributor"
                />
             </div>
-
-            <!-- <div
-               v-if="currentStep == 5"
-               class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
-            >
-               Pestaña 6
-            </div> -->
          </div>
+         {{ contributor }}
       </DEStepperFull>
    </div>
 </template>
@@ -76,12 +69,12 @@
  * @todo add table of actividades generadas
  */
 import { storeToRefs } from "pinia";
-import { useAuthStore } from "~/stores";
+import { useContributorStore } from "~/stores";
 import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service.ts";
 
 // datos del contribuyente
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
+const contributorStore = useContributorStore();
+const { contributor } = storeToRefs(contributorStore);
 const puntoExpedicionList = ref([]);
 
 // current form view

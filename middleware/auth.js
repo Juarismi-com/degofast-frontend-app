@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
    const authStore = useAuthStore();
    authStore.loadToken();
 
-   if (!authStore.auth.authToken) {
+   if (!authStore.authToken) {
       return navigateTo("/auth");
-   }   
+   }
 });

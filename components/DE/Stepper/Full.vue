@@ -1,7 +1,7 @@
 <template>
    <div>
       <ol
-         class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse my-6"
+         class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse my-6 cursor-pointer"
       >
          <li
             v-for="(step, index) in steps"
@@ -9,11 +9,12 @@
                'flex items-center space-x-2.5 rtl:space-x-reverse',
                index === currentStep ? 'text-blue-500' : 'text-gray-400',
             ]"
+            :key="index"
             @click="setStep(index)"
          >
             <span
                :class="[
-                  'flex items-center justify-center w-8 h-8 border  rounded-full shrink-0',
+                  'flex items-center justify-center w-8 h-8 border  rounded-full shrink-0 ',
                   index === currentStep ? 'border-blue-600' : 'border-gray-600',
                ]"
             >
@@ -54,8 +55,8 @@
 <script setup>
 const props = defineProps({
    currentStep: {
-      type: Object,
-      default: {},
+      type: Number,
+      default: 0,
    },
    steps: {
       type: Array,

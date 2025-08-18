@@ -15,6 +15,16 @@ export const create = async (path: string, payload: any) => {
 
 export const update = async (path: string, payload: any) => {
    try {
+      const res = await axios.patch(`${API_URL}/${path}`, payload);
+      return res.data;
+   } catch (error) {
+      console.error(error);
+      throw error;
+   }
+};
+
+export const replace = async (path: string, payload: any) => {
+   try {
       const res = await axios.put(`${API_URL}/${path}`, payload);
       return res.data;
    } catch (error) {

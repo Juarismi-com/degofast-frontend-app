@@ -94,10 +94,14 @@ import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { HOME_PAGE_PATH } from "../../config";
+import { useContributorStore } from "~/stores/contributor.store.js";
 
 const authStore = useAuthStore();
 const { setAuth } = authStore;
-const { auth } = storeToRefs(authStore);
+const { authToken } = storeToRefs(authStore);
+
+const contributorStore = useContributorStore();
+const { contributor } = storeToRefs(contributorStore);
 const router = useRouter();
 
 const form = ref({
@@ -114,8 +118,8 @@ const login = async (e) => {
 
    await setAuth(form.value.username, form.value.password);
 
-   if (auth.value.authToken) {
-      if (authStore.contributor) {
+   if (authToken.value) {
+      if (contributor.value) {
          router.push(HOME_PAGE_PATH);
       } else {
          router.push("/contributor");
