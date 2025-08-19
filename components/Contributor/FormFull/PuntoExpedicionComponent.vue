@@ -28,19 +28,6 @@
                />
             </div>
             <div>
-               <label for="formDataNroActual" :class="[commonLabelClass]"
-                  >Nro. Actual *</label
-               >
-               <input
-                  type="number"
-                  name="formDataNroActual"
-                  id="formDataNroActual"
-                  :class="[INPUT_CLASS.sm]"
-                  placeholder="Nro. Actual"
-                  v-model="formData.nroActual"
-               />
-            </div>
-            <div>
                <label for="formDataNroInicial" :class="[commonLabelClass]"
                   >Nro. Inicial *</label
                >
@@ -51,6 +38,19 @@
                   :class="[INPUT_CLASS.sm]"
                   placeholder="Nro. Inicial"
                   v-model="formData.nroInicial"
+               />
+            </div>
+            <div>
+               <label for="formDataNroActual" :class="[commonLabelClass]"
+                  >Nro. Actual *</label
+               >
+               <input
+                  type="number"
+                  name="formDataNroActual"
+                  id="formDataNroActual"
+                  :class="[INPUT_CLASS.sm]"
+                  placeholder="Nro. Actual"
+                  v-model="formData.nroActual"
                />
             </div>
 
@@ -64,11 +64,13 @@
                   id="formDataTipoDocumento"
                   v-model="formData.tipoDocumento"
                >
-                  <option value="1">Factura Electrónica</option>
-                  <option value="4">Autofactura electrónica</option>
-                  <option value="5">Nota de crédito electrónica</option>
-                  <option value="6">Nota de débito electrónica</option>
-                  <option value="7">Nota de remisión electrónica</option>
+                  <option
+                     v-for="(tipo, index) in tipoDocumentos"
+                     :value="tipo.value"
+                     :key="index"
+                  >
+                     {{ tipo.title }}
+                  </option>
                </select>
             </div>
             <div>
@@ -107,9 +109,15 @@
                   class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                >
                   <tr>
-                     <th scope="col" class="px-3 py-2">Nro Actual</th>
-                     <th scope="col" class="px-3 py-2">Nro. Inicial</th>
                      <th scope="col" class="px-3 py-2">Código</th>
+                     <th scope="col" class="px-3 py-2">Establecimiento</th>
+                     <th scope="col" class="px-3 py-2 text-right">
+                        Nro. Inicial
+                     </th>
+                     <th scope="col" class="px-3 py-2 text-right">
+                        Nro Actual
+                     </th>
+
                      <th scope="col" class="px-3 py-2">Tipo de Documento</th>
                   </tr>
                </thead>
@@ -123,28 +131,28 @@
                   >
                      <td class="px-3 py-2 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
-                           {{ item.nroActual }}
-                        </div>
-                     </td>
-                     <td class="px-3 py-2 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
-                           {{ item.nroInicial }}
-                        </div>
-                     </td>
-                     <td class="px-3 py-2 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
                            {{ item.codigo }}
                         </div>
                      </td>
                      <td class="px-3 py-2 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
-                           {{
-                              item.tipoDocumento === 1
-                                 ? "Factura"
-                                 : item.tipoDocumento === 2
-                                 ? "Nota de crédito"
-                                 : "Recibo"
-                           }}
+                           {{ item.establecimiento.denominacion }}
+                        </div>
+                     </td>
+                     <td class="px-3 py-2 whitespace-nowrap text-right">
+                        <div class="text-sm text-gray-900">
+                           {{ item.nroInicial }}
+                        </div>
+                     </td>
+                     <td class="px-3 py-2 whitespace-nowrap text-right">
+                        <div class="text-sm text-gray-900">
+                           {{ item.nroActual }}
+                        </div>
+                     </td>
+
+                     <td class="px-3 py-2 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">
+                           {{ getTipoDocumentoByValue(item.tipoDocumento) }}
                         </div>
                      </td>
                   </tr>
@@ -181,6 +189,29 @@ const formData = ref({
    tipoDocumento: 1,
 });
 
+const tipoDocumentos = ref([
+   {
+      value: 1,
+      title: "Factura Electrónica",
+   },
+   {
+      value: 4,
+      title: "Autofactura electrónica",
+   },
+   {
+      value: 5,
+      title: "Nota de crédito electrónica",
+   },
+   {
+      value: 6,
+      title: "Nota de débito electrónica",
+   },
+   {
+      value: 7,
+      title: "Nota de remisión electrónic",
+   },
+]);
+
 const puntosExpedicionList = ref([]);
 
 const saveForm = async (e) => {
@@ -212,7 +243,7 @@ const validateForm = () => {
       if (!codigo) throw "Código es requerido";
       if (!establecimiento) throw "establecimiento es requerido";
 
-      if (codigo.length < 3) throw "Código debe tener 3 caracteres";
+      if (codigo.length != 3) throw "Código debe tener 3 caracteres";
 
       return true;
    } catch (error) {
@@ -228,14 +259,18 @@ const getPuntoExpedicion = async () => {
       );
 
       if (puntosExpedicionListTemp.length > 0) {
-         puntoExpedicionList.value = puntosExpedicionListTemp;
+         puntosExpedicionList.value = puntosExpedicionListTemp;
       }
    } catch (error) {
       console.error(error);
    }
 };
 
-onMounted(() => {
-   getPuntoExpedicion();
+const getTipoDocumentoByValue = (value) => {
+   return tipoDocumentos.value.find((tipo) => tipo.value == value).title;
+};
+
+onMounted(async () => {
+   await getPuntoExpedicion();
 });
 </script>
