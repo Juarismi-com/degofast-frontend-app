@@ -43,7 +43,7 @@
                v-if="currentStep == 3"
                class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
             >
-               <ContributorFormFullCertificadoComponent
+               <ContributorFormFullActividadEconomicaComponent
                   :contributor="contributor"
                />
             </div>
@@ -52,7 +52,7 @@
                v-if="currentStep == 4"
                class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow"
             >
-               <ContributorFormFullActividadEconomicaComponent
+               <ContributorFormFullCertificadoComponent
                   :contributor="contributor"
                />
             </div>
@@ -92,10 +92,10 @@ const steps = [
       title: "Puntos de expedición",
    },
    {
-      title: "Certificado",
+      title: "Actividades Económicas",
    },
    {
-      title: "Actividades Económicas",
+      title: "Certificado",
    },
 ];
 
@@ -109,7 +109,7 @@ const availableSteps = computed(() => {
    return [
       true,
       contributor.value?._id ? true : false,
-      contributor.value?.establecimientos.length > 0 ? true : false,
+      contributor.value?.establecimientos?.length > 0 ? true : false,
       puntoExpedicionList.value?.length > 0 ? true : false,
       contributor.value?.certData?.length > 0 ? true : false,
    ];
