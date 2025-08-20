@@ -408,6 +408,8 @@ const validateForm = () => {
       if (!telefono) throw "Telefono de casa es requerido";
       if (!email) throw "Email de casa es requerido";
 
+      if (codigo.length != 3) throw "Código debe tener 3 caracteres";
+
       return true;
    } catch (error) {
       toast.error(error, { duration: 3000 });
@@ -530,7 +532,6 @@ const deleteEstablecimiento = async () => {
 
 const copyEstablecimiento = (item) => {
    formData.value = {
-      ...formData.value,
       ...item,
       ciudad: null,
       distrito: null,

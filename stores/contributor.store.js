@@ -21,9 +21,11 @@ export const useContributorStore = defineStore("contributor", {
    }),
    actions: {
       setContributor(contributor) {
-         this.contributor = { ...this.contributor, ...contributor };
-
-         console.log(this.contributor);
+         if (contributor == null) {
+            this.contributor = null;
+         } else {
+            this.contributor = { ...this.contributor, ...contributor };
+         }
       },
    },
 });
