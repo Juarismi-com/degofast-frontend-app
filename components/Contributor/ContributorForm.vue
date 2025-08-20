@@ -57,7 +57,6 @@
                />
             </div>
          </div>
-         {{ contributor }}
       </DEStepperFull>
    </div>
 </template>
