@@ -110,7 +110,7 @@ const availableSteps = computed(() => {
       contributor.value?._id ? true : false,
       contributor.value?.establecimientos?.length > 0 ? true : false,
       puntoExpedicionList.value?.length > 0 ? true : false,
-      contributor.value?.certData?.length > 0 ? true : false,
+      true,
    ];
 });
 
