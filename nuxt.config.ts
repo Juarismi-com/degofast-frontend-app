@@ -14,6 +14,9 @@ export default defineNuxtConfig({
          DE_SUBMIT_FORM: process.env.DE_SUBMIT_FORM || "de",
          DEGOFAST_SYNC_SQL_API:
             process.env.DEGOFAST_SYNC_SQL_API || "http://localhost:3004/local",
+         DEGOFAST_FILE_GENERATOR:
+            process.env.DEGOFAST_FILE_GENERATOR ||
+            "http://localhost:8001/file-generator",
       },
    },
 

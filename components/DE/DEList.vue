@@ -143,7 +143,7 @@
                               <div class="py-1">
                                  <MenuItem v-slot="{ active }">
                                     <NuxtLink
-                                       :to="`../kude/${item._id}`"
+                                       :to="`${API_URL}/de/cdc/${item.cdc}/kude`"
                                        target="_blank"
                                        :class="[
                                           active
@@ -187,6 +187,7 @@
 </template>
 
 <script setup>
+import { useConfig } from "~/config";
 import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
@@ -206,6 +207,8 @@ import { dePDF } from "@/config/de.ts";
 
 import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
+
+const { API_URL } = useConfig();
 
 const authStore = useAuthStore();
 
