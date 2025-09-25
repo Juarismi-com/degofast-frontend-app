@@ -306,11 +306,21 @@ export const validateDeCliente = (de: any) => {
       const { cliente } = de;
 
       if (!cliente.razonSocial) throw "cliente.nombre es requerido";
+      if (/\d/.test(cliente.razonSocial))
+         throw "cliente.razonSocial no debe contener números";
 
       if (cliente.contribuyente) {
          if (!cliente.ruc) throw "cliente.ruc es requerido";
+
          if (!cliente.telefono) throw "cliente.telefono es requerido";
+         if (cliente.telefono.length > 12)
+            throw "cliente.telefono debe tener como máximo 12 caracteres";
+         if (/[a-zA-Z]/.test(cliente.telefono))
+            throw "cliente.telefono no debe contener letras";
+
          if (!cliente.email) throw "cliente.email es requerido";
+         if (!cliente.email.includes("@"))
+            throw "cliente.email debe contener un arroba (@)";
       } else {
          if (!cliente.documentoNumero)
             throw "cliente.documentoNumero es requerido";
