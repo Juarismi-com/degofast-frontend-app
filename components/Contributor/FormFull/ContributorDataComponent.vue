@@ -162,7 +162,7 @@ const saveForm = async (e) => {
       };
 
       try {
-         if (props.contributor) {
+         if (props.contributor?._id) {
             await update(
                `contributor-emitter/${props.contributor._id}`,
                payload,

@@ -104,13 +104,17 @@ const setCurrentStep = (value) => {
    }
 };
 
+// Manejo de pestañas
 const availableSteps = computed(() => {
    return [
       true,
-      contributor.value?._id ? true : false,
-      contributor.value?.establecimientos?.length > 0 ? true : false,
-      puntoExpedicionList.value?.length > 0 ? true : false,
-      true,
+      contributor.value?._id ? true : false, //Paso 1
+      contributor.value?.establecimientos?.length > 0 ? true : false, //Paso 2
+      //Se habilita también actividades económicas si se ha creado el contribuyente
+      contributor.value?._id || puntoExpedicionList.value?.length > 0
+         ? true
+         : false, //Paso 3
+      true, //Paso 4
    ];
 });
 

@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { useConfig } from "../config";
 import { useStorage } from "@vueuse/core";
 import { useContributorStore } from "./contributor.store";
-const { API_URL } = useConfig();
 
 export const authDefault = {
    authToken: localStorage.getItem("authToken") || null,
@@ -19,7 +18,7 @@ export const useAuthStore = defineStore("auth", {
       },
       async setAuth(username, password) {
          try {
-            const res = await axios.post(`${API_URL}/auth/login`, {
+            const res = await axios.post(`${useConfig().API_URL}/auth/login`, {
                username,
                password,
             });
