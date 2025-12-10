@@ -41,6 +41,13 @@ export const useAuthStore = defineStore("auth", {
             contributorStore.setContributor(contributor);
          } catch (error) {
             axios.defaults.headers.common["auth_token"] = null;
+
+            let message =
+               error?.response?.data?.message ||
+               error?.response?.data?.error ||
+               "Email o contraseña inválidos";
+
+            throw new Error(message);
          }
       },
       logout() {

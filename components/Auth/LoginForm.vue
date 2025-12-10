@@ -89,12 +89,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { HOME_PAGE_PATH } from "../../config";
 import { useContributorStore } from "~/stores/contributor.store.js";
+import { useToast } from "vue-toast-notification";
 
 const authStore = useAuthStore();
 const { setAuth } = authStore;
@@ -103,6 +103,7 @@ const { authToken } = storeToRefs(authStore);
 const contributorStore = useContributorStore();
 const { contributor } = storeToRefs(contributorStore);
 const router = useRouter();
+const toast = useToast();
 
 const form = ref({
    username: "",
@@ -116,21 +117,24 @@ const login = async (e) => {
    e.preventDefault();
    loginFail.value = false;
 
-   await setAuth(form.value.username, form.value.password);
+   try {
+      await setAuth(form.value.username, form.value.password);
 
-   if (authToken.value) {
-      if (contributor.value) {
-         router.push(HOME_PAGE_PATH);
-      } else {
-         router.push("/contributor");
+      if (authToken.value) {
+         if (contributor.value) {
+            router.push(HOME_PAGE_PATH);
+         } else {
+            router.push("/contributor");
+         }
       }
-   } else {
+   } catch (error) {
       loginFail.value = true;
       showToast.value = true;
+      console.error("Login error:", error.message);
 
-      setTimeout(() => {
-         showToast.value = false;
-      }, 3000);
+      if (error.message === "username or password is incorrect") {
+         toast.error("Usuario o contraseña incorrectos");
+      }
    }
 };
 </script>
