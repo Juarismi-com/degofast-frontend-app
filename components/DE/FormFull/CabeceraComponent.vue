@@ -21,7 +21,7 @@
          <div>
             <label for="punto_expedicion">Punto de Expedicion:</label>
             <select id="punto_expedicion" v-model="formData.puntoExpedicion" :class="INPUT_CLASS.sm">
-               <option v-for="(item, index) in puntoExpedicionList" :key="index" :value="item._id">
+               <option v-for="(item, index) in puntoExpedicionList" :key="index" :value="item.codigo">
                   {{
                      item.codigo
                   }}
@@ -225,19 +225,20 @@ const selectEstablecimiento = (e) => {
  */
 const setPuntoEstablecimientoList = async () => {
    const establecimientoCodigo = formData.value.establecimiento;
+
    const establecimiento = contributor.value.establecimientos.find(
-      (establecimiento) => {
+      (establecimiento) => {               
          return establecimiento.codigo == establecimientoCodigo;
       },
    );
 
    puntoExpedicionList.value = await getPuntoExpedicionByFilters({
       contributor: contributor.value?._id,
-      establecimiento: establecimiento?._id,
+      establecimiento: establecimiento?.codigo,
       tipoDocumento: formData.value?.tipoDocumento,
    });
-
-   formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
+ 
+   formData.value.puntoExpedicion = puntoExpedicionList.value[0]?.codigo; 
 };
 
 /* Tablilla cuotas */
@@ -264,7 +265,6 @@ const confirmDeleteTable = () => {
 
 onMounted(() => {
    setPuntoEstablecimientoList();
-
 })
 
 </script>
