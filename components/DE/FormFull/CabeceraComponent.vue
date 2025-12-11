@@ -239,6 +239,7 @@ const setPuntoEstablecimientoList = async () => {
    });
  
    formData.value.puntoExpedicion = puntoExpedicionList.value[0]?.codigo; 
+ 
 };
 
 /* Tablilla cuotas */

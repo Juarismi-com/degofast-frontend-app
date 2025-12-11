@@ -314,8 +314,13 @@ export const validateDeCliente = (de: any) => {
          if (!cliente.ruc) throw new Error("El RUC del cliente es requerido");
          if (!cliente.telefono)
             throw new Error("El telefono del cliente es requerido");
-         if (!cliente.email)
-            throw new Error("El email del cliente es requerido");
+         if (
+            !cliente.email ||
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cliente.email)
+         )
+            throw new Error(
+               "El email del cliente es requerido y debe tener un formato válido",
+            );
       } else {
          if (!cliente.documentoNumero)
             throw new Error("El numero de documento del cliente es requerido");
@@ -361,6 +366,9 @@ export const validateNotaCreditoDebito = (de: any) => {
 
          if (!documentoAsociado.timbrado)
             throw new Error("El timbrado del documento asociado es requerido");
+
+         if (!documentoAsociado.cdc)
+            throw new Error("El CDC del documento asociado es requerido");
 
          if (!documentoAsociado.numero)
             throw new Error("El numero del documento asociado es requerido");
