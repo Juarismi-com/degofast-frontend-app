@@ -8,35 +8,52 @@
 
       <div class="flex flex-col gap-4 mt-4 mb-4">
          <div class="flex gap-4">
+            <!-- Búsqueda principal -->
             <div class="flex-1">
                <label
-                  for="documentoNumero"
+                  for="buscador"
                   class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
                >
-                  Número de Documento
+                  Ingrese búsqueda
                </label>
                <input
                   type="text"
-                  v-model="searchQuery.documentoNumero"
-                  id="documentoNumero"
+                  v-model="searchQuery.search"
+                  id="buscador"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
-                  placeholder="Ingrese número de documento"
+                  placeholder="Ingrese búsqueda"
                />
             </div>
 
+            <!-- Fecha desde -->
             <div class="flex-1">
                <label
-                  for="facturaNumero"
+                  for="fechaDesde"
                   class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
                >
-                  Número de Factura
+                  Fecha desde
                </label>
                <input
-                  type="text"
-                  v-model="searchQuery.facturaNumero"
-                  id="facturaNumero"
+                  type="date"
+                  v-model="searchQuery.fechaDesde"
+                  id="fechaDesde"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
-                  placeholder="Ingrese número de factura"
+               />
+            </div>
+
+            <!-- Fecha hasta -->
+            <div class="flex-1">
+               <label
+                  for="fechaHasta"
+                  class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+               >
+                  Fecha hasta
+               </label>
+               <input
+                  type="date"
+                  v-model="searchQuery.fechaHasta"
+                  id="fechaHasta"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5"
                />
             </div>
 
@@ -230,8 +247,9 @@ const loading = ref(true);
 const showModal = ref(false);
 const cdcActual = ref(null);
 const searchQuery = ref({
-   documentoNumero: "",
-   facturaNumero: "",
+   search: "",
+   fechaDesde: "",
+   fechaHasta: "",
 });
 const filteredItems = ref([]);
 const totalPagesLocal = ref(props.totalPages);
@@ -332,6 +350,63 @@ const openModal = (cdc) => {
 
 const { items } = toRefs(props);
 
+const padWithZeros = (number, length) => {
+   return String(number).padStart(length, "0");
+};
+
+/**
+ * Busca documentos electrónicos (DE) basados en los criterios de búsqueda.
+ */
+const buscar = async () => {
+   loading.value = true;
+   try {
+      const queryParams = {};
+      const input = searchQuery.value.search.trim();
+
+      if (input) {
+         if (/^\d{3}-\d{3}-\d+$/.test(input)) {
+            // Número de factura completo con guiones
+            queryParams.numeroFacturaFull = input;
+         } else if (/^\d{7}-\d$/.test(input)) {
+            // RUC
+            queryParams.ruc = input;
+         } else if (/^\d{44}$/.test(input)) {
+            // CDC exacto de 44 dígitos
+            queryParams.cdc = input;
+         } else if (/^\d+$/.test(input)) {
+            // Solo número de factura parcial
+            queryParams.numeroFactura = input.padStart(7, "0");
+         } else {
+            // Nombre del cliente
+            queryParams.nombre = input;
+         }
+      }
+
+      // Fechas
+      if (searchQuery.value.fechaDesde) {
+         queryParams.fechaDesde = searchQuery.value.fechaDesde;
+      }
+      if (searchQuery.value.fechaHasta) {
+         queryParams.fechaHasta = searchQuery.value.fechaHasta;
+      }
+
+      const queryString = new URLSearchParams({
+         tipoDocumento: props.documentType,
+         usuarioEmail: authStore.user.email,
+         ...queryParams,
+      }).toString();
+
+      const response = await get(`de?${queryString}`);
+
+      filteredItems.value = response.data;
+      totalPagesLocal.value = response.totalPages;
+   } catch (error) {
+      console.error("Error al buscar:", error);
+   } finally {
+      loading.value = false;
+   }
+};
+
 onMounted(() => {
    filteredItems.value = [...items.value];
    console.log(items.value);
@@ -362,49 +437,5 @@ const handlePageChange = (page) => {
 
 const handleCloseModal = (newVal) => {
    showModal.value = newVal;
-};
-
-const padWithZeros = (number, length) => {
-   return String(number).padStart(length, "0");
-};
-
-const buscar = async () => {
-   loading.value = true;
-
-   let queryParams = {};
-
-   if (searchQuery.value.documentoNumero) {
-      if (searchQuery.value.documentoNumero.includes("-")) {
-         queryParams["cliente.ruc"] = searchQuery.value.documentoNumero;
-      } else {
-         queryParams["cliente.documentoNumero"] =
-            searchQuery.value.documentoNumero;
-      }
-   }
-
-   if (searchQuery.value.facturaNumero) {
-      const formattedFacturaNumero = padWithZeros(
-         searchQuery.value.facturaNumero,
-         7,
-      );
-      queryParams["numero"] = formattedFacturaNumero;
-   }
-
-   const queryString = new URLSearchParams(queryParams).toString();
-
-   try {
-      const response = await get(
-         `de?page=1&tipoDocumento=${props.documentType}&usuario.email=${
-            authStore.user.email
-         }${queryString ? `&${queryString}` : ""}`,
-      );
-
-      filteredItems.value = response.data;
-      totalPagesLocal.value = response.totalPages;
-   } catch (error) {
-      console.error("Error al buscar el documento:", error);
-   } finally {
-      loading.value = false;
-   }
 };
 </script>

@@ -100,12 +100,13 @@
 <script setup>
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useAuthStore } from "../../../../stores";
+import { useContributorStore } from "~/stores/contributor.store";
 import { TIPO_DOCUMENT_LIST } from "../../../../config";
 import { deFormData, validatorDeForm } from "~/config/de";
 import { formatDateHours, formatDate } from "~/helpers/date.helper";
 import { saveDE, createDEAsync } from "~/services";
 import { useConfig } from "../../../../config";
+import { useToast } from "vue-toast-notification";
 
 // metadata
 definePageMeta({
@@ -152,17 +153,21 @@ const setCurrentStep = (value) => {
 
 // Modal de previsualizacion de documento electronico
 const isPreviewModal = ref(false);
+const toast = useToast();
 const setIsPreviewModal = () => {
-   if (validatorDeForm(formData.value)) {
-      isPreviewModal.value = !isPreviewModal.value;
-   } else {
+   try {
+      if (validatorDeForm(formData.value)) {
+         isPreviewModal.value = !isPreviewModal.value;
+      }
+   } catch (error) {
       setCurrentStep(0);
+      toast.error(error.message);
    }
 };
 
 // datos del contribuyente
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
+const contributorStore = useContributorStore();
+const { contributor } = storeToRefs(contributorStore);
 
 // datos del formulario / documento electronico
 const initialFormData = JSON.parse(JSON.stringify(deFormData));
@@ -226,6 +231,6 @@ const resetForm = () => {
 };
 
 onMounted(() => {
-   console.log(deFormData);
+   //console.log(deFormData);
 });
 </script>

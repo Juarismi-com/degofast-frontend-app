@@ -15,7 +15,9 @@
             class="col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 m-5"
          >
             <div>
-               <label for="timbradoNumero">Numero de Timbrado *</label>
+               <label for="timbradoNumero" :class="[commonLabelClass]"
+                  >Numero de Timbrado *</label
+               >
                <input
                   type="text"
                   name="timbradoNumero"
@@ -27,7 +29,9 @@
             </div>
 
             <div>
-               <label for="timbradoFecha">Fecha de Timbrado *</label>
+               <label for="timbradoFecha" :class="[commonLabelClass]"
+                  >Fecha de Timbrado *</label
+               >
                <input
                   type="datetime-local"
                   v-model="formData.timbradoFecha"
@@ -37,7 +41,9 @@
             </div>
 
             <div>
-               <label for="tipoContribuyente">Tipo de Contribuyente *</label>
+               <label for="tipoContribuyente" :class="[commonLabelClass]"
+                  >Tipo de Contribuyente *</label
+               >
                <select
                   name="tipoContribuyente"
                   :class="[INPUT_CLASS.sm]"
@@ -50,7 +56,9 @@
             </div>
 
             <div>
-               <label for="ruc">RUC (Sin puntos)*</label>
+               <label for="ruc" :class="[commonLabelClass]"
+                  >RUC (Sin puntos)*</label
+               >
                <input
                   type="text"
                   name="ruc"
@@ -63,7 +71,7 @@
             </div>
 
             <div>
-               <label for="csc">CSC</label>
+               <label for="csc" :class="[commonLabelClass]">CSC</label>
                <input
                   type="text"
                   name="csc"
@@ -75,7 +83,9 @@
             </div>
 
             <div>
-               <label for="nombreFantasia">Nombre de Fantasia *</label>
+               <label for="nombreFantasia" :class="[commonLabelClass]"
+                  >Nombre de Fantasia *</label
+               >
                <input
                   type="text"
                   name="nombreFantasia"
@@ -88,7 +98,9 @@
             </div>
 
             <div>
-               <label for="razonSocial">Razon Social *</label>
+               <label for="razonSocial" :class="[commonLabelClass]"
+                  >Razon Social *</label
+               >
                <input
                   type="text"
                   name="razonSocial"
@@ -101,7 +113,7 @@
             </div>
 
             <div>
-               <label for="email">Email</label>
+               <label for="email" :class="[commonLabelClass]">Email</label>
                <input
                   type="email"
                   name="email"
@@ -120,6 +132,7 @@
 import moment from "moment";
 import { create, update } from "~/services/http.service";
 import { INPUT_CLASS } from "~/config";
+import { commonLabelClass } from "~/config/styles";
 import { useToast } from "vue-toast-notification";
 import { defineProps } from "vue";
 import { useContributorStore } from "~/stores";
@@ -162,7 +175,7 @@ const saveForm = async (e) => {
       };
 
       try {
-         if (props.contributor) {
+         if (props.contributor?._id) {
             await update(
                `contributor-emitter/${props.contributor._id}`,
                payload,
