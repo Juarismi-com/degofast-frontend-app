@@ -278,20 +278,22 @@ export const validateDeCondition = (de: any) => {
    try {
       const { fecha, puntoExpedicion, establecimiento } = de;
 
-      if (!fecha) throw "fecha es requerido";
-      if (!establecimiento) throw "establecimiento es requerido";
-      if (!puntoExpedicion) throw "puntoExpedicion no esta definido";
+      if (!fecha) throw new Error("fecha es requerido");
+      if (!establecimiento) throw new Error("establecimiento es requerido");
+      if (!puntoExpedicion) throw new Error("puntoExpedicion no esta definido");
 
       const { condicion } = de;
       if (condicion?.tipo == 2) {
          const { credito } = condicion;
 
          if (credito?.tipo == 1 && isEmpty(credito.plazo))
-            throw "condicion.credito.tipo.plazo debe asignar algun valor";
+            throw new Error("El plazo de la condicion de credito es requerido");
 
          if (credito?.tipo == 2) {
             if (isEmpty(credito.cuotas) || credito.cuotas == 0)
-               throw "condicion.credito.cuotas debe estar asignado y mayor a cero";
+               throw new Error(
+                  "El numero de cuotas de la condicion de credito es requerido",
+               );
          }
       }
 
@@ -305,23 +307,32 @@ export const validateDeCliente = (de: any) => {
    try {
       const { cliente } = de;
 
-      if (!cliente.razonSocial) throw "cliente.nombre es requerido";
+      if (!cliente.razonSocial)
+         throw new Error("La razón social del cliente es requerida");
 
       if (cliente.contribuyente) {
-         if (!cliente.ruc) throw "cliente.ruc es requerido";
-         if (!cliente.telefono) throw "cliente.telefono es requerido";
-         if (!cliente.email) throw "cliente.email es requerido";
+         if (!cliente.ruc) throw new Error("El RUC del cliente es requerido");
+         if (!cliente.telefono)
+            throw new Error("El telefono del cliente es requerido");
+         if (
+            !cliente.email ||
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cliente.email)
+         )
+            throw new Error(
+               "El email del cliente es requerido y debe tener un formato válido",
+            );
       } else {
          if (!cliente.documentoNumero)
-            throw "cliente.documentoNumero es requerido";
+            throw new Error("El numero de documento del cliente es requerido");
 
-         if (!cliente.documentoTipo) throw "cliente.documentoTipo es requerido";
+         if (!cliente.documentoTipo)
+            throw new Error("El tipo de documento del cliente es requerido");
 
          if (
             cliente.documentoTipo == 6 &&
             cliente.documentoNumero.toString().toLowerCase().indexOf("of") > -1
          )
-            throw "cliente.documentoTipo No debe contener of";
+            throw new Error("cliente.documentoTipo No debe contener of");
       }
 
       return true;
@@ -333,7 +344,7 @@ export const validateDeCliente = (de: any) => {
 export const validateDeItems = (de: any) => {
    try {
       const { items } = de;
-      if (items.length == 0) throw "debe asignar items al documento";
+      if (items.length == 0) throw new Error("Debe asignar items al documento");
 
       return true;
    } catch (error) {
@@ -346,28 +357,35 @@ export const validateNotaCreditoDebito = (de: any) => {
       if (de.tipoDocumento == 5) {
          const { notaCreditoDebito, documentoAsociado } = de;
          if (!notaCreditoDebito?.motivo)
-            throw "notaCreditoDebito.motivo es requerido";
+            throw new Error(
+               "El motivo de la nota de crédito/debito es requerido",
+            );
 
          if (!documentoAsociado.formato)
-            throw "documentoAsociado.formato es requerido";
+            throw new Error("El formato del documento asociado es requerido");
 
          if (!documentoAsociado.timbrado)
-            throw "documentoAsociado.timbrado es requerido";
+            throw new Error("El timbrado del documento asociado es requerido");
+
+         if (!documentoAsociado.cdc)
+            throw new Error("El CDC del documento asociado es requerido");
 
          if (!documentoAsociado.numero)
-            throw "documentoAsociado.numero es requerido";
+            throw new Error("El numero del documento asociado es requerido");
 
          if (!documentoAsociado.punto)
-            throw "documentoAsociado.punto es requerido";
+            throw new Error("El punto del documento asociado es requerido");
 
          if (!documentoAsociado.establecimiento)
-            throw "documentoAsociado.establecimiento es requerido";
+            throw new Error(
+               "El establecimiento del documento asociado es requerido",
+            );
 
          if (!documentoAsociado.fecha)
-            throw "documentoAsociado.fecha es requerido";
+            throw new Error("El fecha del documento asociado es requerido");
 
          if (!documentoAsociado.tipo)
-            throw "documentoAsociado.tipo es requerido";
+            throw new Error("El tipo del documento asociado es requerido");
       }
 
       return true;
@@ -382,18 +400,12 @@ export const validateNotaCreditoDebito = (de: any) => {
  * @returns
  */
 export const validatorDeForm = (de: any) => {
-   try {
-      validateDeCondition(de);
-      validateDeCliente(de);
-      validateDeItems(de);
-      validateNotaCreditoDebito(de);
+   validateDeCondition(de);
+   validateDeCliente(de);
+   validateDeItems(de);
+   validateNotaCreditoDebito(de);
 
-      return true;
-   } catch (error) {
-      alert(error);
-
-      return false;
-   }
+   return true;
 };
 
 export const isEmpty = (value: any) => {
