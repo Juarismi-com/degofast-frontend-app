@@ -131,10 +131,7 @@ const login = async (e) => {
       loginFail.value = true;
       showToast.value = true;
       console.error("Login error:", error.message);
-
-      if (error.message === "Email o contraseña inválidos") {
-         toast.error("Email o contraseña inválidos");
-      }
+      toast.error(error.message);
    }
 };
 </script>
