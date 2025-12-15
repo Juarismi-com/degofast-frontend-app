@@ -130,8 +130,8 @@ const login = async (e) => {
    } catch (error) {
       loginFail.value = true;
       showToast.value = true;
-      console.error("Login error:", error.message);
-      toast.error(error.message);
+      console.error("Login error:", error.message || "Error al iniciar sesión");
+      toast.error(error.message || "Error al iniciar sesión");
    }
 };
 </script>
