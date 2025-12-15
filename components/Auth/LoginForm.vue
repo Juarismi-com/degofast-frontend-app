@@ -132,8 +132,8 @@ const login = async (e) => {
       showToast.value = true;
       console.error("Login error:", error.message);
 
-      if (error.message === "username or password is incorrect") {
-         toast.error("Usuario o contraseña incorrectos");
+      if (error.message === "Email o contraseña inválidos") {
+         toast.error("Email o contraseña inválidos");
       }
    }
 };
