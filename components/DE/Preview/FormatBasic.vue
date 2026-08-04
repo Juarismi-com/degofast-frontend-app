@@ -27,7 +27,7 @@
                               {{ detalle?.establecimiento }} - 001 - 00Y
                               <br />
                            </td>
-                           <td
+                           <!-- <td
                               class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-base font-normal"
                            >
                               Timbrado N°:
@@ -48,7 +48,7 @@
                                  }}</label
                               >
                               <br />
-                           </td>
+                           </td> -->
                         </tr>
                      </tbody>
                   </table>

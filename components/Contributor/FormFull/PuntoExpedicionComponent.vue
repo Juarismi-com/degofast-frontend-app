@@ -101,7 +101,7 @@
             </div>
          </div>
       </form>
-      <div class="m-5 overflow-x-auto">
+      <div class="m-5 overflow-x-auto" style="overflow-y: visible">
          <div
             v-for="(establecimiento, index) in puntosExpedicionList"
             :key="index"
@@ -125,44 +125,44 @@
                      </th>
 
                      <th scope="col" class="px-3 py-2">Tipo de Documento</th>
+                     <th scope="col" class="px-3 py-2 text-center">Acciones</th>
                   </tr>
                </thead>
-               <tbody
-                  class="bg-white divide-y"
-               >
+               <tbody class="bg-white divide-y">
                   <tr
                      v-for="item in establecimiento?.puntos"
                      :key="item.codigo"
                      class="text-gray-700 text-sm"
                   >
-                     <td class="px-3 py-2 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
+                     <td class="px-3 py-2 whitespace-nowrap text-center">
+                        <div class="text-sm">
                            {{ item.codigo }}
                         </div>
                      </td>
                      <td class="px-3 py-2 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
+                        <div class="text-sm">
                            {{ item.establecimiento.denominacion }}
                         </div>
                      </td>
                      <td class="px-3 py-2 whitespace-nowrap text-right">
-                        <div class="text-sm text-gray-900">
+                        <div class="text-sm">
                            {{ item.nroInicial }}
                         </div>
                      </td>
                      <td class="px-3 py-2 whitespace-nowrap text-right">
-                        <div class="text-sm text-gray-900">
+                        <div class="text-sm">
                            {{ item.nroActual }}
                         </div>
                      </td>
 
                      <td class="px-3 py-2 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
+                        <div class="text-sm">
                            {{ getTipoDocumentoByValue(item.tipoDocumento) }}
                         </div>
                      </td>
 
-                     <td class="px-3 py-2 whitespace-nowrap">
+                     <!-- Opciones -->
+                     <td class="text-center relative overflow-visible">
                         <Menu as="div" class="relative inline-block">
                            <MenuButton
                               class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50"

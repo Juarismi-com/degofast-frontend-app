@@ -106,6 +106,7 @@ import { deFormData, validatorDeForm } from "~/config/de";
 import { formatDateHours, formatDate } from "~/helpers/date.helper";
 import { saveDE, createDEAsync } from "~/services";
 import { useConfig } from "../../../../config";
+import { useToast } from "vue-toast-notification";
 
 // metadata
 definePageMeta({
@@ -152,11 +153,15 @@ const setCurrentStep = (value) => {
 
 // Modal de previsualizacion de documento electronico
 const isPreviewModal = ref(false);
+const toast = useToast();
 const setIsPreviewModal = () => {
-   if (validatorDeForm(formData.value)) {
-      isPreviewModal.value = !isPreviewModal.value;
-   } else {
+   try {
+      if (validatorDeForm(formData.value)) {
+         isPreviewModal.value = !isPreviewModal.value;
+      }
+   } catch (error) {
       setCurrentStep(0);
+      toast.error(error.message);
    }
 };
 

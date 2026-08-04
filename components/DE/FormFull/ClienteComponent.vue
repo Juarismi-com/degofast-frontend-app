@@ -82,7 +82,7 @@
          <div>
             <label for="emailCliente">Email:</label>
             <input
-               type="text"
+               type="email"
                v-model="formData.cliente.email"
                id="emailCliente"
                :class="INPUT_CLASS.sm"

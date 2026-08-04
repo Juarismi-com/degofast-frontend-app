@@ -1,7 +1,5 @@
 <template>
-   <div
-      class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0"
-   >
+   <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
          <h1
             class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl"
@@ -92,12 +90,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { HOME_PAGE_PATH } from "../../config";
 import { useContributorStore } from "~/stores/contributor.store.js";
+import { useToast } from "vue-toast-notification";
 
 const authStore = useAuthStore();
 const { setAuth } = authStore;
@@ -106,6 +104,7 @@ const { authToken } = storeToRefs(authStore);
 const contributorStore = useContributorStore();
 const { contributor } = storeToRefs(contributorStore);
 const router = useRouter();
+const toast = useToast();
 
 const form = ref({
    username: "",
@@ -132,16 +131,15 @@ const login = async (e) => {
          } else {
             router.push("/contributor");
          }
-      } else {
-         loginFail.value = true;
-         showToast.value = true;
-
-         setTimeout(() => {
-            showToast.value = false;
-         }, 3000);
       }
-   } finally {
-      isSubmitting.value = false;
+   } catch (error) {
+      loginFail.value = true;
+      showToast.value = true;
+      console.error("Login error:", error.message);
+
+      if (error.message === "username or password is incorrect") {
+         toast.error("Usuario o contraseña incorrectos");
+      }
    }
 };
 </script>
