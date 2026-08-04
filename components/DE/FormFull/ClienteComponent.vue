@@ -13,17 +13,17 @@
                   v-model="formData.cliente.contribuyente"
                   type="checkbox"
                   value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                />
             </div>
             <div class="ms-2 text-sm">
                <label
                   for="contribuyenteCliente"
-                  class="font-medium text-gray-900 dark:text-gray-300"
+                  class="font-medium text-gray-900"
                >
                   ¿Es contribuyente?</label
                >
-               <p class="text-xs font-normal text-gray-500 dark:text-gray-300">
+               <p class="text-xs font-normal text-gray-500">
                   Si el cliente no es contribuyente debera completar otros
                   campos
                </p>
@@ -170,19 +170,21 @@
 <script setup>
 import { getClientByRuc } from "~/services";
 import { INPUT_CLASS } from "../../../config";
+import { useToast } from "vue-toast-notification";
 
 const props = defineProps({
    formData: {
       type: Object,
-      default: {},
+      default: () => ({}),
    },
    contributor: {
       type: Object,
-      default: {},
+      default: () => ({}),
    },
 });
 
 const { formData } = toRefs(props);
+const toast = useToast();
 
 /**
  * Busca un cliente por el valor del ruc
@@ -190,7 +192,7 @@ const { formData } = toRefs(props);
  */
 const buscarCliente = async (ruc) => {
    try {
-      if (ruc.length == 0) throw { message: "Asigne un ruc" };
+      if (!ruc || ruc.length == 0) throw { message: "Asigne un ruc" };
 
       const rucSinDv = ruc.split("-")[0];
       const response = await getClientByRuc(rucSinDv);
@@ -200,11 +202,15 @@ const buscarCliente = async (ruc) => {
          formData.value.cliente.ruc = `${ruc_sin_dv}-${dv}`;
          formData.value.cliente.razonSocial = nombre;
       } else {
-         alert("No se encontró el cliente");
+         toast.error("No se encontró el cliente", { duration: 3000 });
       }
    } catch (error) {
       console.error("Error al buscar el cliente:", error);
-      alert(error?.response?.data?.error);
+      const message =
+         error?.response?.data?.error ||
+         error?.message ||
+         "No se pudo buscar el cliente";
+      toast.error(message, { duration: 3000 });
    }
 };
 </script>

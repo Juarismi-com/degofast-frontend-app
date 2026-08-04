@@ -17,7 +17,7 @@ export const contributorDefault = {
 
 export const useContributorStore = defineStore("contributor", {
    state: () => ({
-      contributor: useStorage("contributor", contributorDefault),
+      contributor: useStorage("contributor", contributorDefault.contributor),
    }),
    actions: {
       setContributor(contributor) {

@@ -2,7 +2,7 @@
    <div>
       <div class="flex justify-between my-6">
          <div>
-            <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            <h2 class="text-2xl font-semibold text-gray-700">
                {{ title }}
             </h2>
          </div>
@@ -10,7 +10,7 @@
             <button
                v-if="currentStep == steps.length - 1"
                @click="setIsPreviewModal"
-               class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+               class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
             >
                Generar Documento
             </button>
@@ -66,9 +66,9 @@
                         <input
                            aria-describedby="helper-checkbox-text"
                            type="checkbox"
-                           id="submitSifen"
-                           v-model="submitSifen"
-                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                           id="submitSifenAsync"
+                           v-model="submitSifenAsync"
+                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                         />
                      </div>
                      Presentar Ahora en la SIFEN
@@ -100,7 +100,7 @@
 <script setup>
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useAuthStore } from "../../../../stores";
+import { useAuthStore, useContributorStore } from "../../../../stores";
 import { TIPO_DOCUMENT_LIST } from "../../../../config";
 import { deFormData, validatorDeForm } from "~/config/de";
 import { formatDateHours, formatDate } from "~/helpers/date.helper";
@@ -118,7 +118,7 @@ const { APP_ENV } = useConfig();
 const route = useRoute();
 const tipoDocumento = ref(route.params.type);
 const routeList = ref(TIPO_DOCUMENT_LIST);
-const submitSifen = ref(APP_ENV != "prod" ? true : false);
+const submitSifenAsync = ref(APP_ENV != "prod" ? true : false);
 const routeSelected = ref(
    routeList.value.find((item) => item.tipoDocumento == route.params.type),
 );
@@ -161,8 +161,8 @@ const setIsPreviewModal = () => {
 };
 
 // datos del contribuyente
-const authStore = useAuthStore();
-const { contributor } = storeToRefs(authStore);
+const contributorStore = useContributorStore();
+const { contributor } = storeToRefs(contributorStore);
 
 // datos del formulario / documento electronico
 const initialFormData = JSON.parse(JSON.stringify(deFormData));
@@ -202,7 +202,7 @@ const submitDe = async () => {
       }
 
       let response;
-      if (submitSifen) {
+      if (!submitSifenAsync.value) {
          response = await createDEAsync(payload);
       } else {
          response = await saveDE(payload);
@@ -212,6 +212,10 @@ const submitDe = async () => {
          submitDeSuccess.value = true;
 
          resetForm();
+
+         return navigateTo(
+            `/documentos-electronicos/tipos/${payload?.tipoDocumento}`,
+         );
       }
    } catch (error) {
       console.log(error);
@@ -221,11 +225,12 @@ const submitDe = async () => {
 const resetForm = () => {
    formData.value = {
       ...initialFormData,
+      establecimiento: formData.value.establecimiento,
+      punto: formData.value.punto,
+      puntoExpedicion: formData.value.puntoExpedicion,
       tipoDocumento: tipoDocumento.value,
    };
 };
 
-onMounted(() => {
-   console.log(deFormData);
-});
+onMounted(() => {});
 </script>

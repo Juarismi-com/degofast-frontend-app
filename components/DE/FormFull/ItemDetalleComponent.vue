@@ -20,7 +20,7 @@
             <div>
                <button
                   type="button"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 focus:outline-none"
                   @click="searchCodigoServicio"
                >
                   Buscar
@@ -33,7 +33,7 @@
             <div>
                <label
                   for="codigo"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                  class="my-4 text-l font-semibold text-gray-700"
                   >Código:</label
                >
                <input
@@ -46,7 +46,7 @@
             <div>
                <label
                   for="descripcion"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                  class="my-4 text-l font-semibold text-gray-700"
                   >Descripción:</label
                >
                <input
@@ -59,7 +59,7 @@
             <div>
                <label
                   for="precio"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                  class="my-4 text-l font-semibold text-gray-700"
                   >Precio:</label
                >
                <input
@@ -72,7 +72,7 @@
             <div>
                <label
                   for="cantidad"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                  class="my-4 text-l font-semibold text-gray-700"
                   >Cantidad:</label
                >
                <input
@@ -85,7 +85,7 @@
             <div>
                <label
                   for="iva"
-                  class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                  class="my-4 text-l font-semibold text-gray-700"
                   >IVA:</label
                >
                <select v-model="item.iva" id="iva" :class="INPUT_CLASS.sm">
@@ -97,7 +97,7 @@
             <!--div>
                   <label
                      for="totalUnitario"
-                     class="my-4 text-l font-semibold text-gray-700 dark:text-white"
+                     class="my-4 text-l font-semibold text-gray-700"
                      >Total Unitario:</label
                   >
                   <input
@@ -110,7 +110,7 @@
             <div>
                <button
                   type="button"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 me-2 mb-2 focus:outline-none"
                   @click="agregarItem"
                >
                   Agregar
@@ -124,7 +124,7 @@
                <div class="overflow-x-auto">
                   <table class="w-full">
                      <thead>
-                        <tr class="bg-gray-50 dark:bg-gray-800">
+                        <tr class="bg-gray-50">
                            <th
                               class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                            >
@@ -161,7 +161,7 @@
                         <tr
                            v-for="(item, index) in formData.items"
                            :key="index"
-                           class="hover:bg-gray-100 dark:hover:bg-gray-700 bg-white"
+                           class="hover:bg-gray-100 bg-white"
                         >
                            <td class="px-4 py-2 whitespace-nowrap text-right">
                               {{ item.codigo }}
@@ -189,7 +189,7 @@
                               <button
                                  type="button"
                                  @click="eliminarItem(index)"
-                                 class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2.5 py-1.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                                 class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2.5 py-1.5 focus:outline-none"
                               >
                                  Eliminar
                               </button>
@@ -209,19 +209,21 @@ import { deItemData } from "~/config/de";
 import { INPUT_CLASS } from "../../../config";
 import { getServicesByContributor } from "~/services/services.service";
 import { formatNumber } from "~/helpers/number.helper";
+import { useToast } from "vue-toast-notification";
 
 const props = defineProps({
    formData: {
       type: Object,
-      default: {},
+      default: () => ({}),
    },
    contributor: {
       type: Object,
-      default: {},
+      default: () => ({}),
    },
 });
 
 const { formData, contributor } = toRefs(props);
+const toast = useToast();
 
 // Relaciona a items/servicios
 const item = ref({ ...deItemData });
@@ -232,9 +234,7 @@ const codigo = ref("");
  * Actualiza el listado de servicios, para su busqueda local (en el navegador)
  */
 const setServicesList = async () => {
-   console.log(contributor.value._id);
    serviceList.value = await getServicesByContributor(contributor.value._id);
-   console.log(serviceList.value);
 };
 
 /**
@@ -244,6 +244,13 @@ const searchCodigoServicio = () => {
    const servicio = serviceList.value.find((servicio) => {
       return servicio.codigo == codigo.value;
    });
+
+   if (!servicio) {
+      toast.error("No se encontró ningún servicio con ese código", {
+         duration: 3000,
+      });
+      return;
+   }
 
    item.value = {
       ...item.value,
@@ -280,7 +287,9 @@ const agregarItem = () => {
          ...deItemData,
       };
    } else {
-      alert("Por favor, complete todos los campos del nuevo ítem.");
+      toast.error("Por favor, complete todos los campos del nuevo ítem.", {
+         duration: 3000,
+      });
    }
 };
 

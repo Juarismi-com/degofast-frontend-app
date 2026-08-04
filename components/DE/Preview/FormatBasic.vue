@@ -20,11 +20,11 @@
                               class="w-1/2 whitespace-nowrap px-2 py-1 text-left text-lg font-semibold"
                            >
                               {{
-                                 detalle.tipoDocumento == 1
+                                 detalle?.tipoDocumento == 1
                                     ? "FACTURA ELECTRÓNICA"
                                     : "NOTA DE CRÉDITO"
                               }}: <br />
-                              {{ detalle.establecimiento }} - 001 - 00Y
+                              {{ detalle?.establecimiento }} - 001 - 00Y
                               <br />
                            </td>
                            <td
@@ -33,7 +33,8 @@
                               Timbrado N°:
                               <label class="font-bold"
                                  >{{
-                                    authStore.contributor.timbradoNumero
+                                    contributorStore?.contributor
+                                       ?.timbradoNumero
                                  }} </label
                               ><br />
 
@@ -41,7 +42,8 @@
                               <label class="font-bold">
                                  {{
                                     moment(
-                                       authStore.contributor.timbradoFecha,
+                                       contributorStore?.contributor
+                                          ?.timbradoFecha,
                                     ).format("DD/MM/YYYY")
                                  }}</label
                               >
@@ -347,7 +349,7 @@ import {
    calculateIVA,
 } from "~/helpers/number.helper";
 import { deValues } from "~/config/de";
-import { useAuthStore } from "~/stores";
+import { useAuthStore, useContributorStore } from "~/stores";
 import moment from "moment";
 
 definePageMeta({
@@ -356,6 +358,7 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
+const contributorStore = useContributorStore();
 const detalle = ref({});
 
 const props = defineProps({

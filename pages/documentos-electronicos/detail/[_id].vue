@@ -1,6 +1,6 @@
 <template>
    <div>
-      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700">
          Detalles de la Factura
       </h2>
 
@@ -25,7 +25,7 @@
             <label class="text-lg font-bold">CDC: </label>
             <label class="text-lg">{{ detalle.cdc }}</label>
             <button
-               class="ml-4 p-2 bg-purple-600 hover:bg-purple-700 text-white rounded dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+               class="ml-4 p-2 bg-purple-600 hover:bg-purple-700 text-white rounded"
                @click="
                   openModal = true;
                   showModal = true;
@@ -64,7 +64,7 @@
                         class="inline-block p-4 border-b-2 rounded-t-lg"
                         :class="{
                            'border-blue-600 text-blue-600': activeTab === 0,
-                           'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300':
+                           'border-transparent hover:text-gray-600 hover:border-gray-300':
                               activeTab !== 0,
                         }"
                         @click="activeTab = 0"
@@ -78,7 +78,7 @@
                         class="inline-block p-4 border-b-2 rounded-t-lg"
                         :class="{
                            'border-blue-600 text-blue-600': activeTab === 1,
-                           'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300':
+                           'border-transparent hover:text-gray-600 hover:border-gray-300':
                               activeTab !== 1,
                         }"
                         @click="activeTab = 1"

@@ -37,8 +37,8 @@ const data = {
       {
          label: "Facturación diaria ($)",
          data: labels.map(() => Math.floor(Math.random() * 1000) + 100), // números aleatorios
-         borderColor: "#3b82f6", // azul Tailwind
-         backgroundColor: "rgba(59, 130, 246, 0.3)",
+         borderColor: "#FF4D5A", // coral de marca
+         backgroundColor: "rgba(255, 77, 90, 0.3)",
          tension: 0.3,
          fill: true,
       },
@@ -50,15 +50,15 @@ const options = {
    plugins: {
       legend: {
          display: true,
-         labels: { color: "#111827" }, // gris-900
+         labels: { color: "#1F1D1F" }, // gray-900 de marca
       },
    },
    scales: {
       x: {
-         ticks: { color: "#374151" }, // gris-700
+         ticks: { color: "#5A575A" }, // gray-700 de marca
       },
       y: {
-         ticks: { color: "#374151" },
+         ticks: { color: "#5A575A" },
       },
    },
 };

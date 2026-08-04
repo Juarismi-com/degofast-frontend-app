@@ -9,9 +9,10 @@
             <div>
                <button
                   type="submit"
-                  class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+                  :disabled="isSubmitting"
+                  class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                >
-                  Guardar
+                  {{ isSubmitting ? "Guardando..." : "Guardar" }}
                </button>
             </div>
          </div>
@@ -152,10 +153,15 @@ const toast = useToast();
 
 const deleteActividadAlert = ref(false);
 const actividadSelected = ref(null); // es un index
+const isSubmitting = ref(false);
 
 const saveForm = async (e) => {
+   if (isSubmitting.value) return;
+
    try {
       if (validateForm() && !validateActividadEconomica()) {
+         isSubmitting.value = true;
+
          const payload = {
             actividadesEconomicas: [
                ...contributor.value.actividadesEconomicas,
@@ -170,6 +176,8 @@ const saveForm = async (e) => {
 
          setContributor(payload);
          toast.success("¡Operación exitosa!", { duration: 3000 });
+
+         formData.value = { codigo: "", descripcion: "" };
       }
    } catch (error) {
       console.error(error);
@@ -180,6 +188,8 @@ const saveForm = async (e) => {
       toast.error(message, {
          duration: 3000,
       });
+   } finally {
+      isSubmitting.value = false;
    }
 };
 
@@ -203,7 +213,6 @@ const validateForm = () => {
 };
 
 const validateActividadEconomica = () => {
-   console.log(contributor);
    const exist = contributor.value.actividadesEconomicas.find((a) => {
       if (parseInt(formData.value.codigo) == parseInt(a.codigo)) return a;
    });
@@ -218,7 +227,7 @@ const validateActividadEconomica = () => {
 };
 
 const setDeleteActividadAlert = (index) => {
-   deleteActividadAlert.value = !deleteActividad.value;
+   deleteActividadAlert.value = !deleteActividadAlert.value;
    actividadSelected.value = index;
 };
 

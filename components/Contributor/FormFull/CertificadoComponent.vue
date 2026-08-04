@@ -19,9 +19,10 @@
                   >Contraseña</label
                >
                <input
-                  type="text"
+                  type="password"
                   name="formCertifiedPassword"
                   id="formCertifiedPassword"
+                  autocomplete="new-password"
                   :class="[commonInputClass]"
                   placeholder="Contraseña"
                   v-model="formCertified.password"
@@ -30,9 +31,10 @@
             <div class="m-5">
                <button
                   type="submit"
-                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+                  :disabled="isSubmitting"
+                  class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                >
-                  Guardar
+                  {{ isSubmitting ? "Guardando..." : "Guardar" }}
                </button>
             </div>
             <h1 :style="{ color: certDataColor }" class="font-bold">
@@ -46,6 +48,7 @@
 <script setup>
 import { create } from "~/services/http.service";
 import { commonInputClass, commonLabelClass } from "~/config/styles";
+import { useToast } from "vue-toast-notification";
 
 import { defineProps } from "vue";
 
@@ -56,6 +59,8 @@ const props = defineProps({
    },
 });
 
+const toast = useToast();
+
 const formCertified = ref({
    cert: null,
    password: "",
@@ -63,34 +68,57 @@ const formCertified = ref({
 
 const messageCertData = ref("No se ha cargado ningún certificado");
 const certDataColor = ref("red");
+const isSubmitting = ref(false);
 
-/* @todo validar funcionalidad */
 const saveCertified = async (e) => {
+   if (isSubmitting.value) return;
+
+   if (!props.contributor?._id) {
+      toast.error("Primero debe cargar los datos del contribuyente", {
+         duration: 3000,
+      });
+      return;
+   }
+
+   if (!formCertified.value.cert) {
+      toast.error("Debe seleccionar un archivo de certificado", {
+         duration: 3000,
+      });
+      return;
+   }
+
+   if (!formCertified.value.password) {
+      toast.error("Debe ingresar la contraseña del certificado", {
+         duration: 3000,
+      });
+      return;
+   }
+
+   isSubmitting.value = true;
+
    try {
-      if (props.contributor) {
-         const formData = new FormData();
+      const formData = new FormData();
+      formData.append("cert", formCertified.value.cert);
+      formData.append("password", formCertified.value.password);
 
-         if (formCertified.value.cert) {
-            formData.append("cert", formCertified.value.cert);
-         } else {
-            console.error("No se ha seleccionado un archivo.");
-            return;
-         }
+      await create("certifieds/local", formData);
 
-         formData.append("password", formCertified.value.password);
+      toast.success("¡Certificado cargado con éxito!", { duration: 3000 });
+      messageCertData.value = "Ya se ha cargado un certificado";
+      certDataColor.value = "green";
 
-         const res = await create("certifieds/local", formData);
-         console.log("Datos actualizados:", res);
-
-         formCertified.value = {
-            cert: null,
-            password: "",
-         };
-      } else {
-         console.log("Se debe cargar los datos del contribuyente", res);
-      }
+      formCertified.value = {
+         cert: null,
+         password: "",
+      };
    } catch (error) {
-      console.error("Error al actualizar los datos:", error.message);
+      console.error("Error al actualizar los datos:", error);
+      const message =
+         error?.response?.data?.error ||
+         "No se pudo cargar el certificado. Intenta nuevamente.";
+      toast.error(message, { duration: 3000 });
+   } finally {
+      isSubmitting.value = false;
    }
 };
 
@@ -99,11 +127,9 @@ const handleFileUpload = (event) => {
 };
 
 onMounted(() => {
-   if (props.contributor) {
-      if (props.contributor?.certData?.length > 0) {
-         messageCertData.value = "Ya se ha cargado un certificado";
-         certDataColor.value = "green";
-      }
+   if (props.contributor?.certData?.length > 0) {
+      messageCertData.value = "Ya se ha cargado un certificado";
+      certDataColor.value = "green";
    }
 });
 </script>

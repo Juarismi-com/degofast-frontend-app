@@ -170,7 +170,8 @@ export const deFormData = {
    tipoDocumento: "1",
    establecimiento: "001",
    codigoSeguridadAleatorio: "",
-   puntoExpedicion: "",
+   puntoExpedicion: null,
+   punto: "001",
    descripcion: "",
    observacion: "",
    fecha: moment().format("YYYY-MM-DDTHH:mm"),
@@ -276,11 +277,11 @@ export const dePDF = {
 
 export const validateDeCondition = (de: any) => {
    try {
-      const { fecha, puntoExpedicion, establecimiento } = de;
+      const { fecha, punto, establecimiento } = de;
 
       if (!fecha) throw "fecha es requerido";
       if (!establecimiento) throw "establecimiento es requerido";
-      if (!puntoExpedicion) throw "puntoExpedicion no esta definido";
+      if (!punto) throw "punto no esta definido";
 
       const { condicion } = de;
       if (condicion?.tipo == 2) {

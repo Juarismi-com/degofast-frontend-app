@@ -1,10 +1,10 @@
 <template>
    <aside
-      class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0"
+      class="z-20 hidden w-64 overflow-y-auto bg-white md:block flex-shrink-0"
    >
-      <div class="py-4 text-gray-500 dark:text-gray-400">
+      <div class="py-4 text-gray-500">
          <a
-            class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
+            class="ml-6 text-lg font-bold text-gray-800"
             href="/dashboard"
          >
             {{ appName }}
@@ -58,7 +58,7 @@ import { useAuthStore } from "~/stores";
 const appName = ref(APP_NAME);
 
 const commonAElementClass = ref(
-   "inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200",
+   "inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800",
 );
 
 const menu = ref([

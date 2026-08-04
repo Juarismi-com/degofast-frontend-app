@@ -1,10 +1,10 @@
 <template>
    <div class="w-full overflow-hidden rounded-lg shadow-xs">
-      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700">
          Recibo
       </h2>
 
-      <div class="p-6 bg-white">
+      <form @submit.prevent="submitRecibo" class="p-6 bg-white">
          <div class="text-xl">
             <h3>Detalles</h3>
             <hr />
@@ -154,13 +154,13 @@
          <div class="m-5">
             <button
                type="submit"
-               class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
-               @click="submitRecibo"
+               :disabled="isSubmitting"
+               class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
-               Enviar
+               {{ isSubmitting ? "Enviando..." : "Enviar" }}
             </button>
          </div>
-      </div>
+      </form>
    </div>
 </template>
 
@@ -169,6 +169,9 @@ import { INPUT_CLASS } from "~/config";
 import { deReceiptData, validateRecibo } from "~/config/receipt";
 import { saveRecibo } from "~/services/recibo.service";
 import { formatDateHours } from "~/helpers/date.helper";
+import { useToast } from "vue-toast-notification";
+
+const toast = useToast();
 
 // datos del formulario / recibo
 const formData = ref({
@@ -176,9 +179,15 @@ const formData = ref({
    tipoDocumento: 50,
 });
 
+const isSubmitting = ref(false);
+
 const submitRecibo = async () => {
+   if (isSubmitting.value) return;
+
    try {
       if (validateRecibo(formData.value)) {
+         isSubmitting.value = true;
+
          const payload = {
             ...formData.value,
             fecha: formatDateHours(formData.value.fecha),
@@ -187,23 +196,22 @@ const submitRecibo = async () => {
          const response = await saveRecibo(payload);
 
          if (response) {
-            alert("Recibo enviado");
+            toast.success("Recibo enviado", { duration: 3000 });
             resetForm();
          }
       }
    } catch (error) {
-      console.log(error);
-      if (error.message) {
-         alert(`Error: ${error.message}`);
-      } else {
-         alert(error);
-      }
+      console.error(error);
+      toast.error(error?.message || String(error), { duration: 3000 });
+   } finally {
+      isSubmitting.value = false;
    }
 };
 
 const resetForm = () => {
    formData.value = {
       ...deReceiptData,
+      tipoDocumento: 50,
    };
 };
 </script>

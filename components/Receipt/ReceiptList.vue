@@ -1,13 +1,13 @@
 <template>
    <div class="w-full overflow-hidden rounded-lg shadow-xs">
-      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700">
          Recibo
       </h2>
 
       <div class="col-span-3 flex justify-left">
          <NuxtLink
             to="/receipt/receipt-form"
-            class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+            class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             type="submit"
          >
             Nuevo
@@ -19,7 +19,7 @@
             <div class="flex-1">
                <label
                   for="documentoNumero"
-                  class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                  class="block mb-2 text-sm font-medium text-gray-700"
                >
                   Número de Documento
                </label>
@@ -47,7 +47,7 @@
          <table class="w-full whitespace-no-wrap">
             <thead>
                <tr
-                  class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+                  class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50"
                >
                   <th class="px-4 py-3">Recibido de</th>
                   <th class="px-4 py-3">Numero</th>
@@ -58,10 +58,10 @@
                </tr>
             </thead>
             <tbody
-               class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
+               class="bg-white divide-y"
             >
                <tr
-                  class="text-gray-700 dark:text-gray-400"
+                  class="text-gray-700"
                   v-for="(item, index) in filteredItems"
                   :key="index"
                >
@@ -70,7 +70,7 @@
                   <td class="px-4 py-3 text-xs">
                      <span
                         :class="[
-                           'px-2 py-1 font-semibold leading-tight text-green-700 rounded-full dark:bg-green-700 dark:text-green-100',
+                           'px-2 py-1 font-semibold leading-tight text-green-700 rounded-full',
                            item?.estado === 'A' ? 'bg-green-100' : 'bg-red-100',
                         ]"
                      >

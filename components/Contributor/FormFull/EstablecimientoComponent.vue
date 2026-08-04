@@ -9,9 +9,10 @@
             <div>
                <button
                   type="submit"
-                  class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+                  :disabled="isSubmitting"
+                  class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                >
-                  Guardar
+                  {{ isSubmitting ? "Guardando..." : "Guardar" }}
                </button>
             </div>
          </div>
@@ -164,13 +165,13 @@
       </form>
 
       <div class="m-5 overflow-x-auto">
-         <h3 class="text-lg font-bold dark:text-white py-5">
+         <h3 class="text-lg font-bold py-5">
             Establecimientos activos
          </h3>
          <table class="divide-gray-200 min-w-full">
             <thead>
                <tr
-                  class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+                  class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50"
                >
                   <th class="px-3 py-2">Código</th>
                   <th class="px-3 py-2">Establecimiento</th>
@@ -184,12 +185,12 @@
                </tr>
             </thead>
             <tbody
-               class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
+               class="bg-white divide-y"
             >
                <tr
                   v-for="item in establecimientos"
                   :key="item.codigo"
-                  class="text-gray-700 dark:text-gray-400 text-sm"
+                  class="text-gray-700 text-sm"
                >
                   <td class="px-3 py-2 whitespace-nowrap text-center">
                      <div>
@@ -330,7 +331,7 @@ const props = defineProps({
    },
 });
 
-const formData = ref({
+const defaultFormData = () => ({
    codigo: "",
    direccion: "",
    numeroCasa: 0,
@@ -347,6 +348,8 @@ const formData = ref({
    denominacion: "",
 });
 
+const formData = ref(defaultFormData());
+
 const establecimientoSelected = ref(null);
 
 const departamentos = ref([...getDepartamentos()]);
@@ -355,10 +358,15 @@ const distritos = ref([]);
 const establecimientos = ref([]);
 
 const deleteEstablecimientoAlert = ref(false);
+const isSubmitting = ref(false);
 
 const saveForm = async (e) => {
+   if (isSubmitting.value) return;
+
    try {
       if (validateForm() && !validateEstablecimiento()) {
+         isSubmitting.value = true;
+
          // Actualiza en local y remoto
          const payload = {
             establecimientos: [
@@ -375,12 +383,17 @@ const saveForm = async (e) => {
          establecimientos.value = payload.establecimientos;
          sortEstablecimientos();
          toast.success("¡Operación exitosa!", { duration: 3000 });
+
+         // Limpia el formulario para cargar el siguiente establecimiento
+         formData.value = defaultFormData();
       }
    } catch (error) {
       console.error(error);
       toast.error("¡Error! no se pudo completar la solicitud", {
          duration: 3000,
       });
+   } finally {
+      isSubmitting.value = false;
    }
 };
 

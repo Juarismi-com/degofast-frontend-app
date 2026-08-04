@@ -142,11 +142,11 @@ import { INPUT_CLASS } from "~/config";
 const props = defineProps({
    formData: {
       type: Object,
-      default: {},
+      default: () => ({}),
    },
    contributor: {
       type: Object,
-      default: {},
+      default: () => ({}),
    },
 });
 

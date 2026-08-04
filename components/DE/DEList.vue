@@ -11,7 +11,7 @@
             <div class="flex-1">
                <label
                   for="documentoNumero"
-                  class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                  class="block mb-2 text-sm font-medium text-gray-700"
                >
                   Número de Documento
                </label>
@@ -27,7 +27,7 @@
             <div class="flex-1">
                <label
                   for="facturaNumero"
-                  class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                  class="block mb-2 text-sm font-medium text-gray-700"
                >
                   Número de Factura
                </label>
@@ -56,7 +56,7 @@
          <table class="w-full whitespace-no-wrap">
             <thead>
                <tr
-                  class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+                  class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50"
                >
                   <th class="px-3 py-2">Cliente</th>
                   <th class="px-3 py-2">Doc. Elec.</th>
@@ -68,10 +68,10 @@
                </tr>
             </thead>
             <tbody
-               class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
+               class="bg-white divide-y"
             >
                <tr
-                  class="text-gray-700 dark:text-gray-400"
+                  class="text-gray-700"
                   v-for="(item, index) in filteredItems"
                   :key="index"
                >
@@ -81,7 +81,7 @@
                            <p class="font-semibold">
                               {{ item?.cliente?.razonSocial }}
                            </p>
-                           <p class="text-xs text-gray-600 dark:text-gray-400">
+                           <p class="text-xs text-gray-600">
                               {{ item?.cliente?.ruc || "XXXXXX-X" }}
                            </p>
                         </div>
@@ -89,7 +89,7 @@
                   </td>
                   <td class="px-3 py-2 text-sm">
                      <b>{{ concatNumeroFactura(item) }}</b>
-                     <p class="text-xs text-gray-600 dark:text-gray-400">
+                     <p class="text-xs text-gray-600">
                         {{ item?.cdc }}
                      </p>
                   </td>
@@ -108,7 +108,7 @@
                   <td class="px-3 py-2 text-xs">
                      <span
                         :class="[
-                           'px-2 py-1 font-semibold leading-tight text-green-700 rounded-full dark:bg-green-700 dark:text-green-100',
+                           'px-2 py-1 font-semibold leading-tight text-green-700 rounded-full',
                            item?.estado === 'A' ? 'bg-green-100' : 'bg-red-100',
                         ]"
                      >
@@ -215,7 +215,7 @@ const authStore = useAuthStore();
 const props = defineProps({
    items: {
       type: Array,
-      default: [],
+      default: () => [],
    },
    totalPages: {
       type: Number,

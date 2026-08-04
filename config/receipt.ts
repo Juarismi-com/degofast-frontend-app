@@ -25,14 +25,6 @@ export const validateRecibo = (recibo: any) => {
       if (!recibo.montoLetras) throw "El campo montoLetras es requerido";
       if (typeof recibo.montoLetras === "number")
          throw "El campo 'montoLetras' no debe ser numérico";
-      if (!recibo.numero) throw "El campo numero es requerido";
-      if (!recibo.recibidoDe) throw "El campo recibidoDe es requerido";
-      if (!recibo.monto || isNaN(Number(recibo.monto)))
-         throw "El campo 'monto' es requerido y debe ser numérico";
-      if (!recibo.moneda) throw "Moneda es requerido";
-      if (!recibo.montoLetras) throw "El campo montoLetras es requerido";
-      if (typeof recibo.montoLetras === "number")
-         throw "El campo 'montoLetras' no debe ser numérico";
       if (/\d/.test(recibo.montoLetras)) {
          throw "El campo montoLetras no debe contener números.";
       }

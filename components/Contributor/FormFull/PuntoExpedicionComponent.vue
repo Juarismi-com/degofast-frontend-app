@@ -5,9 +5,10 @@
             <div>
                <button
                   type="submit"
-                  class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+                  :disabled="isSubmitting"
+                  class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                >
-                  Guardar
+                  {{ isSubmitting ? "Guardando..." : "Guardar" }}
                </button>
             </div>
          </div>
@@ -29,7 +30,7 @@
                         establecimiento, index
                      ) in contributor.establecimientos"
                      :key="index"
-                     :value="establecimiento.codigo"
+                     :value="establecimiento._id"
                   >
                      {{
                         establecimiento.denominacion +
@@ -57,7 +58,7 @@
                   >Nro. Inicial *</label
                >
                <input
-                  type="text"
+                  type="number"
                   name="formDataNroInicial"
                   id="formDataNroInicial"
                   :class="[INPUT_CLASS.sm]"
@@ -105,13 +106,13 @@
             v-for="(establecimiento, index) in puntosExpedicionList"
             :key="index"
          >
-            <h6 class="text-lg font-bold dark:text-white py-3">
+            <h6 class="text-lg font-bold py-3">
                {{ establecimiento.establecimiento.denominacion }}
             </h6>
 
             <table class="divide-gray-200 min-w-full">
                <thead
-                  class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+                  class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50"
                >
                   <tr>
                      <th scope="col" class="px-3 py-2">Código</th>
@@ -127,12 +128,12 @@
                   </tr>
                </thead>
                <tbody
-                  class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
+                  class="bg-white divide-y"
                >
                   <tr
                      v-for="item in establecimiento?.puntos"
                      :key="item.codigo"
-                     class="text-gray-700 dark:text-gray-400 text-sm"
+                     class="text-gray-700 text-sm"
                   >
                      <td class="px-3 py-2 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
@@ -267,10 +268,15 @@ const tipoDocumentos = ref([
 ]);
 
 const puntosExpedicionList = ref([]);
+const isSubmitting = ref(false);
 
 const saveForm = async (e) => {
+   if (isSubmitting.value) return;
+
    try {
       if (validateForm() && !validatePuntoExpedicion()) {
+         isSubmitting.value = true;
+
          const payload = {
             ...formData.value,
          };
@@ -278,8 +284,17 @@ const saveForm = async (e) => {
          await create("punto-expedicion", payload);
 
          setContributor(payload);
-         getPuntoExpedicion();
+         await getPuntoExpedicion();
          toast.success("¡Operación exitosa!", { duration: 3000 });
+
+         formData.value = {
+            nroActual: 0,
+            nroInicial: 0,
+            codigo: "",
+            contributor: props.contributor._id,
+            establecimiento: null,
+            tipoDocumento: 1,
+         };
       }
    } catch (error) {
       console.error(error);
@@ -290,6 +305,8 @@ const saveForm = async (e) => {
       toast.error(message, {
          duration: 3000,
       });
+   } finally {
+      isSubmitting.value = false;
    }
 };
 
@@ -313,15 +330,16 @@ const validateForm = () => {
 };
 
 const validatePuntoExpedicion = () => {
-   const exist = puntosExpedicionList.value.find((p) => {
-      if (
+   const puntos = puntosExpedicionList.value.flatMap(
+      (grupo) => grupo.puntos || [],
+   );
+
+   const exist = puntos.find(
+      (p) =>
          parseInt(formData.value.codigo) == parseInt(p.codigo) &&
-         parseInt(formData.value.establecimiento) ==
-            parseInt(p.establecimiento.codigo) &&
-         formData.value.tipoDocumento == p.tipoDocumento
-      )
-         return p;
-   });
+         formData.value.establecimiento == p.establecimiento._id &&
+         formData.value.tipoDocumento == p.tipoDocumento,
+   );
 
    if (exist) {
       toast.error("¡Error! punto ya existe", {
@@ -344,7 +362,7 @@ const getPuntoExpedicion = async () => {
       for (let i = 0; i < establecimientos.length; i++) {
          const item = establecimientos[i];
          let puntos = await get(
-            `punto-expedicion?contributor=${props.contributor._id}&establecimiento=${item.codigo}`,
+            `punto-expedicion?contributor=${props.contributor._id}&establecimiento=${item._id}`,
          );
 
          puntosExpedicionListTemp.push({ establecimiento: item, puntos });

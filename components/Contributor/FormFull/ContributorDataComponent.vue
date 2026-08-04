@@ -5,9 +5,10 @@
             <div>
                <button
                   type="submit"
-                  class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+                  :disabled="isSubmitting"
+                  class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                >
-                  Guardar
+                  {{ isSubmitting ? "Guardando..." : "Guardar" }}
                </button>
             </div>
          </div>
@@ -149,9 +150,13 @@ const formData = ref({
 });
 
 const emit = defineEmits(["save-data"]);
+const isSubmitting = ref(false);
 
 const saveForm = async (e) => {
+   if (isSubmitting.value) return;
+
    if (validateForm()) {
+      isSubmitting.value = true;
       let timbradoFecha = moment(formData.value.timbradoFecha).format(
          "YYYY-MM-DDTHH:mm:ss",
       );
@@ -162,21 +167,25 @@ const saveForm = async (e) => {
       };
 
       try {
-         if (props.contributor) {
-            await update(
+         let saved;
+
+         if (props.contributor?._id) {
+            saved = await update(
                `contributor-emitter/${props.contributor._id}`,
                payload,
             );
          } else {
-            await create("contributor-emitter", payload);
+            saved = await create("contributor-emitter", payload);
          }
 
          toast.success("¡Operación exitosa!", { duration: 3000 });
-         setContributor(payload);
+         setContributor({ ...payload, ...saved });
       } catch (error) {
          toast.error("¡Error! no se pudo completar la solicitud", {
             duration: 3000,
          });
+      } finally {
+         isSubmitting.value = false;
       }
    }
 };

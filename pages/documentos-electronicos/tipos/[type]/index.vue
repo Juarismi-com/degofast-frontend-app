@@ -1,6 +1,6 @@
 <template>
    <div>
-      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700">
          {{ title }}
       </h2>
       <!--modal-simple title-btn="Subir archivos" title="Subir Archivos">
@@ -10,7 +10,7 @@
       <div class="col-span-3 flex justify-left">
          <NuxtLink
             :to="`/documentos-electronicos/tipos/${deType}/de-form`"
-            class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+            class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             type="submit"
          >
             Nuevo

@@ -3,7 +3,7 @@
       <h1 class="text-3xl">Resumen</h1>
 
       <div class="py-5">
-         <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+         <h2 class="mb-2 text-lg font-semibold text-gray-900">
             Cantidades:
          </h2>
          <div>
@@ -22,7 +22,7 @@
       </div>
 
       <div class="py-5">
-         <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+         <h2 class="mb-2 text-lg font-semibold text-gray-900">
             Ultimos Insertados:
          </h2>
          <div>

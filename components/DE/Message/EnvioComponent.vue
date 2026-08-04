@@ -1,14 +1,14 @@
 <template>
    <div>
-      <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+      <h2 class="mb-2 text-lg font-semibold text-gray-900">
          {{ title }}
       </h2>
       <ul
-         class="max-w-md space-y-2 text-gray-500 list-inside dark:text-gray-400"
+         class="max-w-md space-y-2 text-gray-500 list-inside"
       >
          <li class="flex items-center" v-for="(item, index) in messageList">
             <svg
-               class="w-4 h-4 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
+               class="w-4 h-4 me-2 text-green-500 flex-shrink-0"
                aria-hidden="true"
                xmlns="http://www.w3.org/2000/svg"
                fill="currentColor"
@@ -25,7 +25,7 @@
             <svg
                v-if="item.loading"
                aria-hidden="true"
-               class="w-4 h-4 me-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+               class="w-4 h-4 me-2 text-gray-200 animate-spin fill-blue-600"
                viewBox="0 0 100 101"
                fill="none"
                xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@
    </div>
    <div class="mt-4">
       <div
-         class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+         class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
          role="alert"
       >
          <span class="font-medium">Aviso: </span> Los documentos electrónicos no
