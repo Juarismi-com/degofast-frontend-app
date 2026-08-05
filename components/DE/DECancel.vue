@@ -97,7 +97,10 @@ import { INPUT_CLASS } from "../../config";
 import Loader from "@/components/Theme/Loader/Loader.vue";
 
 import { create } from "~/services/http.service";
+import { useToast } from "vue-toast-notification";
 
+const toast = useToast();
+const { handleError } = useErrorHandler();
 const loading = ref(false);
 
 const props = defineProps({
@@ -125,15 +128,12 @@ const handleSubmit = async () => {
 
       const res = await create(`de/${formData.value.cdc}/event`, payload);
 
-      alert(res.mensaje);
+      toast.success(res.mensaje);
    } catch (error) {
-      let errorMessage = "Ocurrió un error en la solicitud.";
-
-      if (error.response && error.response.data && error.response.data.error) {
-         errorMessage = error.response.data.error.mensaje;
-      }
-
-      alert(errorMessage);
+      const fallback =
+         error?.response?.data?.error?.mensaje ||
+         "Ocurrió un error en la solicitud.";
+      handleError(error, fallback);
    } finally {
       loading.value = false;
       emit("submit", formData.value);

@@ -378,11 +378,13 @@ const props = defineProps({
    },
 });
 
+const { handleError } = useErrorHandler();
+
 const fetchDetalle = async () => {
    try {
       detalle.value = mapperDeName(props.detalle);
    } catch (error) {
-      console.error("Error al obtener los detalles de la factura:", error);
+      handleError(error, "Ocurrió un error al obtener los detalles de la factura.");
    }
 };
 

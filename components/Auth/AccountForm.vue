@@ -84,6 +84,7 @@ import { create } from "@/services/http.service";
 import { useAuthStore } from "~/stores/auth.store.js";
 
 const { user } = storeToRefs(useAuthStore());
+const { handleError } = useErrorHandler();
 
 // Datos iniciales del formulario
 const formData = ref({
@@ -132,19 +133,10 @@ const submitChangePassword = async () => {
          resetForm();
       }
    } catch (error) {
-      console.error("Error al cambiar la contraseña:", error);
-
-      // Capturar el mensaje de error del backend
-      if (
-         error.response &&
-         error.response.data &&
-         error.response.data.message
-      ) {
-         errorMessage.value = error.response.data.message; // Mostrar mensaje específico del backend
-      } else {
-         errorMessage.value =
-            "Error interno del servidor. Por favor, intenta de nuevo.";
-      }
+      errorMessage.value = handleError(
+         error,
+         "Error interno del servidor. Por favor, intenta de nuevo.",
+      );
    } finally {
       isSubmitting.value = false;
    }

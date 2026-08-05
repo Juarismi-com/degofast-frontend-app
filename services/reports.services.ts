@@ -25,7 +25,7 @@ export const getAllContributors = async (ruc: string) => {
       const response = await axios.get(`${DEGOFAST_SYNC_SQL_API}/contributors`);
       return response.data;
    } catch (error) {
-      console.error("getCountersInvoicesByState():", error);
+      console.error("getAllContributors():", error);
       throw error;
    }
 };

@@ -1,17 +1,30 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { useConfig } from "../config";
-import { useStorage } from "@vueuse/core";
 import { useContributorStore } from "./contributor.store";
+import {
+   getSecureItem,
+   setSecureItem,
+   clearSecureItem,
+} from "../helpers/secureStorage.helper";
 
 export const authDefault = {
-   authToken: localStorage.getItem("authToken") || null,
-   user: JSON.parse(localStorage.getItem("user")) || null,
+   authToken: null,
+   user: null,
 };
 
 export const useAuthStore = defineStore("auth", {
-   state: () => authDefault,
+   state: () => ({ ...authDefault }),
    actions: {
+      /**
+       * Descifra y carga el token/usuario persistidos. Debe correr una sola
+       * vez, antes de la navegación inicial (ver plugins/01.hydrateAuth.ts).
+       */
+      async hydrate() {
+         this.authToken = await getSecureItem("authToken");
+         this.user = await getSecureItem("user");
+         this.loadToken();
+      },
       loadToken() {
          axios.defaults.headers.common["auth_token"] = this.authToken;
          axios.defaults.timeout = 20000;
@@ -33,12 +46,12 @@ export const useAuthStore = defineStore("auth", {
             // set axios header with authorization
             this.loadToken();
 
-            // save in localstorage token, user and contributor
-            useStorage("authToken", token);
-            useStorage("user", usuario);
+            // persistir token y usuario cifrados
+            await setSecureItem("authToken", token);
+            await setSecureItem("user", usuario);
 
             const contributorStore = useContributorStore();
-            contributorStore.setContributor(contributor);
+            await contributorStore.setContributor(contributor);
          } catch (error) {
             axios.defaults.headers.common["auth_token"] = null;
 
@@ -57,7 +70,11 @@ export const useAuthStore = defineStore("auth", {
          const contributorStore = useContributorStore();
          contributorStore.setContributor(null);
 
+         clearSecureItem("authToken");
+         clearSecureItem("user");
          localStorage.clear();
+         sessionStorage.clear();
+
          axios.defaults.headers.common["auth_token"] = null;
          navigateTo("/auth");
       },

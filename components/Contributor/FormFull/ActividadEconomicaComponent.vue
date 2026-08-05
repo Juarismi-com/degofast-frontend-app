@@ -150,6 +150,7 @@ const { setContributor } = contributorStore;
 const { contributor } = storeToRefs(contributorStore);
 
 const toast = useToast();
+const { handleError } = useErrorHandler();
 
 const deleteActividadAlert = ref(false);
 const actividadSelected = ref(null); // es un index
@@ -180,14 +181,7 @@ const saveForm = async (e) => {
          formData.value = { codigo: "", descripcion: "" };
       }
    } catch (error) {
-      console.error(error);
-      const message =
-         error?.response?.data?.message ||
-         "¡Error! no se pudo completar la solicitud";
-
-      toast.error(message, {
-         duration: 3000,
-      });
+      handleError(error, "¡Error! no se pudo completar la solicitud");
    } finally {
       isSubmitting.value = false;
    }
@@ -232,6 +226,8 @@ const setDeleteActividadAlert = (index) => {
 };
 
 const deleteActividad = async () => {
+   const previousActividades = [...contributor.value.actividadesEconomicas];
+
    try {
       contributor.value.actividadesEconomicas.splice(
          actividadSelected.value,
@@ -251,7 +247,8 @@ const deleteActividad = async () => {
       actividadSelected.value = null;
       deleteActividadAlert.value = false;
    } catch (error) {
-      console.error(error);
+      contributor.value.actividadesEconomicas = previousActividades;
+      handleError(error, "Ocurrió un error al eliminar la actividad económica.");
    }
 };
 </script>

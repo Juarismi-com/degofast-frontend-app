@@ -363,6 +363,7 @@ const openModal = ref(false);
 const showModal = ref(false);
 
 const route = useRoute();
+const { handleError } = useErrorHandler();
 
 const fetchDetalle = async () => {
    try {
@@ -372,7 +373,7 @@ const fetchDetalle = async () => {
       detalle.value = mapperDeName(deRes);
       localCurrency.value = detalle.value.moneda;
    } catch (error) {
-      console.error("Error al obtener los detalles de la factura:", error);
+      handleError(error, "Ocurrió un error al obtener los detalles de la factura.");
    }
 };
 

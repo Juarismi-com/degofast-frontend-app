@@ -73,14 +73,32 @@
 
             <div>
                <label for="csc" :class="[commonLabelClass]">CSC</label>
-               <input
-                  type="text"
-                  name="csc"
-                  id="csc"
-                  :class="[INPUT_CLASS.sm]"
-                  required="true"
-                  v-model="formData.csc"
-               />
+               <div class="relative">
+                  <input
+                     :type="showCsc ? 'text' : 'password'"
+                     name="csc"
+                     id="csc"
+                     :class="[INPUT_CLASS.sm, 'pr-9']"
+                     :required="!isEditing"
+                     v-model="formData.csc"
+                  />
+                  <button
+                     type="button"
+                     class="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-600"
+                     :aria-label="showCsc ? 'Ocultar CSC' : 'Mostrar CSC'"
+                     @click="showCsc = !showCsc"
+                  >
+                     <EyeSlashIcon v-if="showCsc" class="size-4" />
+                     <EyeIcon v-else class="size-4" />
+                  </button>
+               </div>
+               <p
+                  v-if="isEditing && !formData.csc"
+                  class="mt-1 text-xs text-gray-500"
+               >
+                  Por seguridad no se guarda en este navegador. Dejalo vacío
+                  para no modificarlo, o ingresalo para actualizarlo.
+               </p>
             </div>
 
             <div>
@@ -136,9 +154,15 @@ import { INPUT_CLASS } from "~/config";
 import { commonLabelClass } from "~/config/styles";
 import { useToast } from "vue-toast-notification";
 import { defineProps } from "vue";
+import { storeToRefs } from "pinia";
 import { useContributorStore } from "~/stores";
-const { setContributor } = useContributorStore();
+import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/20/solid";
+
+const contributorStore = useContributorStore();
+const { setContributor } = contributorStore;
+const { csc: storedCsc } = storeToRefs(contributorStore);
 const toast = useToast();
+const { handleError } = useErrorHandler();
 
 const props = defineProps({
    contributor: {
@@ -147,6 +171,9 @@ const props = defineProps({
    },
 });
 
+const isEditing = computed(() => !!props.contributor?._id);
+const showCsc = ref(false);
+
 const formData = ref({
    timbradoNumero: props.contributor?.timbradoNumero,
    tipoContribuyente: props.contributor?.tipoContribuyente,
@@ -154,7 +181,9 @@ const formData = ref({
    nombreFantasia: props.contributor?.nombreFantasia,
    razonSocial: props.contributor?.razonSocial,
    email: props.contributor?.email,
-   csc: props.contributor?.csc,
+   // el CSC no se persiste en este navegador (dato sensible); solo vive en
+   // memoria mientras dura la sesión
+   csc: storedCsc.value || "",
    timbradoFecha: props.contributor
       ? moment(props.contributor.timbradoFecha)
            .local()
@@ -179,6 +208,12 @@ const saveForm = async (e) => {
          timbradoFecha,
       };
 
+      // si se está editando y no se tocó el campo, no mandar csc vacío:
+      // pisaría el valor ya guardado en el backend
+      if (isEditing.value && !payload.csc) {
+         delete payload.csc;
+      }
+
       try {
          let saved;
 
@@ -194,9 +229,7 @@ const saveForm = async (e) => {
          toast.success("¡Operación exitosa!", { duration: 3000 });
          setContributor({ ...payload, ...saved });
       } catch (error) {
-         toast.error("¡Error! no se pudo completar la solicitud", {
-            duration: 3000,
-         });
+         handleError(error, "¡Error! no se pudo completar la solicitud");
       } finally {
          isSubmitting.value = false;
       }
@@ -213,17 +246,19 @@ const validateForm = () => {
          formData.value;
 
       if (!timbradoNumero || isNaN(Number(timbradoNumero)))
-         throw "El campo 'timbradoNúmero' es requerido y debe ser numérico";
+         throw new Error(
+            "El campo 'timbradoNúmero' es requerido y debe ser numérico",
+         );
 
-      if (!ruc) throw "RUC es requerido";
-      if (!csc) throw "CSC es requerido";
-      if (!nombreFantasia) throw "Nombre de fantasía es requerido";
-      if (!razonSocial) throw "Razon Social es requerido";
-      if (!email) throw "Email es requerido";
+      if (!ruc) throw new Error("RUC es requerido");
+      if (!isEditing.value && !csc) throw new Error("CSC es requerido");
+      if (!nombreFantasia) throw new Error("Nombre de fantasía es requerido");
+      if (!razonSocial) throw new Error("Razon Social es requerido");
+      if (!email) throw new Error("Email es requerido");
 
       return true;
    } catch (error) {
-      toast.error(error, { duration: 3000 });
+      handleError(error);
       return false;
    }
 };

@@ -75,6 +75,7 @@ import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service
 const contributorStore = useContributorStore();
 const { contributor } = storeToRefs(contributorStore);
 const puntoExpedicionList = ref([]);
+const { handleError } = useErrorHandler();
 
 // current form view
 const currentStep = ref(0);
@@ -119,8 +120,12 @@ const availableSteps = computed(() => {
 });
 
 onMounted(async () => {
-   puntoExpedicionList.value = await getPuntoExpedicionByFilters({
-      contributor: contributor.value?._id,
-   });
+   try {
+      puntoExpedicionList.value = await getPuntoExpedicionByFilters({
+         contributor: contributor.value?._id,
+      });
+   } catch (error) {
+      handleError(error, "Ocurrió un error al obtener los puntos de expedición.");
+   }
 });
 </script>

@@ -15,7 +15,7 @@ export const getClientByRuc = async (ruc: string) => {
       );
       return response.data;
    } catch (error) {
-      console.error("getContributor():", error);
+      console.error("getClientByRuc():", error);
       throw error;
    }
 };

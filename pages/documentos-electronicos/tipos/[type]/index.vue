@@ -49,6 +49,7 @@ const title = ref(routeSelected.value.title);
 const des = ref([]);
 const currentPage = ref(Number(route.query.page) || 1);
 const totalPages = ref(1);
+const { handleError } = useErrorHandler();
 
 const setDes = async () => {
    try {
@@ -61,7 +62,7 @@ const setDes = async () => {
 
       des.value = data.map(mapperDeName);
    } catch (error) {
-      console.error("Error en la solicitud:", error);
+      handleError(error, "Ocurrió un error al obtener los documentos electrónicos.");
    }
 };
 

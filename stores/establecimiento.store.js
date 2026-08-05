@@ -8,7 +8,7 @@ export const establecimientoDefault = {
    establecimientoSelected: null, // todo
 };
 
-export const useEstablecimientoStore = defineStore("contributor", {
+export const useEstablecimientoStore = defineStore("establecimiento", {
    state: () => ({
       puntoExpedicionList: useStorage(
          "puntoExpedicionList",

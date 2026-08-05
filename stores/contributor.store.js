@@ -1,5 +1,9 @@
 import { defineStore } from "pinia";
-import { useStorage } from "@vueuse/core";
+import {
+   getSecureItem,
+   setSecureItem,
+   clearSecureItem,
+} from "../helpers/secureStorage.helper";
 
 export const contributorDefault = {
    contributor: {
@@ -17,15 +21,39 @@ export const contributorDefault = {
 
 export const useContributorStore = defineStore("contributor", {
    state: () => ({
-      contributor: useStorage("contributor", contributorDefault.contributor),
+      contributor: { ...contributorDefault.contributor },
+      // CSC: nunca se persiste (ver ContributorDataComponent). Solo vive en
+      // memoria durante la sesión del navegador.
+      csc: null,
    }),
    actions: {
-      setContributor(contributor) {
+      /**
+       * Descifra y carga el contribuyente persistido. Debe correr una sola
+       * vez, antes de la navegación inicial (ver plugins/01.hydrateAuth.ts).
+       */
+      async hydrate() {
+         const stored = await getSecureItem("contributor");
+         if (stored) {
+            this.contributor = stored;
+         }
+      },
+      async setContributor(contributor) {
          if (contributor == null) {
             this.contributor = null;
-         } else {
-            this.contributor = { ...this.contributor, ...contributor };
+            this.csc = null;
+            clearSecureItem("contributor");
+            return;
          }
+
+         // el csc nunca se persiste junto al resto de los datos
+         const { csc, ...rest } = contributor;
+         this.contributor = { ...this.contributor, ...rest };
+
+         if (csc !== undefined) {
+            this.csc = csc;
+         }
+
+         await setSecureItem("contributor", this.contributor);
       },
    },
 });

@@ -234,6 +234,7 @@ const props = defineProps({
 const { setContributor } = useContributorStore();
 
 const toast = useToast();
+const { handleError } = useErrorHandler();
 
 const formData = ref({
    nroActual: 0,
@@ -297,14 +298,7 @@ const saveForm = async (e) => {
          };
       }
    } catch (error) {
-      console.error(error);
-      const message =
-         error?.response?.data?.message ||
-         "¡Error! no se pudo completar la solicitud";
-
-      toast.error(message, {
-         duration: 3000,
-      });
+      handleError(error, "¡Error! no se pudo completar la solicitud");
    } finally {
       isSubmitting.value = false;
    }
@@ -314,17 +308,16 @@ const validateForm = () => {
    try {
       const { nroActual, nroInicial, codigo, establecimiento } = formData.value;
 
-      if (!nroActual) throw "Nro. Actual es requerido";
-      if (!nroInicial) throw "Nro. Inicial es requerido";
-      if (!codigo) throw "Código es requerido";
-      if (!establecimiento) throw "Establecimiento es requerido";
+      if (!nroActual) throw new Error("Nro. Actual es requerido");
+      if (!nroInicial) throw new Error("Nro. Inicial es requerido");
+      if (!codigo) throw new Error("Código es requerido");
+      if (!establecimiento) throw new Error("Establecimiento es requerido");
 
-      if (codigo.length != 3) throw "Código debe tener 3 caracteres";
+      if (codigo.length != 3) throw new Error("Código debe tener 3 caracteres");
 
       return true;
    } catch (error) {
-      console.log(error);
-      toast.error(error, { duration: 3000 });
+      handleError(error);
       return false;
    }
 };
@@ -370,10 +363,9 @@ const getPuntoExpedicion = async () => {
 
       if (puntosExpedicionListTemp.length > 0) {
          puntosExpedicionList.value = puntosExpedicionListTemp;
-         puntosExpedicionList.value;
       }
    } catch (error) {
-      console.error(error);
+      handleError(error, "Ocurrió un error al obtener los puntos de expedición.");
    }
 };
 

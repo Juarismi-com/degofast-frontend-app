@@ -52,7 +52,10 @@ import {
 
 definePageMeta({
    layout: "empty",
+   middleware: ["auth"],
 });
+
+const { handleError } = useErrorHandler();
 
 const counters = ref({});
 
@@ -66,7 +69,7 @@ const getRepors = async (id) => {
       lastRecordTmp = await getInvoiceLastByState();
       lastRecords.value = lastRecordTmp.filter((item) => item != null);
    } catch (error) {
-      console.error("Error al obtener los detalles de la factura:", error);
+      handleError(error, "Ocurrió un error al obtener el resumen de reportes.");
    }
 };
 

@@ -162,6 +162,7 @@ import { isValidCurrency } from "~/helpers/number.helper";
 
 definePageMeta({
    layout: "empty",
+   middleware: ["auth"],
 });
 
 // store
@@ -170,6 +171,7 @@ const authStore = useAuthStore();
 const detalle = ref(null);
 const reciboData = ref(null);
 const route = useRoute();
+const { handleError } = useErrorHandler();
 
 const fetchDetalle = async () => {
    try {
@@ -178,8 +180,7 @@ const fetchDetalle = async () => {
       const deRes = await getReciboById(id);
       detalle.value = deRes;
    } catch (error) {
-      alert(error);
-      console.error("Error al obtener datos del recibo:", error);
+      handleError(error, "Ocurrió un error al obtener los datos del recibo.");
    }
 };
 
@@ -188,7 +189,7 @@ const getReciboCabecera = async (id) => {
       const contributorRes = await getContributorById(id);
       reciboData.value = contributorRes;
    } catch (error) {
-      console.error("Error al obtener los detalles de la factura:", error);
+      handleError(error, "Ocurrió un error al obtener los detalles de la factura.");
    }
 };
 

@@ -145,7 +145,8 @@
 <script>
 import { useConfig } from "~/config";
 
-const { API_URL } = useConfig()
+const { API_URL } = useConfig();
+const { handleError } = useErrorHandler();
 
 export default {
    data() {
@@ -190,11 +191,18 @@ export default {
             if (res.status.value === "success") {
                this.$router.push("/auth");
             } else {
-               this.registerFailMessage =
-                  res.error.value?.data?.message ||
-                  "Ocurrio un problema en su registro";
+               this.registerFailMessage = handleError(
+                  res.error.value,
+                  "Ocurrio un problema en su registro",
+               );
                this.registerFail = true;
             }
+         } catch (error) {
+            this.registerFailMessage = handleError(
+               error,
+               "Ocurrio un problema en su registro",
+            );
+            this.registerFail = true;
          } finally {
             this.isSubmitting = false;
          }

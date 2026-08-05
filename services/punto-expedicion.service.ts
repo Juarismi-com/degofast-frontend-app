@@ -18,7 +18,7 @@ export const getPuntoExpedicionByFilters = async (filters: any) => {
 
       return response.data;
    } catch (error) {
-      console.error("getContributor():", error);
+      console.error("getPuntoExpedicionByFilters():", error);
       throw error;
    }
 };

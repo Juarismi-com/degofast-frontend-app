@@ -6,10 +6,6 @@
          >
             Iniciar Sesión
          </h1>
-         <ToastDanger
-            v-if="showToast"
-            message="Email o contraseña inválidos."
-         />
          <form
             class="space-y-4 md:space-y-6"
             action="#"
@@ -95,7 +91,6 @@ import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { HOME_PAGE_PATH } from "../../config";
 import { useContributorStore } from "~/stores/contributor.store.js";
-import { useToast } from "vue-toast-notification";
 
 const authStore = useAuthStore();
 const { setAuth } = authStore;
@@ -104,22 +99,19 @@ const { authToken } = storeToRefs(authStore);
 const contributorStore = useContributorStore();
 const { contributor } = storeToRefs(contributorStore);
 const router = useRouter();
-const toast = useToast();
+const { handleError } = useErrorHandler();
 
 const form = ref({
    username: "",
    password: "",
 });
 
-const loginFail = ref(false);
-const showToast = ref(false);
 const isSubmitting = ref(false);
 
 const login = async (e) => {
    e.preventDefault();
    if (isSubmitting.value) return;
 
-   loginFail.value = false;
    isSubmitting.value = true;
 
    try {
@@ -133,13 +125,9 @@ const login = async (e) => {
          }
       }
    } catch (error) {
-      loginFail.value = true;
-      showToast.value = true;
-      console.error("Login error:", error.message);
-
-      if (error.message === "username or password is incorrect") {
-         toast.error("Usuario o contraseña incorrectos");
-      }
+      handleError(error, "Email o contraseña inválidos.");
+   } finally {
+      isSubmitting.value = false;
    }
 };
 </script>

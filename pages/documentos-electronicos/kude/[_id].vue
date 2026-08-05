@@ -423,12 +423,14 @@ import moment from "moment";
 
 definePageMeta({
    layout: "empty",
+   middleware: ["auth"],
 });
 
 const route = useRoute();
 const title = ref("");
 const detalle = ref(null);
 const localCurrency = ref(null);
+const { handleError } = useErrorHandler();
 
 const getDeById = async (id) => {
    try {
@@ -441,7 +443,7 @@ const getDeById = async (id) => {
             ? "NOTA DE CRÉDITO"
             : "FACTURA ELECTRÓNICA";
    } catch (error) {
-      console.error("Error al obtener los detalles de la factura:", error);
+      handleError(error, "Ocurrió un error al obtener los detalles de la factura.");
    }
 };
 /**

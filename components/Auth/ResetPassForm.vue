@@ -78,6 +78,7 @@
 <script setup>
 import { create } from "@/services/http.service";
 
+const { handleError } = useErrorHandler();
 const form = ref({ username: "" });
 const newPass = ref("");
 const isEmailValid = ref(false);
@@ -101,10 +102,10 @@ const resetPassword = async () => {
       const result = await create("auth/reset-password", payload);
       newPass.value = result.newPassword;
    } catch (error) {
-      console.error("Error al resetear la contraseña:", error);
-      errorMessage.value =
-         error.response?.data?.message ||
-         "No se pudo generar la nueva contraseña. Intenta nuevamente.";
+      errorMessage.value = handleError(
+         error,
+         "No se pudo generar la nueva contraseña. Intenta nuevamente.",
+      );
    } finally {
       isSubmitting.value = false;
    }

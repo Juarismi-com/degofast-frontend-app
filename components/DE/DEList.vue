@@ -222,10 +222,13 @@ import { dePDF } from "@/config/de.ts";
 
 import { useAuthStore } from "../../stores/auth.store.js";
 import { storeToRefs } from "pinia";
+import { useToast } from "vue-toast-notification";
 
 const { API_URL } = useConfig();
 
 const authStore = useAuthStore();
+const toast = useToast();
+const { handleError } = useErrorHandler();
 
 const props = defineProps({
    items: {
@@ -276,7 +279,7 @@ const generarPDF = async (id) => {
       // );
       // return response;
    } catch (error) {
-      console.error("Error al buscar el documento:", error);
+      handleError(error, "Ocurrió un error al buscar el documento.");
    } finally {
       loading.value = false;
    }
@@ -329,10 +332,13 @@ const enviarEmail = async (id) => {
          deRes.cliente.email,
          deRes._id,
       );
-      alert(JSON.stringify(response.message));
-      console.log("Respuesta del servidor:", response);
+      toast.success(
+         typeof response?.message === "string"
+            ? response.message
+            : "Notificación enviada correctamente.",
+      );
    } catch (error) {
-      console.error("Error al enviar la notificación:", error);
+      handleError(error, "Ocurrió un error al enviar la notificación.");
    }
 };
 
@@ -399,7 +405,7 @@ const buscar = async () => {
       filteredItems.value = response.data;
       totalPagesLocal.value = response.totalPages;
    } catch (error) {
-      console.error("Error al buscar:", error);
+      handleError(error, "Ocurrió un error al buscar los documentos.");
    } finally {
       loading.value = false;
    }
@@ -407,7 +413,6 @@ const buscar = async () => {
 
 onMounted(() => {
    filteredItems.value = [...items.value];
-   console.log(items.value);
    loading.value = true;
 });
 
@@ -415,7 +420,7 @@ watch(items, (newItems) => {
    filteredItems.value = [...newItems];
    loading.value = false;
    if (newItems.length === 0) {
-      alert("No hay elementos que mostrar.");
+      toast.info("No hay elementos que mostrar.");
    }
 });
 
@@ -423,7 +428,6 @@ watch(
    () => props.totalPages,
    (newTotalPages) => {
       totalPagesLocal.value = newTotalPages;
-      console.log(totalPagesLocal.value);
    },
 );
 

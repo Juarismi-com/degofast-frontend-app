@@ -305,6 +305,10 @@
 import { getPuntoExpedicionByFilters } from "~/services/punto-expedicion.service.ts";
 import { INPUT_CLASS } from "../../../config";
 import NotaCreditoDebito from "../Tipo/NotaCreditoDebito.vue";
+import { useToast } from "vue-toast-notification";
+
+const toast = useToast();
+const { handleError } = useErrorHandler();
 
 const props = defineProps({
    formData: {
@@ -353,8 +357,8 @@ const setPuntoEstablecimientoList = async () => {
       if (puntoExpedicionList.value.length === 0) {
          formData.value.puntoExpedicion = null;
          formData.value.punto = null;
-         console.error(
-            "No hay puntos de expedición configurados para este establecimiento y tipo de documento",
+         toast.warning(
+            "No hay puntos de expedición configurados para este establecimiento y tipo de documento.",
          );
          return;
       }
@@ -362,7 +366,7 @@ const setPuntoEstablecimientoList = async () => {
       formData.value.puntoExpedicion = puntoExpedicionList.value[0]._id;
       formData.value.punto = puntoExpedicionList.value[0].codigo;
    } catch (error) {
-      console.error(error);
+      handleError(error, "Ocurrió un error al obtener los puntos de expedición.");
    }
 };
 

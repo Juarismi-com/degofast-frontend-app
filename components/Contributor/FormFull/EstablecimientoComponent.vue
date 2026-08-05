@@ -323,6 +323,7 @@ import AlertSimple from "~/components/Theme/Alert/AlertSimple.vue";
 const { setContributor } = useContributorStore();
 
 const toast = useToast();
+const { handleError } = useErrorHandler();
 
 const props = defineProps({
    contributor: {
@@ -388,10 +389,7 @@ const saveForm = async (e) => {
          formData.value = defaultFormData();
       }
    } catch (error) {
-      console.error(error);
-      toast.error("¡Error! no se pudo completar la solicitud", {
-         duration: 3000,
-      });
+      handleError(error, "¡Error! no se pudo completar la solicitud");
    } finally {
       isSubmitting.value = false;
    }
@@ -411,21 +409,21 @@ const validateForm = () => {
          telefono,
       } = formData.value;
 
-      if (!codigo) throw "Codigo es requerido";
-      if (!denominacion) throw "Denominacion de casa es requerido";
-      if (!departamento) throw "Departamento de casa es requerido";
-      if (!distrito) throw "Distrito de casa es requerido";
-      if (!ciudad) throw "Ciudad de casa es requerido";
-      if (!direccion) throw "Direccion es requerido";
-      if (!numeroCasa) throw "Número de casa es requerido";
-      if (!telefono) throw "Telefono de casa es requerido";
-      if (!email) throw "Email de casa es requerido";
+      if (!codigo) throw new Error("Codigo es requerido");
+      if (!denominacion) throw new Error("Denominacion de casa es requerido");
+      if (!departamento) throw new Error("Departamento de casa es requerido");
+      if (!distrito) throw new Error("Distrito de casa es requerido");
+      if (!ciudad) throw new Error("Ciudad de casa es requerido");
+      if (!direccion) throw new Error("Direccion es requerido");
+      if (!numeroCasa) throw new Error("Número de casa es requerido");
+      if (!telefono) throw new Error("Telefono de casa es requerido");
+      if (!email) throw new Error("Email de casa es requerido");
 
-      if (codigo.length != 3) throw "Código debe tener 3 caracteres";
+      if (codigo.length != 3) throw new Error("Código debe tener 3 caracteres");
 
       return true;
    } catch (error) {
-      toast.error(error, { duration: 3000 });
+      handleError(error);
       return false;
    }
 };
@@ -515,6 +513,8 @@ const setDeleteEstablecimientoAlert = (item) => {
 };
 
 const deleteEstablecimiento = async () => {
+   const previousEstablecimientos = [...establecimientos.value];
+
    try {
       // elimina el establecimiento no existente
       const item = establecimientoSelected.value;
@@ -539,7 +539,8 @@ const deleteEstablecimiento = async () => {
       establecimientoSelected.value = null;
       deleteEstablecimientoAlert.value = false;
    } catch (error) {
-      console.error(error);
+      establecimientos.value = previousEstablecimientos;
+      handleError(error, "Ocurrió un error al eliminar el establecimiento.");
    }
 };
 

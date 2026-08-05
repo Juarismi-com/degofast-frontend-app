@@ -135,6 +135,7 @@ const recibos = ref([]);
 const filteredItems = ref([]);
 const totalPagesLocal = ref(1);
 const currentPage = ref(Number(route.query.page) || 1);
+const { handleError } = useErrorHandler();
 
 const getRecibo = async () => {
    try {
@@ -143,7 +144,7 @@ const getRecibo = async () => {
       filteredItems.value = recibos.value;
       totalPagesLocal.value = results?.totalPages || 1;
    } catch (error) {
-      console.error("Error en la solicitud:", error);
+      handleError(error, "Ocurrió un error al obtener los recibos.");
    } finally {
       loading.value = false;
    }
@@ -170,7 +171,7 @@ const buscar = async () => {
          filteredItems.value = recibos.value;
       }
    } catch (error) {
-      console.error("Error al buscar el documento:", error);
+      handleError(error, "Ocurrió un error al buscar el documento.");
    } finally {
       loading.value = false;
    }

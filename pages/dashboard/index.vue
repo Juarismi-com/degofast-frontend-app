@@ -46,6 +46,7 @@ definePageMeta({
 // datos del contribuyente
 const contributorStore = useContributorStore();
 const { contributor } = storeToRefs(contributorStore);
+const { handleError } = useErrorHandler();
 
 const cards = ref([
    { title: "Total de Facturas", content: "Cargando..." },
@@ -85,7 +86,7 @@ const generarReportes = async () => {
          { title: "Notas de Débito", content: data.totalNotaDebito },
       ];
    } catch (error) {
-      console.error("Error:", error);
+      handleError(error, "Ocurrió un error al generar los reportes del dashboard.");
    }
 };
 

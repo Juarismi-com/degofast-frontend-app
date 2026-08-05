@@ -10,7 +10,8 @@
             <button
                v-if="currentStep == steps.length - 1"
                @click="setIsPreviewModal"
-               class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+               :disabled="isSubmitting"
+               class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                Generar Documento
             </button>
@@ -92,6 +93,7 @@
             :is-open="isPreviewModal"
             :set-open="setIsPreviewModal"
             :submit="submitDe"
+            :is-submitting="isSubmitting"
          />
       </div>
    </div>
@@ -107,6 +109,8 @@ import { formatDateHours, formatDate } from "~/helpers/date.helper";
 import { saveDE, createDEAsync } from "~/services";
 import { useConfig } from "../../../../config";
 import { useToast } from "vue-toast-notification";
+
+const { handleError } = useErrorHandler();
 
 // metadata
 definePageMeta({
@@ -153,7 +157,6 @@ const setCurrentStep = (value) => {
 
 // Modal de previsualizacion de documento electronico
 const isPreviewModal = ref(false);
-const toast = useToast();
 const setIsPreviewModal = () => {
    try {
       if (validatorDeForm(formData.value)) {
@@ -161,7 +164,7 @@ const setIsPreviewModal = () => {
       }
    } catch (error) {
       setCurrentStep(0);
-      toast.error(error.message);
+      handleError(error);
    }
 };
 
@@ -179,13 +182,17 @@ const formData = ref({
 
 const confirmSubmit = ref(false);
 const submitDeSuccess = ref(false);
+const isSubmitting = ref(false);
 
 /**
  * Guarda el documento electronico de forma sincrona
  * @param payload
  */
 const submitDe = async () => {
+   if (isSubmitting.value) return;
+
    try {
+      isSubmitting.value = true;
       setIsPreviewModal();
 
       confirmSubmit.value = true;
@@ -223,7 +230,13 @@ const submitDe = async () => {
          );
       }
    } catch (error) {
-      console.log(error);
+      confirmSubmit.value = false;
+      handleError(
+         error,
+         "Ocurrió un error al presentar el documento electrónico.",
+      );
+   } finally {
+      isSubmitting.value = false;
    }
 };
 

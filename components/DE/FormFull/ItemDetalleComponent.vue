@@ -224,6 +224,7 @@ const props = defineProps({
 
 const { formData, contributor } = toRefs(props);
 const toast = useToast();
+const { handleError } = useErrorHandler();
 
 // Relaciona a items/servicios
 const item = ref({ ...deItemData });
@@ -234,7 +235,11 @@ const codigo = ref("");
  * Actualiza el listado de servicios, para su busqueda local (en el navegador)
  */
 const setServicesList = async () => {
-   serviceList.value = await getServicesByContributor(contributor.value._id);
+   try {
+      serviceList.value = await getServicesByContributor(contributor.value._id);
+   } catch (error) {
+      handleError(error, "Ocurrió un error al obtener el listado de servicios.");
+   }
 };
 
 /**
