@@ -5,14 +5,26 @@
          :confirm-fn="deleteEstablecimiento"
       />
       <form @submit.prevent="saveForm" method="post">
-         <div class="mx-5 flex justify-end">
-            <div>
+         <div class="mx-5 flex justify-between items-center">
+            <p v-if="editingCodigo" class="text-sm text-purple-700 font-medium">
+               Editando establecimiento {{ editingCodigo }}
+            </p>
+            <div v-else></div>
+            <div class="flex gap-2">
+               <button
+                  v-if="editingCodigo"
+                  type="button"
+                  @click="cancelEdit"
+                  class="text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2 text-center"
+               >
+                  Cancelar
+               </button>
                <button
                   type="submit"
                   :disabled="isSubmitting"
                   class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                >
-                  {{ isSubmitting ? "Guardando..." : "Guardar" }}
+                  {{ isSubmitting ? "Guardando..." : editingCodigo ? "Actualizar" : "Guardar" }}
                </button>
             </div>
          </div>
@@ -263,6 +275,21 @@
                               <div class="py-1 cursor-pointer">
                                  <MenuItem
                                     v-slot="{ active }"
+                                    @click="editEstablecimiento(item)"
+                                 >
+                                    <NuxtLink
+                                       :class="[
+                                          active
+                                             ? 'bg-gray-100 text-gray-900 outline-hidden'
+                                             : 'text-gray-700',
+                                          'block px-4 py-2 text-sm',
+                                       ]"
+                                    >
+                                       Editar establecimiento
+                                    </NuxtLink>
+                                 </MenuItem>
+                                 <MenuItem
+                                    v-slot="{ active }"
                                     @click="copyEstablecimiento(item)"
                                  >
                                     <NuxtLink
@@ -352,6 +379,7 @@ const defaultFormData = () => ({
 const formData = ref(defaultFormData());
 
 const establecimientoSelected = ref(null);
+const editingCodigo = ref(null);
 
 const departamentos = ref([...getDepartamentos()]);
 const ciudades = ref([]);
@@ -369,12 +397,15 @@ const saveForm = async (e) => {
          isSubmitting.value = true;
 
          // Actualiza en local y remoto
-         const payload = {
-            establecimientos: [
-               ...establecimientos.value,
-               { ...formData.value },
-            ],
-         };
+         const establecimientosTemp = editingCodigo.value
+            ? establecimientos.value.map((establecimiento) =>
+                 establecimiento.codigo == editingCodigo.value
+                    ? { ...formData.value }
+                    : establecimiento,
+              )
+            : [...establecimientos.value, { ...formData.value }];
+
+         const payload = { establecimientos: establecimientosTemp };
 
          await update(`contributor-emitter/${props.contributor._id}`, payload);
 
@@ -387,6 +418,7 @@ const saveForm = async (e) => {
 
          // Limpia el formulario para cargar el siguiente establecimiento
          formData.value = defaultFormData();
+         editingCodigo.value = null;
       }
    } catch (error) {
       handleError(error, "¡Error! no se pudo completar la solicitud");
@@ -495,7 +527,9 @@ const setCiudad = (e) => {
 
 const validateEstablecimiento = () => {
    const exist = establecimientos.value.find(
-      (e) => parseInt(formData.value.codigo) == parseInt(e.codigo),
+      (e) =>
+         parseInt(formData.value.codigo) == parseInt(e.codigo) &&
+         e.codigo != editingCodigo.value,
    );
 
    if (exist) {
@@ -550,5 +584,19 @@ const copyEstablecimiento = (item) => {
       ciudad: null,
       distrito: null,
    };
+};
+
+const editEstablecimiento = (item) => {
+   editingCodigo.value = item.codigo;
+   formData.value = { ...item };
+
+   // repuebla los selects de distrito/ciudad con los datos ya guardados
+   if (item.departamento) getDistritos(item.departamento);
+   if (item.distrito) getCiudades(item.distrito);
+};
+
+const cancelEdit = () => {
+   editingCodigo.value = null;
+   formData.value = defaultFormData();
 };
 </script>
